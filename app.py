@@ -9,8 +9,8 @@ HEADERS = {
     "Referer": "https://www.fotmob.com/",
 }
 
-BIG_FORM_THRESHOLD = 4      # 4 victoires ou 4 défaites récentes
-RANK_GAP_THRESHOLD = 8      # écart de classement minimum
+BIG_FORM_THRESHOLD = 4
+RANK_GAP_THRESHOLD = 8
 
 
 def tg_send(text: str):
@@ -27,15 +27,15 @@ def tg_send(text: str):
         "parse_mode": "HTML"
     }
 
-    r = requests.post(url, json=payload, timeout=20)
-    r.raise_for_status()
+    response = requests.post(url, json=payload, timeout=20)
+    response.raise_for_status()
 
 
 def api_get(path: str, params=None):
     url = f"{BASE_URL}{path}"
-    r = requests.get(url, params=params, headers=HEADERS, timeout=20)
-    r.raise_for_status()
-    return r.json()
+    response = requests.get(url, params=params, headers=HEADERS, timeout=20)
+    response.raise_for_status()
+    return response.json()
 
 
 def get_matches_today():
@@ -119,7 +119,6 @@ def extract_recent_form(match_details, team_name):
             form_list = cur
             break
 
-    # Si la structure précise n'est pas trouvée, on renvoie vide
     wins = sum(1 for x in form_list if str(x).upper().startswith("W"))
     losses = sum(1 for x in form_list if str(x).upper().startswith("L"))
 
@@ -134,11 +133,11 @@ def build_alerts():
     alerts = []
     matches = get_matches_today()
 
-    for m in matches:
+    for match in matches:
         try:
-            table = get_league_table(m["league_id"]) if m["league_id"] else []
-            home_rank = find_rank(table, m["home_team"])
-            away_rank = find_rank(table, m["away_team"])
+            table = get_league_table(match["league_id"]) if match["league_id"] else []
+            home_rank = find_rank(table, match["home_team"])
+            away_rank = find_rank(table, match["away_team"])
 
             rank_gap = None
             indicator_2 = False
@@ -146,9 +145,9 @@ def build_alerts():
                 rank_gap = abs(int(home_rank) - int(away_rank))
                 indicator_2 = rank_gap >= RANK_GAP_THRESHOLD
 
-            details = get_match_details(m["match_id"])
-            home_form = extract_recent_form(details, m["home_team"])
-            away_form = extract_recent_form(details, m["away_team"])
+            details = get_match_details(match["match_id"])
+            home_form = extract_recent_form(details, match["home_team"])
+            away_form = extract_recent_form(details, match["away_team"])
 
             home_big = (
                 home_form["wins"] >= BIG_FORM_THRESHOLD
@@ -163,26 +162,26 @@ def build_alerts():
 
             if indicator_1 or indicator_2:
                 lines = [
-                    f"⚽ <b>{m['home_team']} vs {m['away_team']}</b>",
-                    f"Compétition : {m['league_name']}",
+                    f"⚽ <b>{match['home_team']} vs {match['away_team']}</b>",
+                    f"Compétition : {match['league_name']}",
                 ]
 
                 if indicator_1:
                     lines.append("Indicateur 1 : forme marquée détectée")
                     lines.append(
-                        f"{m['home_team']} forme: {home_form['raw']} | "
-                        f"{m['away_team']} forme: {away_form['raw']}"
+                        f"{match['home_team']} forme: {home_form['raw']} | "
+                        f"{match['away_team']} forme: {away_form['raw']}"
                     )
 
                 if indicator_2:
                     lines.append(
                         f"Indicateur 2 : écart classement = {rank_gap} "
-                        f"(rang {m['home_team']}={home_rank}, {m['away_team']}={away_rank})"
+                        f"(rang {match['home_team']}={home_rank}, {match['away_team']}={away_rank})"
                     )
 
                 alerts.append("\n".join(lines))
 
-        except Exception as e:
+        except Exception:
             continue
 
     return alerts
