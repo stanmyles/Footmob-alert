@@ -33,5 +33,5 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           pwd
-          ls -l ./main.py
-          python ./main.py
+          ls -l ./appy.py
+          python ./appy.py
