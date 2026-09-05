@@ -187,7 +187,7 @@ def build_alerts():
     return alerts
 
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     alerts = build_alerts()
 
     if not alerts:
