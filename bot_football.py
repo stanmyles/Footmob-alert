@@ -15,7 +15,8 @@ SPORT = "football"
 
 MIN_RANK_GAP = 8
 MIN_POINTS_GAP = 12
-MAX_MATCHES_SENT = 25
+MIN_H2H_WIN_GAP_TOTAL = 2
+MAX_MATCHES_SENT = 20
 REQUEST_TIMEOUT = 30
 
 
@@ -83,6 +84,11 @@ def get_today_date_paris():
     return (datetime.now(timezone.utc) + paris_offset).strftime("%Y-%m-%d")
 
 
+def get_current_year_paris():
+    paris_offset = timedelta(hours=2)
+    return (datetime.now(timezone.utc) + paris_offset).year
+
+
 def get_matches_today():
     date_str = get_today_date_paris()
     timezone_offset = 7200
@@ -130,6 +136,24 @@ def get_standings(unique_tournament_id, season_id):
             })
 
     return rows
+
+
+def get_h2h_events(home_id, away_id):
+    paths_to_try = [
+        f"/api/v1/{SPORT}/h2h/{home_id}/{away_id}",
+        f"/api/v1/h2h/{home_id}/{away_id}",
+    ]
+
+    for path in paths_to_try:
+        try:
+            data = api_get(path)
+            events = data.get("events", [])
+            if events:
+                return events
+        except Exception:
+            continue
+
+    return []
 
 
 def extract_team_ids(event):
@@ -184,6 +208,73 @@ def format_match_time(timestamp_value):
     return dt_paris.strftime("%d/%m/%Y %H:%M")
 
 
+def get_event_year(event):
+    ts = event.get("startTimestamp")
+    if not ts:
+        return None
+    dt = datetime.fromtimestamp(ts, tz=timezone.utc) + timedelta(hours=2)
+    return dt.year
+
+
+def get_event_winner_name(event):
+    winner_code = event.get("winnerCode")
+    home = event.get("homeTeam", {})
+    away = event.get("awayTeam", {})
+
+    if winner_code == 1:
+        return home.get("name")
+    if winner_code == 2:
+        return away.get("name")
+    return None
+
+
+def analyze_h2h(home_id, away_id, home_name, away_name):
+    h2h_events = get_h2h_events(home_id, away_id)
+    current_year = get_current_year_paris()
+    years_to_keep = {current_year, current_year - 1}
+
+    yearly = {
+        current_year - 1: {"home_wins": 0, "away_wins": 0, "draws": 0},
+        current_year: {"home_wins": 0, "away_wins": 0, "draws": 0},
+    }
+
+    for event in h2h_events:
+        year = get_event_year(event)
+        if year not in years_to_keep:
+            continue
+
+        winner_name = get_event_winner_name(event)
+
+        if winner_name == home_name:
+            yearly[year]["home_wins"] += 1
+        elif winner_name == away_name:
+            yearly[year]["away_wins"] += 1
+        else:
+            yearly[year]["draws"] += 1
+
+    total_home = sum(v["home_wins"] for v in yearly.values())
+    total_away = sum(v["away_wins"] for v in yearly.values())
+    total_draws = sum(v["draws"] for v in yearly.values())
+    total_gap = abs(total_home - total_away)
+
+    if total_home > total_away:
+        dominant = home_name
+    elif total_away > total_home:
+        dominant = away_name
+    else:
+        dominant = "Équilibre"
+
+    return {
+        "yearly": yearly,
+        "total_home_wins": total_home,
+        "total_away_wins": total_away,
+        "total_draws": total_draws,
+        "total_gap": total_gap,
+        "dominant": dominant,
+        "events_found": len(h2h_events),
+    }
+
+
 def analyze_matches():
     date_str, events = get_matches_today()
 
@@ -191,6 +282,7 @@ def analyze_matches():
         return date_str, []
 
     standings_cache = {}
+    h2h_cache = {}
     selected = []
 
     for event in events:
@@ -205,7 +297,6 @@ def analyze_matches():
             continue
 
         cache_key = f"{utid}_{season_id}"
-
         if cache_key not in standings_cache:
             try:
                 standings_cache[cache_key] = get_standings(utid, season_id)
@@ -225,13 +316,23 @@ def analyze_matches():
 
         rank_gap = abs(home_rank - away_rank)
         points_gap = None
-
         if home_points is not None and away_points is not None:
             points_gap = abs(home_points - away_points)
 
-        if rank_gap >= MIN_RANK_GAP or (
+        pair_key = tuple(sorted([home_id, away_id]))
+        if pair_key not in h2h_cache:
+            h2h_cache[pair_key] = analyze_h2h(
+                home_id, away_id, info["home_name"], info["away_name"]
+            )
+
+        h2h = h2h_cache[pair_key]
+
+        standings_ok = rank_gap >= MIN_RANK_GAP or (
             points_gap is not None and points_gap >= MIN_POINTS_GAP
-        ):
+        )
+        h2h_ok = h2h["total_gap"] >= MIN_H2H_WIN_GAP_TOTAL and h2h["dominant"] != "Équilibre"
+
+        if standings_ok and h2h_ok:
             if home_rank < away_rank:
                 favorite = info["home_name"]
             else:
@@ -250,23 +351,53 @@ def analyze_matches():
                 "rank_gap": rank_gap,
                 "points_gap": points_gap,
                 "favorite": favorite,
+                "h2h": h2h,
             })
 
-    selected.sort(key=lambda x: (-x["rank_gap"], -(x["points_gap"] or 0), x["time"]))
+    selected.sort(
+        key=lambda x: (
+            -x["rank_gap"],
+            -(x["points_gap"] or 0),
+            -x["h2h"]["total_gap"],
+            x["time"]
+        )
+    )
+
     return date_str, selected[:MAX_MATCHES_SENT]
+
+
+def build_h2h_lines(match):
+    h2h = match["h2h"]
+    yearly = h2h["yearly"]
+    years = sorted(yearly.keys())
+
+    lines = []
+    for year in years:
+        y = yearly[year]
+        lines.append(
+            f"📚 H2H {year} : {match['home_name']} {y['home_wins']} victoires | "
+            f"{match['away_name']} {y['away_wins']} victoires | "
+            f"Nuls {y['draws']}"
+        )
+
+    lines.append(
+        f"🔥 Dominant sur 2 ans : {h2h['dominant']} "
+        f"({h2h['total_home_wins']} vs {h2h['total_away_wins']}, nuls {h2h['total_draws']})"
+    )
+    return lines
 
 
 def build_message(date_str, matches):
     if not matches:
         return (
             f"📅 Matchs du {date_str}\n\n"
-            f"Aucune affiche avec gros écart de classement détectée aujourd’hui."
+            f"Aucune affiche ne combine gros écart de classement et domination H2H sur 2 ans."
         )
 
     lines = [
         f"📅 Matchs du {date_str}",
         "",
-        "⚠️ Affiches avec gros écart de niveau estimé",
+        "⚠️ Affiches avec gros écart de niveau + domination historique",
         ""
     ]
 
@@ -284,11 +415,15 @@ def build_message(date_str, matches):
             f"📊 Classement : {m['home_name']} #{m['home_rank']} vs {m['away_name']} #{m['away_rank']}",
             f"📈 Écart classement : {m['rank_gap']}",
             f"📉 Points : {points_text}",
-            f"⭐ Favori théorique : {m['favorite']}",
-            ""
+            f"⭐ Favori théorique classement : {m['favorite']}",
         ])
 
-    lines.append("Critères : gros écart de classement ou de points dans leur championnat.")
+        lines.extend(build_h2h_lines(m))
+        lines.append("")
+
+    lines.append(
+        "Critères : gros écart de classement/points + domination H2H sur les 2 dernières années."
+    )
     return "\n".join(lines)
 
 
