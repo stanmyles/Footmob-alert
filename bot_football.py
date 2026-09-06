@@ -13,9 +13,9 @@ HEADERS = {
 
 REQUEST_TIMEOUT = 30
 DAYS_AHEAD = 2
-MIN_H2H_MATCHES = 5
-MIN_H2H_WIN_GAP = 4
-H2H_LIMIT = 20
+MIN_H2H_MATCHES = 2
+MIN_H2H_WIN_GAP = 2
+H2H_LIMIT = 50
 MAX_MATCHES_SENT = 100
 
 
@@ -91,41 +91,50 @@ def format_match_time(utc_date_str):
         return utc_date_str
 
 
-def get_matches_for_competition(code, start_date, end_date):
+def get_matches_for_competition(code, start_date, end_date_exclusive):
     data = api_get(
         f"/competitions/{code}/matches",
-        params={"dateFrom": start_date, "dateTo": end_date}
+        params={"dateFrom": start_date, "dateTo": end_date_exclusive}
     )
     return data.get("matches", [])
 
 
 def get_head2head(match_id):
+    today = get_now_paris().date()
+    date_to = today.strftime("%Y-%m-%d")
+    date_from = (today - timedelta(days=730)).strftime("%Y-%m-%d")
+
     data = api_get(
         f"/matches/{match_id}/head2head",
-        params={"limit": H2H_LIMIT}
+        params={
+            "limit": H2H_LIMIT,
+            "dateFrom": date_from,
+            "dateTo": date_to
+        }
     )
     return data
 
 
 def get_all_matches():
     start_dt = get_now_paris()
-    end_dt = start_dt + timedelta(days=DAYS_AHEAD - 1)
+    end_dt_exclusive = start_dt + timedelta(days=DAYS_AHEAD)
 
     start_date = get_date_str(start_dt)
-    end_date = get_date_str(end_dt)
+    end_date_exclusive = get_date_str(end_dt_exclusive)
+    display_end_date = get_date_str(end_dt_exclusive - timedelta(days=1))
 
     all_matches = []
 
     for code in COMPETITIONS:
         try:
-            matches = get_matches_for_competition(code, start_date, end_date)
+            matches = get_matches_for_competition(code, start_date, end_date_exclusive)
             print(f"Competition {code} -> {len(matches)} matchs")
             all_matches.extend(matches)
         except Exception as e:
             print(f"Erreur competition {code} :", str(e))
             continue
 
-    return start_date, end_date, all_matches
+    return start_date, display_end_date, all_matches
 
 
 def parse_h2h_aggregates(h2h_data):
@@ -146,6 +155,7 @@ def parse_h2h_aggregates(h2h_data):
         for m in matches_list:
             score = m.get("score", {})
             winner = score.get("winner")
+
             if winner == "HOME_TEAM":
                 home_wins += 1
             elif winner == "AWAY_TEAM":
@@ -226,7 +236,7 @@ def build_message(start_date, end_date, matches):
         ])
 
     lines.append(
-        f"Filtres utilisés : au moins {MIN_H2H_MATCHES} confrontations H2H et au moins {MIN_H2H_WIN_GAP} victoires d’écart."
+        f"Filtres utilisés : au moins {MIN_H2H_MATCHES} confrontations H2H, au moins {MIN_H2H_WIN_GAP} victoires d’écart, H2H borné aux 2 dernières années."
     )
     return "\n".join(lines)
 
