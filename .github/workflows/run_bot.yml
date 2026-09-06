@@ -1,4 +1,4 @@
-name: Bot Football Weekly
+name: Bot Football Weekly Dominance Alert
 
 on:
   workflow_dispatch:
@@ -38,7 +38,7 @@ jobs:
           fi
           echo "Secrets OK"
 
-      - name: Lancer le bot hebdomadaire
+      - name: Lancer le bot
         env:
           RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
