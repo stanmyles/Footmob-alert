@@ -22,8 +22,8 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Execute script
-        env:
-          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        run: python bot_football.py
+          - name: Execute script
+            env:
+              RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+              DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+            run: python bot_football.py
