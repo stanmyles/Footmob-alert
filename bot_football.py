@@ -1,5 +1,4 @@
 import os
-import math
 import requests
 from datetime import datetime, timezone, timedelta
 
@@ -23,8 +22,16 @@ REQUEST_TIMEOUT = 30
 def api_get(path):
     url = f"{BASE_URL}{path}"
     response = requests.get(url, headers=HEADERS, timeout=REQUEST_TIMEOUT)
+
+    print("URL appelée :", url)
+    print("Code API :", response.status_code)
+    print("Réponse API :", response.text[:300])
+
     if response.status_code != 200:
-        raise RuntimeError(f"Erreur API {response.status_code} sur {path} : {response.text[:300]}")
+        raise RuntimeError(
+            f"Erreur API {response.status_code} sur {path} : {response.text[:300]}"
+        )
+
     return response.json()
 
 
@@ -33,12 +40,17 @@ def send_discord_message(content):
         raise RuntimeError("DISCORD_WEBHOOK_URL manquant")
 
     chunks = split_message(content, 1900)
+
     for chunk in chunks:
         response = requests.post(
             DISCORD_WEBHOOK_URL,
             json={"content": chunk},
             timeout=REQUEST_TIMEOUT
         )
+
+        print("Discord status :", response.status_code)
+        print("Discord response :", response.text[:300])
+
         if response.status_code not in (200, 204):
             raise RuntimeError(
                 f"Erreur Discord {response.status_code} : {response.text[:300]}"
@@ -51,6 +63,7 @@ def split_message(text, max_len=1900):
 
     parts = []
     current = ""
+
     for line in text.splitlines():
         if len(current) + len(line) + 1 <= max_len:
             current += line + "\n"
@@ -72,10 +85,26 @@ def get_today_date_paris():
 
 def get_matches_today():
     date_str = get_today_date_paris()
-    data = api_get(f"/api/v1/sport/{SPORT}/scheduled-events/{date_str}")
+    timezone_offset = 7200
 
-    events = data.get("events", [])
-    return date_str, events
+    categories_data = api_get(f"/api/v1/sport/{SPORT}/{date_str}/{timezone_offset}/categories")
+    categories = categories_data.get("categories", [])
+
+    all_events = []
+
+    for category in categories:
+        category_id = category.get("id")
+        if not category_id:
+            continue
+
+        try:
+            category_data = api_get(f"/api/v1/category/{category_id}/scheduled-events/{date_str}")
+            events = category_data.get("events", [])
+            all_events.extend(events)
+        except Exception:
+            continue
+
+    return date_str, all_events
 
 
 def get_standings(unique_tournament_id, season_id):
@@ -176,6 +205,7 @@ def analyze_matches():
             continue
 
         cache_key = f"{utid}_{season_id}"
+
         if cache_key not in standings_cache:
             try:
                 standings_cache[cache_key] = get_standings(utid, season_id)
@@ -195,6 +225,7 @@ def analyze_matches():
 
         rank_gap = abs(home_rank - away_rank)
         points_gap = None
+
         if home_points is not None and away_points is not None:
             points_gap = abs(home_points - away_points)
 
@@ -203,10 +234,8 @@ def analyze_matches():
         ):
             if home_rank < away_rank:
                 favorite = info["home_name"]
-                outsider = info["away_name"]
             else:
                 favorite = info["away_name"]
-                outsider = info["home_name"]
 
             selected.append({
                 "time": format_match_time(info["start"]),
@@ -221,7 +250,6 @@ def analyze_matches():
                 "rank_gap": rank_gap,
                 "points_gap": points_gap,
                 "favorite": favorite,
-                "outsider": outsider,
             })
 
     selected.sort(key=lambda x: (-x["rank_gap"], -(x["points_gap"] or 0), x["time"]))
@@ -278,5 +306,5 @@ def main():
     print(f"Nombre de matchs retenus : {len(matches)}")
 
 
-if __name__ == "__main__":
+if _name_ == "_main_":
     main()
