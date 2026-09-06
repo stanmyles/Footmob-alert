@@ -1,4 +1,4 @@
-name: Football Dominance Alert 2 Days
+name: Football H2H Dominance 2 Days
 
 on:
   workflow_dispatch:
