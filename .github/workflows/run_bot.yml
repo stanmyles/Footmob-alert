@@ -1,16 +1,13 @@
-name: Bot Football
+name: Bot Football Daily
 
 on:
-  workflow_dispatch: # Permet de lancer le bot manuellement
+  workflow_dispatch:
   schedule:
-    - cron: "*/30 * * * *" # Lance le bot toutes les 30 minutes (heure UTC)
+    - cron: "15 6 * * *"
 
 jobs:
   run-bot:
     runs-on: ubuntu-latest
-
-    env:
-      RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
 
     steps:
       - name: Recuperer le code
@@ -24,15 +21,25 @@ jobs:
       - name: Installer les dependances
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install requests
 
-      - name: Verifier la cle RapidAPI
+      - name: Verifier les secrets
+        env:
+          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           if [ -z "$RAPIDAPI_KEY" ]; then
-            echo "ERREUR : le secret RAPIDAPI_KEY est absent."
+            echo "RAPIDAPI_KEY manquant"
             exit 1
           fi
-          echo "La cle RapidAPI est bien presente."
+          if [ -z "$DISCORD_WEBHOOK_URL" ]; then
+            echo "DISCORD_WEBHOOK_URL manquant"
+            exit 1
+          fi
+          echo "Secrets OK"
 
       - name: Lancer le bot
+        env:
+          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: python bot_football.py
