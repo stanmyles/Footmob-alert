@@ -2,9 +2,8 @@ import os
 import datetime
 import requests
 
-# Configuration des API (récupérées depuis les secrets GitHub)
-API_KEY = os.getenv("API_FOOTBALL_KEY")
-DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK")
+API_KEY = os.getenv("RAPIDAPI_KEY", "").strip()
+DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "").strip()
 
 HEADERS = {
     "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
@@ -13,83 +12,156 @@ HEADERS = {
 
 BASE_URL = "https://api-football-v1.p.rapidapi.com/v3"
 
+MIN_H2H_MATCHES = 5
+MIN_H2H_GAP = 3
+MIN_RANK_GAP = 8
+
+
 def get_matches_today():
     today = datetime.date.today().isoformat()
     url = f"{BASE_URL}/fixtures"
-    response = requests.get(url, headers=HEADERS, params={"date": today}).json()
-    return response.get("response", [])
+    response = requests.get(url, headers=HEADERS, params={"date": today}, timeout=30)
+    response.raise_for_status()
+    data = response.json()
+    return data.get("response", [])
+
 
 def check_h2h_last_2_years(team1_id, team2_id):
-    url = f"{BASE_URL}/fixtures/headtohead?h2h={team1_id}-{team2_id}"
-    response = requests.get(url, headers=HEADERS).json()
-    fixtures = response.get("response", [])
+    url = f"{BASE_URL}/fixtures/headtohead"
+    response = requests.get(
+        url,
+        headers=HEADERS,
+        params={"h2h": f"{team1_id}-{team2_id}"},
+        timeout=30
+    )
+    response.raise_for_status()
+    data = response.json()
+    fixtures = data.get("response", [])
 
-    two_years_ago = datetime.datetime.now() - datetime.timedelta(days=2*365)
+    two_years_ago = datetime.datetime.now() - datetime.timedelta(days=2 * 365)
 
     t1_wins = 0
     t2_wins = 0
+    total_valid = 0
 
     for f in fixtures:
-        f_date = datetime.datetime.fromisoformat(f['fixture']['date'].replace('Z', '+00:00')).replace(tzinfo=None)
-        if f_date >= two_years_ago:
-            winner = f['teams']['home'] if f['fixtures']['winner']['home'] else f['teams']['away']
-            if f['teams']['home']['id'] == team1_id and f['goals']['home'] > f['goals']['away']:
+        fixture_date = f["fixture"]["date"]
+        f_date = datetime.datetime.fromisoformat(fixture_date.replace("Z", "+00:00")).replace(tzinfo=None)
+
+        if f_date < two_years_ago:
+            continue
+
+        home_id = f["teams"]["home"]["id"]
+        away_id = f["teams"]["away"]["id"]
+        home_goals = f["goals"]["home"]
+        away_goals = f["goals"]["away"]
+
+        if home_goals is None or away_goals is None:
+            continue
+
+        total_valid += 1
+
+        if home_id == team1_id:
+            if home_goals > away_goals:
                 t1_wins += 1
-            elif f['teams']['home']['id'] == team1_id and f['goals']['home'] < f['goals']['away']:
+            elif home_goals < away_goals:
                 t2_wins += 1
-            elif f['teams']['away']['id'] == team1_id and f['goals']['away'] > f['goals']['home']:
+        elif away_id == team1_id:
+            if away_goals > home_goals:
                 t1_wins += 1
-            elif f['teams']['away']['id'] == team1_id and f['goals']['away'] < f['goals']['home']:
+            elif away_goals < home_goals:
                 t2_wins += 1
 
-    if t1_wins > t2_wins:
-        return team1_id
-    elif t2_wins > t1_wins:
-        return team2_id
-    return None
+    return t1_wins, t2_wins, total_valid
+
 
 def get_team_standing(league_id, season, team_id):
-    url = f"https://://rapidapi.com/v3/standings?league={league_id}&season={season}&team={team_id}"
-    response = requests.get(url, headers=HEADERS).json()
+    url = f"{BASE_URL}/standings"
+    response = requests.get(
+        url,
+        headers=HEADERS,
+        params={"league": league_id, "season": season},
+        timeout=30
+    )
+    response.raise_for_status()
+    data = response.json()
+
     try:
-        return response['response'][0]['league']['standings'][0][0]['rank']
-    except (IndexError, KeyError):
+        standings_groups = data["response"][0]["league"]["standings"]
+        for group in standings_groups:
+            for row in group:
+                if row["team"]["id"] == team_id:
+                    return row["rank"]
+    except (IndexError, KeyError, TypeError):
         return None
 
-def send_alert(message):
-    if DISCORD_WEBHOOK_URL:
-        requests.post(DISCORD_WEBHOOK_URL, json={"content": message})
-    print(message)
+    return None
+
+
+def send_discord(message):
+    if not DISCORD_WEBHOOK_URL:
+        raise ValueError("DISCORD_WEBHOOK_URL est vide.")
+
+    response = requests.post(
+        DISCORD_WEBHOOK_URL,
+        json={"content": message[:2000]},
+        timeout=20
+    )
+    print("Discord status:", response.status_code)
+    response.raise_for_status()
+
 
 def main():
+    if not API_KEY:
+        raise ValueError("RAPIDAPI_KEY est vide.")
+
     matches = get_matches_today()
+    alerts = []
+
     for match in matches:
-        # Ignorer si le match n'a pas de ligue ou de classement disponible
-        league_id = match['league']['id']
-        season = match['league']['season']
-        
-        t1_id = match['teams']['home']['id']
-        t1_name = match['teams']['home']['name']
-        t2_id = match['teams']['away']['id']
-        t2_name = match['teams']['away']['name']
-        
-        # 1. Vérification Dominance Historique (2 derniers ans)
-        dominant_team_id = check_h2h_last_2_years(t1_id, t2_id)
-        if not dominant_team_id:
-            continue
-            
-        # 2. Vérification du classement
+        league_id = match["league"]["id"]
+        season = match["league"]["season"]
+
+        t1_id = match["teams"]["home"]["id"]
+        t1_name = match["teams"]["home"]["name"]
+        t2_id = match["teams"]["away"]["id"]
+        t2_name = match["teams"]["away"]["name"]
+
+        t1_wins, t2_wins, h2h_total = check_h2h_last_2_years(t1_id, t2_id)
+        h2h_gap = abs(t1_wins - t2_wins)
+
         rank1 = get_team_standing(league_id, season, t1_id)
         rank2 = get_team_standing(league_id, season, t2_id)
-        
+
         if rank1 is None or rank2 is None:
             continue
-            
-        # Condition : L'équipe dominante à l'historique doit aussi être mieux classée (chiffre de rang plus petit)
-        if (dominant_team_id == t1_id and rank1 < rank2) or (dominant_team_id == t2_id and rank2 < rank1):
-            msg = f"⚽ Match Détecté : {t1_name} vs {t2_name}\n" \
-                  f"🏆 Équipe dominante historique + mieux classée disponible."
-            send_alert(msg)
 
-if __name__ == "__main__":
+        rank_gap = abs(rank1 - rank2)
+
+        if h2h_total >= MIN_H2H_MATCHES and h2h_gap >= MIN_H2H_GAP and rank_gap >= MIN_RANK_GAP:
+            if t1_wins > t2_wins:
+                dominant = t1_name
+            elif t2_wins > t1_wins:
+                dominant = t2_name
+            else:
+                dominant = "Aucune"
+
+            alerts.append(
+                f"⚽ {t1_name} vs {t2_name}\n"
+                f"🏆 Dominance H2H : {dominant}\n"
+                f"📊 H2H sur 2 ans : {t1_name} {t1_wins} - {t2_wins} {t2_name} "
+                f"(écart {h2h_gap}, matchs {h2h_total})\n"
+                f"📈 Classement : {t1_name} #{rank1} - #{rank2} {t2_name} "
+                f"(écart {rank_gap})"
+            )
+
+    if alerts:
+        message = "🚨 Matchs détectés aujourd'hui :\n\n" + "\n\n".join(alerts[:8])
+    else:
+        message = "ℹ️ Aucun match aujourd'hui ne respecte tes critères H2H + classement."
+
+    send_discord(message)
+
+
+if _name_ == "_main_":
     main()
