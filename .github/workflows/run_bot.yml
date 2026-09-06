@@ -1,9 +1,12 @@
-name: Bot Football Weekly Dominance Alert
+name: Test All Football Matches
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 6 * * 1"
+    inputs:
+      days_ahead:
+        description: "Nombre de jours à analyser"
+        required: true
+        default: "7"
 
 jobs:
   run-bot:
@@ -38,8 +41,9 @@ jobs:
           fi
           echo "Secrets OK"
 
-      - name: Lancer le bot
+      - name: Lancer le bot de test
         env:
           RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DAYS_AHEAD: ${{ github.event.inputs.days_ahead }}
         run: python bot_football.py
