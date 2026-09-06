@@ -25,10 +25,10 @@ def api_get(path, params=None):
 
     print("URL appelée :", response.url)
     print("Code API :", response.status_code)
-    print("Réponse API :", response.text[:300])
+    print("Réponse API :", response.text[:500])
 
     if response.status_code != 200:
-        raise RuntimeError(f"Erreur API {response.status_code} sur {path} : {response.text[:300]}")
+        raise RuntimeError(f"Erreur API {response.status_code} sur {path} : {response.text[:500]}")
 
     return response.json()
 
@@ -104,7 +104,7 @@ def get_head2head(match_id):
     date_to = today.strftime("%Y-%m-%d")
     date_from = (today - timedelta(days=730)).strftime("%Y-%m-%d")
 
-    data = api_get(
+    return api_get(
         f"/matches/{match_id}/head2head",
         params={
             "limit": H2H_LIMIT,
@@ -112,7 +112,6 @@ def get_head2head(match_id):
             "dateTo": date_to
         }
     )
-    return data
 
 
 def get_all_matches():
@@ -137,36 +136,75 @@ def get_all_matches():
     return start_date, display_end_date, all_matches
 
 
-def parse_h2h_aggregates(h2h_data):
-    aggregates = h2h_data.get("aggregates", {})
-    if not isinstance(aggregates, dict):
-        aggregates = {}
+def parse_h2h_from_matches(h2h_data, current_home_id, current_away_id, current_home_name, current_away_name):
+    matches_list = h2h_data.get("matches", [])
+    if not matches_list:
+        matches_list = h2h_data.get("fixtures", [])
 
-    home_wins = aggregates.get("homeTeamWins", 0)
-    away_wins = aggregates.get("awayTeamWins", 0)
-    draws = aggregates.get("draws", 0)
+    home_wins = 0
+    away_wins = 0
+    draws = 0
 
-    if not home_wins and not away_wins and not draws:
-        matches_list = h2h_data.get("matches", [])
-        home_wins = 0
-        away_wins = 0
-        draws = 0
+    for m in matches_list:
+        home_team = m.get("homeTeam", {})
+        away_team = m.get("awayTeam", {})
 
-        for m in matches_list:
-            score = m.get("score", {})
-            winner = score.get("winner")
+        hist_home_id = home_team.get("id")
+        hist_away_id = away_team.get("id")
 
-            if winner == "HOME_TEAM":
-                home_wins += 1
-            elif winner == "AWAY_TEAM":
-                away_wins += 1
-            elif winner == "DRAW":
+        if not hist_home_id or not hist_away_id:
+            continue
+
+        if {hist_home_id, hist_away_id} != {current_home_id, current_away_id}:
+            continue
+
+        score = m.get("score", {})
+        winner = score.get("winner")
+
+        if winner == "DRAW":
+            draws += 1
+            continue
+
+        if winner == "HOME_TEAM":
+            winning_team_id = hist_home_id
+        elif winner == "AWAY_TEAM":
+            winning_team_id = hist_away_id
+        else:
+            full_time = score.get("fullTime", {})
+            home_goals = full_time.get("home")
+            if home_goals is None:
+                home_goals = full_time.get("homeTeam")
+            away_goals = full_time.get("away")
+            if away_goals is None:
+                away_goals = full_time.get("awayTeam")
+
+            if home_goals is None or away_goals is None:
+                continue
+
+            if home_goals > away_goals:
+                winning_team_id = hist_home_id
+            elif away_goals > home_goals:
+                winning_team_id = hist_away_id
+            else:
                 draws += 1
+                continue
+
+        if winning_team_id == current_home_id:
+            home_wins += 1
+        elif winning_team_id == current_away_id:
+            away_wins += 1
 
     total_h2h = home_wins + away_wins + draws
     h2h_gap = abs(home_wins - away_wins)
 
-    return home_wins, away_wins, draws, total_h2h, h2h_gap
+    if home_wins > away_wins:
+        dominant_team = current_home_name
+    elif away_wins > home_wins:
+        dominant_team = current_away_name
+    else:
+        dominant_team = None
+
+    return home_wins, away_wins, draws, total_h2h, h2h_gap, dominant_team
 
 
 def analyze_match(match):
@@ -175,11 +213,24 @@ def analyze_match(match):
     away = match.get("awayTeam", {})
 
     match_id = match.get("id")
-    if not match_id:
+    home_id = home.get("id")
+    away_id = away.get("id")
+    home_name = home.get("name", "Domicile")
+    away_name = away.get("name", "Extérieur")
+
+    if not match_id or not home_id or not away_id:
         return None
 
     h2h_data = get_head2head(match_id)
-    home_wins, away_wins, draws, total_h2h, h2h_gap = parse_h2h_aggregates(h2h_data)
+
+    home_wins, away_wins, draws, total_h2h, h2h_gap, dominant_team = parse_h2h_from_matches(
+        h2h_data, home_id, away_id, home_name, away_name
+    )
+
+    print(
+        f"H2H recalculé - {home_name} vs {away_name} : "
+        f"{home_wins}-{away_wins}, draws={draws}, total={total_h2h}"
+    )
 
     if total_h2h < MIN_H2H_MATCHES:
         return None
@@ -187,18 +238,14 @@ def analyze_match(match):
     if h2h_gap < MIN_H2H_WIN_GAP:
         return None
 
-    if home_wins > away_wins:
-        dominant_team = home.get("name", "Domicile")
-    elif away_wins > home_wins:
-        dominant_team = away.get("name", "Extérieur")
-    else:
+    if not dominant_team:
         return None
 
     return {
         "competition_name": competition.get("name", "Compétition inconnue"),
         "competition_code": competition.get("code", "N/A"),
-        "home_name": home.get("name", "Domicile"),
-        "away_name": away.get("name", "Extérieur"),
+        "home_name": home_name,
+        "away_name": away_name,
         "time": format_match_time(match.get("utcDate")),
         "status": match.get("status", "UNKNOWN"),
         "home_wins": home_wins,
