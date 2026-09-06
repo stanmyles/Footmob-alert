@@ -13,9 +13,9 @@ HEADERS = {
 
 REQUEST_TIMEOUT = 30
 DAYS_AHEAD = 2
-MIN_RANK_GAP = 8
 MIN_H2H_MATCHES = 5
 MIN_H2H_WIN_GAP = 4
+H2H_LIMIT = 20
 MAX_MATCHES_SENT = 100
 
 
@@ -99,33 +99,12 @@ def get_matches_for_competition(code, start_date, end_date):
     return data.get("matches", [])
 
 
-def get_standings_for_competition(code):
-    data = api_get(f"/competitions/{code}/standings")
-    standings = data.get("standings", [])
-
-    rows = []
-    for table in standings:
-        if table.get("type") == "TOTAL" or not rows:
-            rows = table.get("table", [])
-            if rows:
-                break
-
-    result = {}
-    for row in rows:
-        team = row.get("team", {})
-        team_id = team.get("id")
-        result[team_id] = {
-            "position": row.get("position"),
-            "points": row.get("points"),
-            "team_name": team.get("name", "Inconnu")
-        }
-
-    return result
-
-
 def get_head2head(match_id):
-    data = api_get(f"/matches/{match_id}/head2head")
-    return data.get("aggregates", data.get("head2head", data))
+    data = api_get(
+        f"/matches/{match_id}/head2head",
+        params={"limit": H2H_LIMIT}
+    )
+    return data
 
 
 def get_all_matches():
@@ -149,43 +128,50 @@ def get_all_matches():
     return start_date, end_date, all_matches
 
 
-def analyze_match(match, standings_cache):
-    competition = match.get("competition", {})
-    competition_code = competition.get("code")
-    match_id = match.get("id")
+def parse_h2h_aggregates(h2h_data):
+    aggregates = h2h_data.get("aggregates", {})
+    if not isinstance(aggregates, dict):
+        aggregates = {}
 
-    home = match.get("homeTeam", {})
-    away = match.get("awayTeam", {})
+    home_wins = aggregates.get("homeTeamWins", 0)
+    away_wins = aggregates.get("awayTeamWins", 0)
+    draws = aggregates.get("draws", 0)
 
-    home_id = home.get("id")
-    away_id = away.get("id")
+    if not home_wins and not away_wins and not draws:
+        matches_list = h2h_data.get("matches", [])
+        home_wins = 0
+        away_wins = 0
+        draws = 0
 
-    if not competition_code or not match_id or not home_id or not away_id:
-        return None
+        for m in matches_list:
+            score = m.get("score", {})
+            winner = score.get("winner")
+            if winner == "HOME_TEAM":
+                home_wins += 1
+            elif winner == "AWAY_TEAM":
+                away_wins += 1
+            elif winner == "DRAW":
+                draws += 1
 
-    if competition_code not in standings_cache:
-        standings_cache[competition_code] = get_standings_for_competition(competition_code)
-
-    standings = standings_cache[competition_code]
-    if home_id not in standings or away_id not in standings:
-        return None
-
-    home_rank = standings[home_id]["position"]
-    away_rank = standings[away_id]["position"]
-    rank_gap = abs(home_rank - away_rank)
-
-    h2h = get_head2head(match_id)
-
-    home_wins = h2h.get("homeTeamWins", 0)
-    away_wins = h2h.get("awayTeamWins", 0)
-    draws = h2h.get("draws", 0)
     total_h2h = home_wins + away_wins + draws
     h2h_gap = abs(home_wins - away_wins)
 
-    if total_h2h < MIN_H2H_MATCHES:
+    return home_wins, away_wins, draws, total_h2h, h2h_gap
+
+
+def analyze_match(match):
+    competition = match.get("competition", {})
+    home = match.get("homeTeam", {})
+    away = match.get("awayTeam", {})
+
+    match_id = match.get("id")
+    if not match_id:
         return None
 
-    if rank_gap < MIN_RANK_GAP:
+    h2h_data = get_head2head(match_id)
+    home_wins, away_wins, draws, total_h2h, h2h_gap = parse_h2h_aggregates(h2h_data)
+
+    if total_h2h < MIN_H2H_MATCHES:
         return None
 
     if h2h_gap < MIN_H2H_WIN_GAP:
@@ -200,16 +186,11 @@ def analyze_match(match, standings_cache):
 
     return {
         "competition_name": competition.get("name", "Compétition inconnue"),
-        "competition_code": competition_code,
+        "competition_code": competition.get("code", "N/A"),
         "home_name": home.get("name", "Domicile"),
         "away_name": away.get("name", "Extérieur"),
         "time": format_match_time(match.get("utcDate")),
         "status": match.get("status", "UNKNOWN"),
-        "home_rank": home_rank,
-        "away_rank": away_rank,
-        "rank_gap": rank_gap,
-        "home_points": standings[home_id]["points"],
-        "away_points": standings[away_id]["points"],
         "home_wins": home_wins,
         "away_wins": away_wins,
         "draws": draws,
@@ -223,13 +204,13 @@ def build_message(start_date, end_date, matches):
     if not matches:
         return (
             f"📅 Matchs du {start_date} au {end_date}\n\n"
-            f"Aucune affiche ne présente à la fois une domination historique forte et un gros écart de classement."
+            f"Aucune affiche ne présente une domination historique assez forte."
         )
 
     lines = [
         f"📅 Matchs du {start_date} au {end_date}",
         "",
-        "⚠️ Affiches avec ultra domination historique + écart de classement",
+        "⚠️ Affiches avec domination historique nette",
         ""
     ]
 
@@ -238,15 +219,14 @@ def build_message(start_date, end_date, matches):
             f"{i}. {m['home_name']} vs {m['away_name']}",
             f"🏆 {m['competition_name']} ({m['competition_code']})",
             f"🕒 {m['time']}",
-            f"📊 Classement : {m['home_name']} #{m['home_rank']} ({m['home_points']} pts) vs {m['away_name']} #{m['away_rank']} ({m['away_points']} pts)",
-            f"📈 Écart classement : {m['rank_gap']}",
             f"📚 H2H : {m['home_name']} {m['home_wins']} victoires | {m['away_name']} {m['away_wins']} victoires | Nuls {m['draws']}",
-            f"🔥 Équipe historiquement dominante : {m['dominant_team']}",
+            f"🔥 Équipe dominante : {m['dominant_team']}",
+            f"📈 Écart H2H : {m['h2h_gap']} victoires sur {m['total_h2h']} confrontations",
             ""
         ])
 
     lines.append(
-        f"Filtres utilisés : écart classement >= {MIN_RANK_GAP}, au moins {MIN_H2H_MATCHES} confrontations H2H, et écart H2H >= {MIN_H2H_WIN_GAP} victoires."
+        f"Filtres utilisés : au moins {MIN_H2H_MATCHES} confrontations H2H et au moins {MIN_H2H_WIN_GAP} victoires d’écart."
     )
     return "\n".join(lines)
 
@@ -259,19 +239,17 @@ def main():
 
     start_date, end_date, all_matches = get_all_matches()
 
-    standings_cache = {}
     selected = []
-
     for match in all_matches:
         try:
-            result = analyze_match(match, standings_cache)
+            result = analyze_match(match)
             if result:
                 selected.append(result)
         except Exception as e:
             print("Erreur analyse match :", str(e))
             continue
 
-    selected.sort(key=lambda x: (-x["h2h_gap"], -x["rank_gap"], x["time"]))
+    selected.sort(key=lambda x: (-x["h2h_gap"], -x["total_h2h"], x["time"]))
     selected = selected[:MAX_MATCHES_SENT]
 
     message = build_message(start_date, end_date, selected)
