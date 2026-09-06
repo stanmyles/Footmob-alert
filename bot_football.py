@@ -12,10 +12,10 @@ HEADERS = {
 }
 
 REQUEST_TIMEOUT = 30
-DAYS_AHEAD = 2
-MIN_H2H_MATCHES = 2
+DAYS_AHEAD = 7
+H2H_LIMIT = 10
+MIN_H2H_MATCHES = 3
 MIN_H2H_WIN_GAP = 2
-H2H_LIMIT = 50
 MAX_MATCHES_SENT = 100
 
 
@@ -91,6 +91,15 @@ def format_match_time(utc_date_str):
         return utc_date_str
 
 
+def extract_year(date_str):
+    try:
+        return datetime.fromisoformat(date_str.replace("Z", "+00:00")).strftime("%Y")
+    except Exception:
+        if date_str and len(date_str) >= 4:
+            return date_str[:4]
+        return "????"
+
+
 def get_matches_for_competition(code, start_date, end_date_exclusive):
     data = api_get(
         f"/competitions/{code}/matches",
@@ -100,17 +109,9 @@ def get_matches_for_competition(code, start_date, end_date_exclusive):
 
 
 def get_head2head(match_id):
-    today = get_now_paris().date()
-    date_to = today.strftime("%Y-%m-%d")
-    date_from = (today - timedelta(days=730)).strftime("%Y-%m-%d")
-
     return api_get(
         f"/matches/{match_id}/head2head",
-        params={
-            "limit": H2H_LIMIT,
-            "dateFrom": date_from,
-            "dateTo": date_to
-        }
+        params={"limit": H2H_LIMIT}
     )
 
 
@@ -120,7 +121,7 @@ def get_all_matches():
 
     start_date = get_date_str(start_dt)
     end_date_exclusive = get_date_str(end_dt_exclusive)
-    display_end_date = get_date_str(end_dt_exclusive - timedelta(days=1))
+    display_end_date = get_date_str(end_dt_exclusive_dt_minus_one(end_dt_exclusive))
 
     all_matches = []
 
@@ -136,7 +137,11 @@ def get_all_matches():
     return start_date, display_end_date, all_matches
 
 
-def parse_h2h_from_matches(h2h_data, current_home_id, current_away_id, current_home_name, current_away_name):
+def end_dt_exclusive_dt_minus_one(end_dt_exclusive):
+    return end_dt_exclusive - timedelta(days=1)
+
+
+def parse_h2h_last_10(h2h_data, current_home_id, current_away_id, current_home_name, current_away_name):
     matches_list = h2h_data.get("matches", [])
     if not matches_list:
         matches_list = h2h_data.get("fixtures", [])
@@ -144,11 +149,12 @@ def parse_h2h_from_matches(h2h_data, current_home_id, current_away_id, current_h
     home_wins = 0
     away_wins = 0
     draws = 0
+    years = []
+    details = []
 
-    for m in matches_list:
+    for m in matches_list[:10]:
         home_team = m.get("homeTeam", {})
         away_team = m.get("awayTeam", {})
-
         hist_home_id = home_team.get("id")
         hist_away_id = away_team.get("id")
 
@@ -158,11 +164,16 @@ def parse_h2h_from_matches(h2h_data, current_home_id, current_away_id, current_h
         if {hist_home_id, hist_away_id} != {current_home_id, current_away_id}:
             continue
 
+        match_date = m.get("utcDate", "")
+        year = extract_year(match_date)
+        years.append(year)
+
         score = m.get("score", {})
         winner = score.get("winner")
 
         if winner == "DRAW":
             draws += 1
+            details.append(f"{year}: nul")
             continue
 
         if winner == "HOME_TEAM":
@@ -187,12 +198,15 @@ def parse_h2h_from_matches(h2h_data, current_home_id, current_away_id, current_h
                 winning_team_id = hist_away_id
             else:
                 draws += 1
+                details.append(f"{year}: nul")
                 continue
 
         if winning_team_id == current_home_id:
             home_wins += 1
+            details.append(f"{year}: {current_home_name}")
         elif winning_team_id == current_away_id:
             away_wins += 1
+            details.append(f"{year}: {current_away_name}")
 
     total_h2h = home_wins + away_wins + draws
     h2h_gap = abs(home_wins - away_wins)
@@ -204,7 +218,16 @@ def parse_h2h_from_matches(h2h_data, current_home_id, current_away_id, current_h
     else:
         dominant_team = None
 
-    return home_wins, away_wins, draws, total_h2h, h2h_gap, dominant_team
+    return {
+        "home_wins": home_wins,
+        "away_wins": away_wins,
+        "draws": draws,
+        "total_h2h": total_h2h,
+        "h2h_gap": h2h_gap,
+        "dominant_team": dominant_team,
+        "years": years,
+        "details": details
+    }
 
 
 def analyze_match(match):
@@ -222,23 +245,15 @@ def analyze_match(match):
         return None
 
     h2h_data = get_head2head(match_id)
+    parsed = parse_h2h_last_10(h2h_data, home_id, away_id, home_name, away_name)
 
-    home_wins, away_wins, draws, total_h2h, h2h_gap, dominant_team = parse_h2h_from_matches(
-        h2h_data, home_id, away_id, home_name, away_name
-    )
-
-    print(
-        f"H2H recalculé - {home_name} vs {away_name} : "
-        f"{home_wins}-{away_wins}, draws={draws}, total={total_h2h}"
-    )
-
-    if total_h2h < MIN_H2H_MATCHES:
+    if parsed["total_h2h"] < MIN_H2H_MATCHES:
         return None
 
-    if h2h_gap < MIN_H2H_WIN_GAP:
+    if parsed["h2h_gap"] < MIN_H2H_WIN_GAP:
         return None
 
-    if not dominant_team:
+    if not parsed["dominant_team"]:
         return None
 
     return {
@@ -248,12 +263,7 @@ def analyze_match(match):
         "away_name": away_name,
         "time": format_match_time(match.get("utcDate")),
         "status": match.get("status", "UNKNOWN"),
-        "home_wins": home_wins,
-        "away_wins": away_wins,
-        "draws": draws,
-        "total_h2h": total_h2h,
-        "h2h_gap": h2h_gap,
-        "dominant_team": dominant_team,
+        **parsed
     }
 
 
@@ -261,29 +271,34 @@ def build_message(start_date, end_date, matches):
     if not matches:
         return (
             f"📅 Matchs du {start_date} au {end_date}\n\n"
-            f"Aucune affiche ne présente une domination historique assez forte."
+            f"Aucune affiche ne présente une domination assez nette sur les 10 dernières confrontations."
         )
 
     lines = [
         f"📅 Matchs du {start_date} au {end_date}",
         "",
-        "⚠️ Affiches avec domination historique nette",
+        "⚠️ Affiches avec domination sur les 10 dernières confrontations",
         ""
     ]
 
     for i, m in enumerate(matches, start=1):
+        years_text = ", ".join(m["years"]) if m["years"] else "Aucune année disponible"
+        details_text = " | ".join(m["details"]) if m["details"] else "Aucun détail"
+
         lines.extend([
             f"{i}. {m['home_name']} vs {m['away_name']}",
             f"🏆 {m['competition_name']} ({m['competition_code']})",
             f"🕒 {m['time']}",
-            f"📚 H2H : {m['home_name']} {m['home_wins']} victoires | {m['away_name']} {m['away_wins']} victoires | Nuls {m['draws']}",
+            f"📚 10 derniers H2H : {m['home_name']} {m['home_wins']} victoires | {m['away_name']} {m['away_wins']} victoires | Nuls {m['draws']}",
             f"🔥 Équipe dominante : {m['dominant_team']}",
-            f"📈 Écart H2H : {m['h2h_gap']} victoires sur {m['total_h2h']} confrontations",
+            f"📈 Écart : {m['h2h_gap']} victoire(s) sur {m['total_h2h']} rencontre(s)",
+            f"🗓️ Années concernées : {years_text}",
+            f"📝 Détail : {details_text}",
             ""
         ])
 
     lines.append(
-        f"Filtres utilisés : au moins {MIN_H2H_MATCHES} confrontations H2H, au moins {MIN_H2H_WIN_GAP} victoires d’écart, H2H borné aux 2 dernières années."
+        f"Filtres utilisés : semaine à venir, 10 dernières confrontations, au moins {MIN_H2H_MATCHES} matchs H2H et au moins {MIN_H2H_WIN_GAP} victoires d’écart."
     )
     return "\n".join(lines)
 
