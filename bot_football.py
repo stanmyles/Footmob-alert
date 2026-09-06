@@ -20,15 +20,15 @@ def get_matches_today():
     return response.get("response", [])
 
 def check_h2h_last_2_years(team1_id, team2_id):
-  url = f"{BASE_URL}/fixtures/headtohead?h2h={team1_id}-{team2_id}"
+    url = f"{BASE_URL}/fixtures/headtohead?h2h={team1_id}-{team2_id}"
     response = requests.get(url, headers=HEADERS).json()
-    fixtures = response.get('response', [])
-    
+    fixtures = response.get("response", [])
+
     two_years_ago = datetime.datetime.now() - datetime.timedelta(days=2*365)
-    
+
     t1_wins = 0
     t2_wins = 0
-    
+
     for f in fixtures:
         f_date = datetime.datetime.fromisoformat(f['fixture']['date'].replace('Z', '+00:00')).replace(tzinfo=None)
         if f_date >= two_years_ago:
