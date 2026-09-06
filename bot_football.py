@@ -16,8 +16,9 @@ SPORT = "football"
 MIN_RANK_GAP = 8
 MIN_POINTS_GAP = 12
 MIN_H2H_WIN_GAP_TOTAL = 2
-MAX_MATCHES_SENT = 20
+MAX_MATCHES_SENT = 40
 REQUEST_TIMEOUT = 30
+DAYS_AHEAD = 7
 
 
 def api_get(path):
@@ -79,18 +80,19 @@ def split_message(text, max_len=1900):
     return parts
 
 
-def get_today_date_paris():
-    paris_offset = timedelta(hours=2)
-    return (datetime.now(timezone.utc) + paris_offset).strftime("%Y-%m-%d")
+def get_now_paris():
+    return datetime.now(timezone.utc) + timedelta(hours=2)
+
+
+def get_date_str(dt):
+    return dt.strftime("%Y-%m-%d")
 
 
 def get_current_year_paris():
-    paris_offset = timedelta(hours=2)
-    return (datetime.now(timezone.utc) + paris_offset).year
+    return get_now_paris().year
 
 
-def get_matches_today():
-    date_str = get_today_date_paris()
+def get_matches_for_date(date_str):
     timezone_offset = 7200
 
     categories_data = api_get(f"/api/v1/sport/{SPORT}/{date_str}/{timezone_offset}/categories")
@@ -110,7 +112,26 @@ def get_matches_today():
         except Exception:
             continue
 
-    return date_str, all_events
+    return all_events
+
+
+def get_matches_week():
+    start_dt = get_now_paris()
+    all_events = []
+
+    for i in range(DAYS_AHEAD):
+        date_dt = start_dt + timedelta(days=i)
+        date_str = get_date_str(date_dt)
+        try:
+            events = get_matches_for_date(date_str)
+            all_events.extend(events)
+        except Exception as e:
+            print(f"Erreur récupération date {date_str} :", str(e))
+            continue
+
+    start_date = get_date_str(start_dt)
+    end_date = get_date_str(start_dt + timedelta(days=DAYS_AHEAD - 1))
+    return start_date, end_date, all_events
 
 
 def get_standings(unique_tournament_id, season_id):
@@ -276,10 +297,10 @@ def analyze_h2h(home_id, away_id, home_name, away_name):
 
 
 def analyze_matches():
-    date_str, events = get_matches_today()
+    start_date, end_date, events = get_matches_week()
 
     if not events:
-        return date_str, []
+        return start_date, end_date, []
 
     standings_cache = {}
     h2h_cache = {}
@@ -356,14 +377,14 @@ def analyze_matches():
 
     selected.sort(
         key=lambda x: (
+            x["time"],
             -x["rank_gap"],
             -(x["points_gap"] or 0),
             -x["h2h"]["total_gap"],
-            x["time"]
         )
     )
 
-    return date_str, selected[:MAX_MATCHES_SENT]
+    return start_date, end_date, selected[:MAX_MATCHES_SENT]
 
 
 def build_h2h_lines(match):
@@ -387,15 +408,15 @@ def build_h2h_lines(match):
     return lines
 
 
-def build_message(date_str, matches):
+def build_message(start_date, end_date, matches):
     if not matches:
         return (
-            f"📅 Matchs du {date_str}\n\n"
+            f"📅 Matchs de la semaine du {start_date} au {end_date}\n\n"
             f"Aucune affiche ne combine gros écart de classement et domination H2H sur 2 ans."
         )
 
     lines = [
-        f"📅 Matchs du {date_str}",
+        f"📅 Matchs de la semaine du {start_date} au {end_date}",
         "",
         "⚠️ Affiches avec gros écart de niveau + domination historique",
         ""
@@ -433,11 +454,11 @@ def main():
     if not DISCORD_WEBHOOK_URL:
         raise RuntimeError("DISCORD_WEBHOOK_URL manquant")
 
-    date_str, matches = analyze_matches()
-    message = build_message(date_str, matches)
+    start_date, end_date, matches = analyze_matches()
+    message = build_message(start_date, end_date, matches)
     send_discord_message(message)
 
-    print("Message envoyé sur Discord.")
+    print("Message hebdomadaire envoyé sur Discord.")
     print(f"Nombre de matchs retenus : {len(matches)}")
 
 
