@@ -1,9 +1,9 @@
-name: Bot Football Daily
+name: Bot Football Weekly
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "15 6 * * *"
+    - cron: "0 6 * * 1"
 
 jobs:
   run-bot:
@@ -38,7 +38,7 @@ jobs:
           fi
           echo "Secrets OK"
 
-      - name: Lancer le bot
+      - name: Lancer le bot hebdomadaire
         env:
           RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
