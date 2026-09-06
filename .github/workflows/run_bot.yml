@@ -7,6 +7,7 @@ on:
         description: "Codes competitions separes par des virgules (ex: PL,PD,SA,BL1,FL1,UCL)"
         required: true
         default: "PL,PD,SA,BL1,FL1,UCL"
+        type: string
 
 jobs:
   run-bot:
@@ -45,5 +46,5 @@ jobs:
         env:
           FOOTBALL_DATA_API_KEY: ${{ secrets.FOOTBALL_DATA_API_KEY }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          COMPETITIONS: ${{ github.event.inputs.competitions }}
+          COMPETITIONS: ${{ inputs.competitions }}
         run: python bot_football.py
