@@ -7,18 +7,20 @@ API_KEY = os.getenv("API_FOOTBALL_KEY")
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK")
 
 HEADERS = {
-    'x-rapidapi-host': "://rapidapi.com",
-    'x-rapidapi-key': API_KEY
+    "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
+    "x-rapidapi-key": API_KEY
 }
+
+BASE_URL = "https://api-football-v1.p.rapidapi.com/v3"
 
 def get_matches_today():
     today = datetime.date.today().isoformat()
-    url = f"https://://rapidapi.com/v3/fixtures?date={today}"
-    response = requests.get(url, headers=HEADERS).json()
-    return response.get('response', [])
+    url = f"{BASE_URL}/fixtures"
+    response = requests.get(url, headers=HEADERS, params={"date": today}).json()
+    return response.get("response", [])
 
 def check_h2h_last_2_years(team1_id, team2_id):
-    url = f"https://://rapidapi.com/v3/fixtures/headtohead?h2h={team1_id}-{team2_id}"
+  url = f"{BASE_URL}/fixtures/headtohead?h2h={team1_id}-{team2_id}"
     response = requests.get(url, headers=HEADERS).json()
     fixtures = response.get('response', [])
     
