@@ -2,33 +2,30 @@ import os
 import requests
 from datetime import datetime, timezone, timedelta
 
-RAPIDAPI_KEY = os.getenv("RAPIDAPI_KEY", "").strip()
+API_KEY = os.getenv("FOOTBALL_DATA_API_KEY", "").strip()
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "").strip()
 DAYS_AHEAD = int(os.getenv("DAYS_AHEAD", "7"))
+COMPETITIONS = [c.strip() for c in os.getenv("COMPETITIONS", "PL,PD,SA,BL1,FL1,UCL").split(",") if c.strip()]
 
-BASE_URL = "https://sportapi7.p.rapidapi.com"
+BASE_URL = "https://api.football-data.org/v4"
 HEADERS = {
-    "x-rapidapi-host": "sportapi7.p.rapidapi.com",
-    "x-rapidapi-key": RAPIDAPI_KEY,
+    "X-Auth-Token": API_KEY
 }
 
-SPORT = "football"
 REQUEST_TIMEOUT = 30
 MAX_MATCHES_SENT = 500
 
 
-def api_get(path):
+def api_get(path, params=None):
     url = f"{BASE_URL}{path}"
-    response = requests.get(url, headers=HEADERS, timeout=REQUEST_TIMEOUT)
+    response = requests.get(url, headers=HEADERS, params=params or {}, timeout=REQUEST_TIMEOUT)
 
-    print("URL appelée :", url)
+    print("URL appelée :", response.url)
     print("Code API :", response.status_code)
     print("Réponse API :", response.text[:300])
 
     if response.status_code != 200:
-        raise RuntimeError(
-            f"Erreur API {response.status_code} sur {path} : {response.text[:300]}"
-        )
+        raise RuntimeError(f"Erreur API {response.status_code} sur {path} : {response.text[:300]}")
 
     return response.json()
 
@@ -50,9 +47,7 @@ def send_discord_message(content):
         print("Discord response :", response.text[:300])
 
         if response.status_code not in (200, 204):
-            raise RuntimeError(
-                f"Erreur Discord {response.status_code} : {response.text[:300]}"
-            )
+            raise RuntimeError(f"Erreur Discord {response.status_code} : {response.text[:300]}")
 
 
 def split_message(text, max_len=1900):
@@ -84,126 +79,111 @@ def get_date_str(dt):
     return dt.strftime("%Y-%m-%d")
 
 
-def format_match_time(timestamp_value):
-    if not timestamp_value:
+def format_match_time(utc_date_str):
+    if not utc_date_str:
         return "Heure inconnue"
 
-    dt_utc = datetime.fromtimestamp(timestamp_value, tz=timezone.utc)
-    dt_paris = dt_utc + timedelta(hours=2)
-    return dt_paris.strftime("%d/%m/%Y %H:%M")
-
-
-def get_matches_for_date(date_str):
-    timezone_offset = 7200
-    all_events = []
-
     try:
-        data = api_get(f"/api/v1/sport/{SPORT}/scheduled-events/{date_str}")
-        events = data.get("events", [])
-        if events:
-            return events
+        dt = datetime.fromisoformat(utc_date_str.replace("Z", "+00:00"))
+        dt_paris = dt.astimezone(timezone(timedelta(hours=2)))
+        return dt_paris.strftime("%d/%m/%Y %H:%M")
     except Exception:
-        print(f"Endpoint global indisponible pour {date_str}, tentative par catégories")
-
-    categories_data = api_get(f"/api/v1/sport/{SPORT}/{date_str}/{timezone_offset}/categories")
-    categories = categories_data.get("categories", [])
-
-    for category in categories:
-        category_id = category.get("id")
-        if not category_id:
-            continue
-
-        try:
-            category_data = api_get(f"/api/v1/category/{category_id}/scheduled-events/{date_str}")
-            events = category_data.get("events", [])
-            all_events.extend(events)
-        except Exception as e:
-            print(f"Erreur catégorie {category_id} le {date_str} :", str(e))
-            continue
-
-    return all_events
+        return utc_date_str
 
 
-def get_matches_period():
+def get_matches_for_competition(code, start_date, end_date_exclusive):
+    data = api_get(
+        f"/competitions/{code}/matches",
+        params={
+            "dateFrom": start_date,
+            "dateTo": end_date_exclusive
+        }
+    )
+    return data.get("matches", [])
+
+
+def get_all_matches():
     start_dt = get_now_paris()
-    all_events = []
-
-    for i in range(DAYS_AHEAD):
-        current_dt = start_dt + timedelta(days=i)
-        date_str = get_date_str(current_dt)
-
-        try:
-            events = get_matches_for_date(date_str)
-            print(f"{date_str} -> {len(events)} matchs")
-            all_events.extend(events)
-        except Exception as e:
-            print(f"Erreur récupération {date_str} :", str(e))
-            continue
+    end_dt_exclusive = start_dt + timedelta(days=DAYS_AHEAD)
 
     start_date = get_date_str(start_dt)
-    end_date = get_date_str(start_dt + timedelta(days=DAYS_AHEAD - 1))
-    return start_date, end_date, all_events
+    end_date_exclusive = get_date_str(end_dt_exclusive)
+    display_end_date = get_date_str(end_dt_exclusive - timedelta(days=1))
+
+    all_matches = []
+
+    for code in COMPETITIONS:
+        try:
+            matches = get_matches_for_competition(code, start_date, end_date_exclusive)
+            print(f"Competition {code} -> {len(matches)} matchs")
+            all_matches.extend(matches)
+        except Exception as e:
+            print(f"Erreur competition {code} :", str(e))
+            continue
+
+    return start_date, display_end_date, all_matches
 
 
-def parse_event(event):
-    tournament = event.get("tournament", {})
-    category = event.get("category", {})
-    home = event.get("homeTeam", {})
-    away = event.get("awayTeam", {})
+def parse_match(match):
+    competition = match.get("competition", {})
+    home = match.get("homeTeam", {})
+    away = match.get("awayTeam", {})
 
     return {
+        "competition_code": competition.get("code", "N/A"),
+        "competition_name": competition.get("name", "Compétition inconnue"),
         "home_name": home.get("name", "Domicile"),
         "away_name": away.get("name", "Extérieur"),
-        "competition": tournament.get("name", "Compétition inconnue"),
-        "country": category.get("name", "Pays inconnu"),
-        "time": format_match_time(event.get("startTimestamp")),
+        "utc_date": match.get("utcDate"),
+        "status": match.get("status", "UNKNOWN"),
+        "time": format_match_time(match.get("utcDate")),
     }
 
 
-def build_message(start_date, end_date, events):
-    if not events:
+def build_message(start_date, end_date, matches):
+    if not matches:
         return (
-            f"📅 Test matchs football du {start_date} au {end_date}\n\n"
-            f"Aucun match récupéré."
+            f"📅 Matchs football du {start_date} au {end_date}\n\n"
+            f"Aucun match récupéré sur les compétitions demandées."
         )
 
+    parsed = [parse_match(m) for m in matches[:MAX_MATCHES_SENT]]
+    parsed.sort(key=lambda x: (x["time"], x["competition_code"], x["home_name"]))
+
     lines = [
-        f"📅 Test matchs football du {start_date} au {end_date}",
-        f"Nombre total de matchs récupérés : {len(events)}",
-        "",
+        f"📅 Matchs football du {start_date} au {end_date}",
+        f"Compétitions : {', '.join(COMPETITIONS)}",
+        f"Nombre total de matchs récupérés : {len(matches)}",
+        ""
     ]
 
-    parsed = [parse_event(event) for event in events[:MAX_MATCHES_SENT]]
-    parsed.sort(key=lambda x: (x["time"], x["country"], x["competition"], x["home_name"]))
-
-    for i, match in enumerate(parsed, start=1):
+    for i, m in enumerate(parsed, start=1):
         lines.extend([
-            f"{i}. {match['home_name']} vs {match['away_name']}",
-            f"🏆 {match['competition']} ({match['country']})",
-            f"🕒 {match['time']}",
+            f"{i}. {m['home_name']} vs {m['away_name']}",
+            f"🏆 {m['competition_name']} ({m['competition_code']})",
+            f"🕒 {m['time']}",
+            f"📌 Statut : {m['status']}",
             ""
         ])
 
-    if len(events) > MAX_MATCHES_SENT:
-        lines.append(
-            f"Liste tronquée à {MAX_MATCHES_SENT} matchs pour éviter un volume trop important."
-        )
+    if len(matches) > MAX_MATCHES_SENT:
+        lines.append(f"Liste tronquée à {MAX_MATCHES_SENT} matchs.")
 
     return "\n".join(lines)
 
 
 def main():
-    if not RAPIDAPI_KEY:
-        raise RuntimeError("RAPIDAPI_KEY manquant")
+    if not API_KEY:
+        raise RuntimeError("FOOTBALL_DATA_API_KEY manquant")
     if not DISCORD_WEBHOOK_URL:
         raise RuntimeError("DISCORD_WEBHOOK_URL manquant")
 
-    start_date, end_date, events = get_matches_period()
-    message = build_message(start_date, end_date, events)
+    start_date, end_date, matches = get_all_matches()
+    message = build_message(start_date, end_date, matches)
     send_discord_message(message)
 
-    print("Message de test envoyé sur Discord.")
-    print(f"Nombre total de matchs récupérés : {len(events)}")
+    print("Message envoyé sur Discord.")
+    print(f"Nombre total de matchs récupérés : {len(matches)}")
 
 
 if __name__ == "__main__":
