@@ -1,12 +1,8 @@
-name: Football Data Weekly Test
+name: Football Dominance Alert 2 Days
 
 on:
   workflow_dispatch:
     inputs:
-      days_ahead:
-        description: "Nombre de jours a analyser"
-        required: true
-        default: "7"
       competitions:
         description: "Codes competitions separes par des virgules (ex: PL,PD,SA,BL1,FL1,UCL)"
         required: true
@@ -49,6 +45,5 @@ jobs:
         env:
           FOOTBALL_DATA_API_KEY: ${{ secrets.FOOTBALL_DATA_API_KEY }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          DAYS_AHEAD: ${{ github.event.inputs.days_ahead }}
           COMPETITIONS: ${{ github.event.inputs.competitions }}
         run: python bot_football.py
