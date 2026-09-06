@@ -1,12 +1,16 @@
-name: Test All Football Matches
+name: Football Data Weekly Test
 
 on:
   workflow_dispatch:
     inputs:
       days_ahead:
-        description: "Nombre de jours à analyser"
+        description: "Nombre de jours a analyser"
         required: true
         default: "7"
+      competitions:
+        description: "Codes competitions separes par des virgules (ex: PL,PD,SA,BL1,FL1,UCL)"
+        required: true
+        default: "PL,PD,SA,BL1,FL1,UCL"
 
 jobs:
   run-bot:
@@ -28,11 +32,11 @@ jobs:
 
       - name: Verifier les secrets
         env:
-          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+          FOOTBALL_DATA_API_KEY: ${{ secrets.FOOTBALL_DATA_API_KEY }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
-          if [ -z "$RAPIDAPI_KEY" ]; then
-            echo "RAPIDAPI_KEY manquant"
+          if [ -z "$FOOTBALL_DATA_API_KEY" ]; then
+            echo "FOOTBALL_DATA_API_KEY manquant"
             exit 1
           fi
           if [ -z "$DISCORD_WEBHOOK_URL" ]; then
@@ -41,9 +45,10 @@ jobs:
           fi
           echo "Secrets OK"
 
-      - name: Lancer le bot de test
+      - name: Lancer le bot
         env:
-          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+          FOOTBALL_DATA_API_KEY: ${{ secrets.FOOTBALL_DATA_API_KEY }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           DAYS_AHEAD: ${{ github.event.inputs.days_ahead }}
+          COMPETITIONS: ${{ github.event.inputs.competitions }}
         run: python bot_football.py
