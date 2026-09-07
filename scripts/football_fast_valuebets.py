@@ -24,11 +24,7 @@ DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "").strip()
 DAYS_AHEAD = int(float(os.getenv("DAYS_AHEAD", "5")))
 MAX_MATCHES = int(float(os.getenv("MAX_MATCHES", "15")))
 H2H_LIMIT = int(float(os.getenv("H2H_LIMIT", "10")))
-
-MIN_H2H_MATCHES = int(float(os.getenv("MIN_H2H_MATCHES", "5")))
-MIN_H2H_WINS = int(float(os.getenv("MIN_H2H_WINS", "4")))
-MIN_H2H_GAP = int(float(os.getenv("MIN_H2H_GAP", "2")))
-
+H2H_YEARS_BACK = int(float(os.getenv("H2H_YEARS_BACK", "3")))
 MIN_EV_PCT = float(os.getenv("MIN_EV_PCT", "2"))
 
 FD_HEADERS = {"X-Auth-Token": FD_TOKEN} if FD_TOKEN else {}
@@ -230,6 +226,10 @@ def utc_to_paris(utc_str):
     return paris.strftime("%Y-%m-%d"), paris.strftime("%H:%M")
 
 
+def parse_utc_datetime(utc_str):
+    return datetime.fromisoformat(utc_str.replace("Z", "+00:00"))
+
+
 def poisson_pmf(goals, expected_goals):
     return (
         math.exp(-expected_goals)
@@ -279,7 +279,6 @@ def get_available_competitions():
     for competition in data.get("competitions", []):
         code = competition.get("code")
 
-        # On ne garde que les compétitions qui ont une correspondance odds.
         if code in ODDS_SPORTS_MAP:
             preferred.append(code)
 
@@ -345,6 +344,14 @@ def get_h2h(match_id):
         return []
 
 
+def get_required_gap(total_h2h_matches):
+    if 3 <= total_h2h_matches <= 5:
+        return 2
+    if 6 <= total_h2h_matches <= 10:
+        return 3
+    return None
+
+
 def summarize_h2h(h2h_matches, current_home, current_away):
     home_wins = 0
     away_wins = 0
@@ -354,14 +361,36 @@ def summarize_h2h(h2h_matches, current_home, current_away):
     home_normalized = normalize_team_name(current_home)
     away_normalized = normalize_team_name(current_away)
 
-    for match in h2h_matches:
-        full_time = match.get("score", {}).get("fullTime", {})
+    now_utc = datetime.now(timezone.utc)
+    cutoff_utc = now_utc - timedelta(days=365 * H2H_YEARS_BACK)
 
+    filtered_matches = []
+
+    for match in h2h_matches:
+        utc_date = match.get("utcDate")
+        if not utc_date:
+            continue
+
+        match_dt = parse_utc_datetime(utc_date)
+        if match_dt < cutoff_utc:
+            continue
+
+        full_time = match.get("score", {}).get("fullTime", {})
         home_goals = full_time.get("home")
         away_goals = full_time.get("away")
 
         if home_goals is None or away_goals is None:
             continue
+
+        filtered_matches.append(match)
+
+    filtered_matches.sort(key=lambda m: m.get("utcDate", ""), reverse=True)
+    filtered_matches = filtered_matches[:H2H_LIMIT]
+
+    for match in filtered_matches:
+        full_time = match.get("score", {}).get("fullTime", {})
+        home_goals = full_time.get("home")
+        away_goals = full_time.get("away")
 
         previous_home = match.get("homeTeam", {}).get("name", "")
         previous_away = match.get("awayTeam", {}).get("name", "")
@@ -382,29 +411,23 @@ def summarize_h2h(h2h_matches, current_home, current_away):
 
         if winner_normalized == home_normalized:
             home_wins += 1
-
         elif winner_normalized == away_normalized:
             away_wins += 1
 
     total = home_wins + away_wins + draws
+    required_gap = get_required_gap(total)
 
     dominant_team = None
     dominant_wins = 0
     dominant_losses = 0
 
-    if total >= MIN_H2H_MATCHES:
-        if (
-            home_wins >= MIN_H2H_WINS
-            and (home_wins - away_wins) >= MIN_H2H_GAP
-        ):
+    if required_gap is not None:
+        if (home_wins - away_wins) >= required_gap:
             dominant_team = current_home
             dominant_wins = home_wins
             dominant_losses = away_wins
 
-        elif (
-            away_wins >= MIN_H2H_WINS
-            and (away_wins - home_wins) >= MIN_H2H_GAP
-        ):
+        elif (away_wins - home_wins) >= required_gap:
             dominant_team = current_away
             dominant_wins = away_wins
             dominant_losses = home_wins
@@ -417,14 +440,12 @@ def summarize_h2h(h2h_matches, current_home, current_away):
         "dominant_team": dominant_team,
         "dominant_wins": dominant_wins,
         "dominant_losses": dominant_losses,
-        "recent_h2h": latest_results[:H2H_LIMIT]
+        "required_gap": required_gap,
+        "recent_h2h": latest_results
     }
 
 
 def estimate_probabilities_fast(h2h_summary):
-    # Modèle léger et rapide.
-    # Il donne un léger avantage à domicile,
-    # puis corrige avec la domination H2H.
     home_xg = 1.35
     away_xg = 1.10
 
@@ -588,8 +609,6 @@ def build_rows(matches):
                 away_team
             )
 
-            # Important : on ignore les matchs sans domination H2H.
-            # On n'appelle donc pas les cotes pour ces matchs.
             if not h2h["dominant_team"]:
                 continue
 
@@ -614,6 +633,7 @@ def build_rows(matches):
                 "dominant_wins": h2h["dominant_wins"],
                 "draws": h2h["draws"],
                 "dominant_losses": h2h["dominant_losses"],
+                "required_gap": h2h["required_gap"],
                 "recent_h2h": json.dumps(
                     h2h["recent_h2h"],
                     ensure_ascii=False
@@ -654,10 +674,10 @@ def build_rows(matches):
 def render_discord_message(df):
     if df.empty:
         return (
-            "⚠️ Aucun match avec domination H2H forte "
-            "trouvé sur la période.\n"
-            "Réglages actuels : minimum 5 H2H, "
-            "4 victoires et 2 victoires d'écart."
+            "⚠️ Aucun match avec domination H2H forte trouvé sur la période.\n"
+            "Règle actuelle : H2H des 3 dernières années uniquement, "
+            "3 à 5 matchs = 2 victoires d'écart minimum, "
+            "6 à 10 matchs = 3 victoires d'écart minimum."
         )
 
     lines = [
@@ -672,7 +692,8 @@ def render_discord_message(df):
         lines.append(f"👑 Équipe dominante : {row.dominant_team}")
         lines.append(
             f"📚 H2H : {row.dominant_wins}V | "
-            f"{row.draws}N | {row.dominant_losses}D"
+            f"{row.draws}N | {row.dominant_losses}D "
+            f"(écart requis : {row.required_gap})"
         )
         lines.append(
             f"📈 Modèle : {row.homeTeam} {row.p_home_model}% | "
