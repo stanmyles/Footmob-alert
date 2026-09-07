@@ -9,7 +9,7 @@ import pandas as pd
 import requests
 
 BASE_FD = "https://api.football-data.org/v4"
-ODDS_BASE = "https://api.the-odds-api.com/v4"
+ODDS_BASE = "https://api.theoddsapi.com"
 
 OUTPUT_DIR = Path("output")
 OUTPUT_DIR.mkdir(exist_ok=True)
@@ -18,18 +18,18 @@ FD_TOKEN = os.getenv("FOOTBALL_DATA_API_TOKEN", "")
 ODDS_API_KEY = os.getenv("ODDS_API_KEY", "")
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "")
 
-DAYS_AHEAD = int(float(os.getenv("DAYS_AHEAD", "7")))
+DAYS_AHEAD = int(float(os.getenv("DAYS_AHEAD", "3")))
+MAX_MATCHES = int(float(os.getenv("MAX_MATCHES", "25")))
 BANKROLL = float(os.getenv("BANKROLL", "1000"))
 MIN_EDGE_PCT = float(os.getenv("MIN_EDGE_PCT", "2"))
 MIN_EV_PCT = float(os.getenv("MIN_EV_PCT", "1"))
-MAX_MATCHES = int(float(os.getenv("MAX_MATCHES", "150")))
 
 FD_HEADERS = {"X-Auth-Token": FD_TOKEN} if FD_TOKEN else {}
-
 SESSION = requests.Session()
-SESSION.headers.update({
-    "User-Agent": "github-actions-football-analysis/2.0"
-})
+SESSION.headers.update({"User-Agent": "github-actions-football-analysis/3.0"})
+
+FD_MIN_INTERVAL = 6.5
+_last_fd_call_ts = 0.0
 
 COMPETITIONS = [
     "PL", "PD", "BL1", "SA", "FL1",
@@ -69,20 +69,28 @@ ALIASES = {
 }
 
 
+def throttle_football_data():
+    global _last_fd_call_ts
+    now = time.time()
+    wait = FD_MIN_INTERVAL - (now - _last_fd_call_ts)
+    if wait > 0:
+        time.sleep(wait)
+    _last_fd_call_ts = time.time()
+
+
 def request_json(url, headers=None, params=None, timeout=30, retries=3):
     last_error = None
 
     for attempt in range(retries):
         try:
-            response = SESSION.get(
-                url,
-                headers=headers,
-                params=params,
-                timeout=timeout
-            )
+            if "api.football-data.org" in url:
+                throttle_football_data()
+
+            response = SESSION.get(url, headers=headers, params=params, timeout=timeout)
 
             if response.status_code == 429:
-                delay = attempt + 1
+                retry_after = response.headers.get("Retry-After")
+                delay = int(retry_after) if retry_after and retry_after.isdigit() else (attempt + 1) * 8
                 print(f"[WARN] Limite API atteinte. Nouvelle tentative dans {delay}s.")
                 time.sleep(delay)
                 continue
@@ -103,33 +111,19 @@ def request_json(url, headers=None, params=None, timeout=30, retries=3):
 def iso_to_api_date(value):
     if not value:
         return None
-
     return value[:10]
 
 
 def normalize_team_name(name):
     name = (name or "").lower().strip()
-
-    for word in [
-        " football club",
-        " futebol clube",
-        " calcio",
-        " fc",
-        " cf",
-        " club"
-    ]:
+    for word in [" football club", " futebol clube", " calcio", " fc", " cf", " club"]:
         name = name.replace(word, "")
-
     name = " ".join(name.split())
     return ALIASES.get(name, name)
 
 
 def poisson_pmf(goals, expected_goals):
-    return (
-        math.exp(-expected_goals)
-        * (expected_goals ** goals)
-        / math.factorial(goals)
-    )
+    return math.exp(-expected_goals) * (expected_goals ** goals) / math.factorial(goals)
 
 
 def match_outcome_probabilities(home_xg, away_xg, max_goals=8):
@@ -139,17 +133,16 @@ def match_outcome_probabilities(home_xg, away_xg, max_goals=8):
 
     for home_goals in range(max_goals + 1):
         p_home = poisson_pmf(home_goals, home_xg)
-
         for away_goals in range(max_goals + 1):
             p_away = poisson_pmf(away_goals, away_xg)
-            probability = p_home * p_away
+            p = p_home * p_away
 
             if home_goals > away_goals:
-                home_win += probability
+                home_win += p
             elif home_goals == away_goals:
-                draw += probability
+                draw += p
             else:
-                away_win += probability
+                away_win += p
 
     total = home_win + draw + away_win
     return home_win / total, draw / total, away_win / total
@@ -157,10 +150,7 @@ def match_outcome_probabilities(home_xg, away_xg, max_goals=8):
 
 def get_upcoming_matches():
     now = datetime.now(timezone.utc)
-
     date_from = now.date().isoformat()
-
-    # dateTo est exclusif : +1 jour permet une vraie fenêtre de 7 jours.
     date_to = (now + timedelta(days=DAYS_AHEAD + 1)).date().isoformat()
 
     matches = []
@@ -170,10 +160,7 @@ def get_upcoming_matches():
             data = request_json(
                 f"{BASE_FD}/competitions/{competition}/matches",
                 headers=FD_HEADERS,
-                params={
-                    "dateFrom": date_from,
-                    "dateTo": date_to
-                }
+                params={"dateFrom": date_from, "dateTo": date_to}
             )
 
             retained = 0
@@ -193,10 +180,9 @@ def get_upcoming_matches():
     return matches[:MAX_MATCHES]
 
 
-def get_team_recent_matches(team_id, fixture_date, limit=8):
+def get_team_recent_matches(team_id, fixture_date, limit=5):
     try:
         api_date = iso_to_api_date(fixture_date)
-
         data = request_json(
             f"{BASE_FD}/teams/{team_id}/matches",
             headers=FD_HEADERS,
@@ -206,9 +192,7 @@ def get_team_recent_matches(team_id, fixture_date, limit=8):
                 "limit": limit
             }
         )
-
         return data.get("matches", [])
-
     except Exception as error:
         print(f"[WARN] Forme récente équipe {team_id} : {error}")
         return []
@@ -245,12 +229,7 @@ def summarize_form(team_id, matches):
         games += 1
 
     if games == 0:
-        return {
-            "matches": 0,
-            "ppg": 1.20,
-            "gfpg": 1.20,
-            "gapg": 1.20
-        }
+        return {"matches": 0, "ppg": 1.20, "gfpg": 1.20, "gapg": 1.20}
 
     return {
         "matches": games,
@@ -262,15 +241,12 @@ def summarize_form(team_id, matches):
 
 def get_h2h(match_id):
     try:
-        # Aucun dateFrom ici : il provoquait des erreurs 400.
         data = request_json(
             f"{BASE_FD}/matches/{match_id}/head2head",
             headers=FD_HEADERS,
-            params={"limit": 10}
+            params={"limit": 5}
         )
-
         return data.get("matches", [])
-
     except Exception as error:
         print(f"[WARN] H2H match {match_id} : {error}")
         return []
@@ -331,42 +307,17 @@ def estimate_probabilities(match):
     away = match["awayTeam"]
     fixture_date = match["utcDate"]
 
-    home_form = summarize_form(
-        home["id"],
-        get_team_recent_matches(home["id"], fixture_date)
-    )
+    home_form = summarize_form(home["id"], get_team_recent_matches(home["id"], fixture_date))
+    away_form = summarize_form(away["id"], get_team_recent_matches(away["id"], fixture_date))
+    h2h_summary = summarize_h2h(get_h2h(match["id"]), home["name"], away["name"])
 
-    away_form = summarize_form(
-        away["id"],
-        get_team_recent_matches(away["id"], fixture_date)
-    )
-
-    h2h_summary = summarize_h2h(
-        get_h2h(match["id"]),
-        home["name"],
-        away["name"]
-    )
-
-    home_xg = (
-        1.35
-        + 0.22 * (home_form["ppg"] - 1.30)
-        + 0.18 * (home_form["gfpg"] - away_form["gapg"])
-    )
-
-    away_xg = (
-        1.10
-        + 0.18 * (away_form["ppg"] - 1.30)
-        + 0.16 * (away_form["gfpg"] - home_form["gapg"])
-    )
+    home_xg = 1.35 + 0.22 * (home_form["ppg"] - 1.30) + 0.18 * (home_form["gfpg"] - away_form["gapg"])
+    away_xg = 1.10 + 0.18 * (away_form["ppg"] - 1.30) + 0.16 * (away_form["gfpg"] - home_form["gapg"])
 
     if h2h_summary["h2h_matches"] > 0:
-        h2h_bias = (
-            h2h_summary["h2h_home_wins"]
-            - h2h_summary["h2h_away_wins"]
-        ) / h2h_summary["h2h_matches"]
-
-        home_xg += max(-0.20, min(0.20, h2h_bias * 0.20))
-        away_xg -= max(-0.15, min(0.15, h2h_bias * 0.15))
+        h2h_bias = (h2h_summary["h2h_home_wins"] - h2h_summary["h2h_away_wins"]) / h2h_summary["h2h_matches"]
+        home_xg += max(-0.15, min(0.15, h2h_bias * 0.15))
+        away_xg -= max(-0.12, min(0.12, h2h_bias * 0.12))
 
     home_xg = max(0.20, min(3.20, home_xg))
     away_xg = max(0.20, min(3.00, away_xg))
@@ -397,15 +348,14 @@ def get_odds(match):
 
     try:
         events = request_json(
-            f"{ODDS_BASE}/sports/{sport_key}/odds",
+            f"{ODDS_BASE}/v4/sports/{sport_key}/odds",
+            headers={"x-api-key": ODDS_API_KEY},
             params={
-                "apiKey": ODDS_API_KEY,
                 "regions": "eu",
                 "markets": "h2h",
                 "oddsFormat": "decimal"
             }
         )
-
     except Exception as error:
         print(f"[WARN] Cotes indisponibles pour {sport_key} : {error}")
         return {}
@@ -413,12 +363,7 @@ def get_odds(match):
     wanted_home = normalize_team_name(match["homeTeam"]["name"])
     wanted_away = normalize_team_name(match["awayTeam"]["name"])
 
-    best = {
-        "home": None,
-        "draw": None,
-        "away": None,
-        "bookmaker": None
-    }
+    best = {"home": None, "draw": None, "away": None, "bookmaker": None}
 
     for event in events:
         event_home = normalize_team_name(event.get("home_team", ""))
@@ -440,12 +385,10 @@ def get_odds(match):
                         if best["home"] is None or price > best["home"]:
                             best["home"] = price
                             best["bookmaker"] = bookmaker.get("title")
-
                     elif outcome_name == wanted_away:
                         if best["away"] is None or price > best["away"]:
                             best["away"] = price
                             best["bookmaker"] = bookmaker.get("title")
-
                     elif outcome_name in {"draw", "tie", "nul", "match nul"}:
                         if best["draw"] is None or price > best["draw"]:
                             best["draw"] = price
@@ -513,31 +456,22 @@ def build_rows(matches):
                 "status": match.get("status", ""),
                 "homeTeam": home_name,
                 "awayTeam": away_name,
-
                 "home_xg": round(probabilities["home_xg"], 2),
                 "away_xg": round(probabilities["away_xg"], 2),
-
                 "p_home_model": round(probabilities["p_home"] * 100, 2),
                 "p_draw_model": round(probabilities["p_draw"] * 100, 2),
                 "p_away_model": round(probabilities["p_away"] * 100, 2),
-
                 "home_ppg": round(probabilities["home_form"]["ppg"], 2),
                 "away_ppg": round(probabilities["away_form"]["ppg"], 2),
-
                 "h2h_matches": probabilities["h2h"]["h2h_matches"],
                 "h2h_home_wins": probabilities["h2h"]["h2h_home_wins"],
                 "h2h_draws": probabilities["h2h"]["h2h_draws"],
                 "h2h_away_wins": probabilities["h2h"]["h2h_away_wins"],
-                "recent_h2h": json.dumps(
-                    probabilities["h2h"]["recent_h2h"],
-                    ensure_ascii=False
-                ),
-
+                "recent_h2h": json.dumps(probabilities["h2h"]["recent_h2h"], ensure_ascii=False),
                 "odds_home": odds.get("home"),
                 "odds_draw": odds.get("draw"),
                 "odds_away": odds.get("away"),
                 "bookmaker": odds.get("bookmaker"),
-
                 "recommended_side": selection["side"] if selection else None,
                 "recommended_probability_pct": selection["probability_pct"] if selection else None,
                 "recommended_odds": selection["odds"] if selection else None,
@@ -555,14 +489,11 @@ def build_rows(matches):
 def h2h_trend(home_wins, away_wins, total):
     if total == 0:
         return "⚪ Pas d'historique exploitable"
-
     difference = abs(home_wins - away_wins)
-
-    if difference >= 4:
+    if difference >= 3:
         return "🔥 Domination nette"
-    if difference >= 2:
+    if difference >= 1:
         return "📈 Léger avantage"
-
     return "⚖️ Confrontation équilibrée"
 
 
@@ -571,7 +502,7 @@ def render_discord_message(df):
         return "⚠️ Aucun match récupéré sur la fenêtre choisie."
 
     lines = [
-        "📊 *Confrontations directes — 7 prochains jours*",
+        "📊 *Confrontations directes & Value Bets*",
         f"📅 Matchs analysés : {len(df)}"
     ]
 
@@ -591,28 +522,22 @@ def render_discord_message(df):
 
         if getattr(row, "recommended_side", None):
             lines.append(
-                f"💸 *Value bet : {row.recommended_side}* "
-                f"| cote {row.recommended_odds} "
-                f"| EV {row.recommended_ev_pct}% "
-                f"| edge {row.recommended_edge_pct}%"
+                f"💸 *Value bet : {row.recommended_side}* | "
+                f"cote {row.recommended_odds} | "
+                f"EV {row.recommended_ev_pct}% | "
+                f"edge {row.recommended_edge_pct}%"
             )
 
-    picks = df[df["recommended_side"].notna()]
+    picks = df[df["recommended_side"].notna()] if "recommended_side" in df.columns else pd.DataFrame()
 
     lines.append("")
-
     if picks.empty:
         lines.append("⚠️ Aucun value bet détecté avec les seuils actuels.")
     else:
-        lines.append("🎯 *Value bets détectés*")
-
-        for row in picks.sort_values(
-            "recommended_ev_pct",
-            ascending=False
-        ).head(5).itertuples():
+        lines.append("🎯 *Top value bets*")
+        for row in picks.sort_values("recommended_ev_pct", ascending=False).head(5).itertuples():
             lines.append(
-                f"• {row.homeTeam} vs {row.awayTeam} "
-                f"→ *{row.recommended_side}* "
+                f"• {row.homeTeam} vs {row.awayTeam} → *{row.recommended_side}* "
                 f"(cote {row.recommended_odds}, EV {row.recommended_ev_pct}%)"
             )
 
@@ -624,26 +549,20 @@ def send_discord(message):
         print("[WARN] DISCORD_WEBHOOK_URL absent.")
         return
 
-    chunks = [
-        message[position:position + 1900]
-        for position in range(0, len(message), 1900)
-    ]
+    chunks = [message[i:i + 1900] for i in range(0, len(message), 1900)]
 
-    for index, chunk in enumerate(chunks[:5], start=1):
+    for idx, chunk in enumerate(chunks[:5], start=1):
         try:
             response = requests.post(
                 DISCORD_WEBHOOK_URL,
                 json={"content": chunk},
                 timeout=20
             )
-
-            print(f"[INFO] Discord message {index} : HTTP {response.status_code}")
-
+            print(f"[INFO] Discord message {idx} : HTTP {response.status_code}")
             if response.status_code >= 400:
                 print(response.text)
-
         except Exception as error:
-            print(f"[WARN] Discord message {index} : {error}")
+            print(f"[WARN] Discord message {idx} : {error}")
 
 
 def main():
@@ -651,7 +570,6 @@ def main():
         raise RuntimeError("FOOTBALL_DATA_API_TOKEN manquant.")
 
     matches = get_upcoming_matches()
-
     print(f"[INFO] {len(matches)} matchs récupérés")
 
     for match in matches[:10]:
@@ -665,31 +583,14 @@ def main():
     rows = build_rows(matches)
     df = pd.DataFrame(rows)
 
-    df.to_csv(
-        OUTPUT_DIR / "football_matches.csv",
-        index=False
-    )
+    df.to_csv(OUTPUT_DIR / "football_matches.csv", index=False)
+    df.to_json(OUTPUT_DIR / "football_matches.json", orient="records", force_ascii=False, indent=2)
 
-    df.to_json(
-        OUTPUT_DIR / "football_matches.json",
-        orient="records",
-        force_ascii=False,
-        indent=2
-    )
-
-    picks = df[df["recommended_side"].notna()] if not df.empty else pd.DataFrame()
-
-    picks.to_csv(
-        OUTPUT_DIR / "value_bets.csv",
-        index=False
-    )
+    picks = df[df["recommended_side"].notna()] if not df.empty and "recommended_side" in df.columns else pd.DataFrame()
+    picks.to_csv(OUTPUT_DIR / "value_bets.csv", index=False)
 
     message = render_discord_message(df)
-
-    (OUTPUT_DIR / "notification_message.txt").write_text(
-        message,
-        encoding="utf-8"
-    )
+    (OUTPUT_DIR / "notification_message.txt").write_text(message, encoding="utf-8")
 
     print("\n===== MESSAGE DISCORD =====")
     print(message)
