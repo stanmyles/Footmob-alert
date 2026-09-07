@@ -10,46 +10,27 @@ import requests
 from requests.exceptions import HTTPError, RequestException
 
 BASE_FD = "https://api.football-data.org/v4"
-ODDS_BASE = "https://api.theoddsapi.com"
 
 OUTPUT_DIR = Path("output")
 OUTPUT_DIR.mkdir(exist_ok=True)
 
 FD_TOKEN = os.getenv("FOOTBALL_DATA_API_TOKEN", "")
-ODDS_API_KEY = os.getenv("ODDS_API_KEY", "")
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "")
 
 DAYS_AHEAD = int(float(os.getenv("DAYS_AHEAD", "3")))
-MAX_MATCHES = int(float(os.getenv("MAX_MATCHES", "25")))
-BANKROLL = float(os.getenv("BANKROLL", "1000"))
-MIN_EDGE_PCT = float(os.getenv("MIN_EDGE_PCT", "2"))
-MIN_EV_PCT = float(os.getenv("MIN_EV_PCT", "1"))
+MAX_MATCHES = int(float(os.getenv("MAX_MATCHES", "15")))
 
 FD_HEADERS = {"X-Auth-Token": FD_TOKEN} if FD_TOKEN else {}
 SESSION = requests.Session()
-SESSION.headers.update({"User-Agent": "github-actions-football-analysis/6.0"})
+SESSION.headers.update({"User-Agent": "github-actions-football-analysis-no-odds/1.0"})
 
 FD_MIN_INTERVAL = 6.5
 _last_fd_call_ts = 0.0
-AVAILABLE_ODDS_SPORTS = set()
 
 COMPETITIONS = [
     "PL", "PD", "BL1", "SA", "FL1",
     "ELC", "PPL", "DED", "BSA", "CL"
 ]
-
-ODDS_SPORTS_MAP = {
-    "PL": "soccer_epl",
-    "PD": "soccer_spain_la_liga",
-    "BL1": "soccer_germany_bundesliga",
-    "SA": "soccer_italy_serie_a",
-    "FL1": "soccer_france_ligue_one",
-    "ELC": "soccer_efl_champ",
-    "PPL": "soccer_portugal_primeira_liga",
-    "DED": "soccer_netherlands_eredivisie",
-    "BSA": "soccer_brazil_campeonato",
-    "CL": "soccer_uefa_champs_league"
-}
 
 ALIASES = {
     "paris saint-germain fc": "paris saint-germain",
@@ -127,43 +108,6 @@ def normalize_team_name(name):
         name = name.replace(word, "")
     name = " ".join(name.split())
     return ALIASES.get(name, name)
-
-
-def load_available_odds_sports():
-    global AVAILABLE_ODDS_SPORTS
-
-    if not ODDS_API_KEY:
-        print("[WARN] ODDS_API_KEY absent, aucun sport odds chargé.")
-        AVAILABLE_ODDS_SPORTS = set()
-        return
-
-    try:
-        sports = request_json(
-            f"{ODDS_BASE}/sports/",
-            headers={"x-api-key": ODDS_API_KEY}
-        )
-
-        AVAILABLE_ODDS_SPORTS = {
-            item.get("key")
-            for item in sports
-            if item.get("key")
-        }
-
-        print(f"[INFO] Sports odds disponibles: {len(AVAILABLE_ODDS_SPORTS)}")
-
-    except HTTPError as error:
-        status = error.response.status_code if error.response is not None else None
-        if status in {400, 401, 403, 404, 410}:
-            print(f"[INFO] Catalogue Odds non accessible: HTTP {status}")
-            AVAILABLE_ODDS_SPORTS = set()
-            return
-
-        print(f"[WARN] Impossible de charger /sports/: {error}")
-        AVAILABLE_ODDS_SPORTS = set()
-
-    except Exception as error:
-        print(f"[WARN] Impossible de charger /sports/: {error}")
-        AVAILABLE_ODDS_SPORTS = set()
 
 
 def poisson_pmf(goals, expected_goals):
@@ -393,119 +337,8 @@ def estimate_probabilities(match):
     }
 
 
-def get_odds(match):
-    if not ODDS_API_KEY:
-        return {}
-
-    competition = match.get("_competitionCode")
-    sport_key = ODDS_SPORTS_MAP.get(competition)
-
-    if not sport_key:
-        return {}
-
-    if AVAILABLE_ODDS_SPORTS and sport_key not in AVAILABLE_ODDS_SPORTS:
-        print(f"[INFO] Sport odds non disponible pour ce plan: {sport_key}")
-        return {}
-
-    try:
-        events = request_json(
-            f"{ODDS_BASE}/odds/",
-            headers={"x-api-key": ODDS_API_KEY},
-            params={
-                "sport_key": sport_key,
-                "regions": "eu",
-                "markets": "h2h",
-                "oddsFormat": "decimal"
-            }
-        )
-    except HTTPError as error:
-        status = error.response.status_code if error.response is not None else None
-        if status in {400, 401, 403, 404, 410}:
-            print(f"[INFO] Odds ignorées pour {sport_key}: HTTP {status}")
-            return {}
-        print(f"[WARN] Cotes indisponibles pour {sport_key}: {error}")
-        return {}
-    except Exception as error:
-        print(f"[WARN] Cotes indisponibles pour {sport_key}: {error}")
-        return {}
-
-    if not isinstance(events, list):
-        return {}
-
-    wanted_home = normalize_team_name(match["homeTeam"]["name"])
-    wanted_away = normalize_team_name(match["awayTeam"]["name"])
-
-    best = {"home": None, "draw": None, "away": None, "bookmaker": None}
-
-    for event in events:
-        event_home = normalize_team_name(event.get("home_team", ""))
-        event_away = normalize_team_name(event.get("away_team", ""))
-
-        if {event_home, event_away} != {wanted_home, wanted_away}:
-            continue
-
-        for bookmaker in event.get("bookmakers", []):
-            for market in bookmaker.get("markets", []):
-                if market.get("key") != "h2h":
-                    continue
-
-                for outcome in market.get("outcomes", []):
-                    outcome_name = normalize_team_name(outcome.get("name", ""))
-                    price = outcome.get("price")
-
-                    if outcome_name == wanted_home:
-                        if best["home"] is None or price > best["home"]:
-                            best["home"] = price
-                            best["bookmaker"] = bookmaker.get("title")
-                    elif outcome_name == wanted_away:
-                        if best["away"] is None or price > best["away"]:
-                            best["away"] = price
-                            best["bookmaker"] = bookmaker.get("title")
-                    elif outcome_name in {"draw", "tie", "nul", "match nul"}:
-                        if best["draw"] is None or price > best["draw"]:
-                            best["draw"] = price
-                            best["bookmaker"] = bookmaker.get("title")
-
-        break
-
-    return best
-
-
-def calculate_selection(probabilities, odds):
-    selections = []
-
-    mapping = [
-        ("DOMICILE", probabilities["p_home"], odds.get("home")),
-        ("NUL", probabilities["p_draw"], odds.get("draw")),
-        ("EXTERIEUR", probabilities["p_away"], odds.get("away"))
-    ]
-
-    for side, probability, odd in mapping:
-        if not odd or odd <= 1:
-            continue
-
-        market_probability = 1 / odd
-        edge_pct = (probability - market_probability) * 100
-        ev_pct = (probability * odd - 1) * 100
-
-        if edge_pct >= MIN_EDGE_PCT and ev_pct >= MIN_EV_PCT:
-            selections.append({
-                "side": side,
-                "probability_pct": round(probability * 100, 2),
-                "odds": odd,
-                "edge_pct": round(edge_pct, 2),
-                "ev_pct": round(ev_pct, 2)
-            })
-
-    if not selections:
-        return None
-
-    return max(selections, key=lambda item: item["ev_pct"])
-
-
 def build_rows(matches):
     rows = []
-    odds_found = 0
 
     for index, match in enumerate(matches, start=1):
         home_name = match["homeTeam"]["name"]
@@ -515,12 +348,6 @@ def build_rows(matches):
 
         try:
             probabilities = estimate_probabilities(match)
-            odds = get_odds(match)
-
-            if odds.get("home") and odds.get("draw") and odds.get("away"):
-                odds_found += 1
-
-            selection = calculate_selection(probabilities, odds)
 
             rows.append({
                 "utcDate": match["utcDate"],
@@ -539,22 +366,12 @@ def build_rows(matches):
                 "h2h_home_wins": probabilities["h2h"]["h2h_home_wins"],
                 "h2h_draws": probabilities["h2h"]["h2h_draws"],
                 "h2h_away_wins": probabilities["h2h"]["h2h_away_wins"],
-                "recent_h2h": json.dumps(probabilities["h2h"]["recent_h2h"], ensure_ascii=False),
-                "odds_home": odds.get("home"),
-                "odds_draw": odds.get("draw"),
-                "odds_away": odds.get("away"),
-                "bookmaker": odds.get("bookmaker"),
-                "recommended_side": selection["side"] if selection else None,
-                "recommended_probability_pct": selection["probability_pct"] if selection else None,
-                "recommended_odds": selection["odds"] if selection else None,
-                "recommended_edge_pct": selection["edge_pct"] if selection else None,
-                "recommended_ev_pct": selection["ev_pct"] if selection else None
+                "recent_h2h": json.dumps(probabilities["h2h"]["recent_h2h"], ensure_ascii=False)
             })
 
         except Exception as error:
             print(f"[WARN] Analyse impossible {home_name} vs {away_name}: {error}")
 
-    print(f"[INFO] Matchs avec cotes complètes : {odds_found}/{len(matches)}")
     return rows
 
 
@@ -574,7 +391,7 @@ def render_discord_message(df):
         return "⚠️ Aucun match récupéré sur la fenêtre choisie."
 
     lines = [
-        "📊 *Confrontations directes & Value Bets*",
+        "📊 *Analyse football sans cotes bookmaker*",
         f"📅 Matchs analysés : {len(df)}"
     ]
 
@@ -586,32 +403,16 @@ def render_discord_message(df):
 
         lines.append("")
         lines.append(f"⚽ *{row.homeTeam} vs {row.awayTeam}*")
+        lines.append(
+            f"📈 Modèle: {row.homeTeam} {row.p_home_model}% | "
+            f"Nul {row.p_draw_model}% | "
+            f"{row.awayTeam} {row.p_away_model}%"
+        )
         lines.append(f"✅ {row.homeTeam} : {home_wins} victoire(s)")
         lines.append(f"🤝 Nuls : {draws}")
         lines.append(f"❌ {row.awayTeam} : {away_wins} victoire(s)")
         lines.append(f"📅 {total} confrontation(s) analysée(s)")
         lines.append(h2h_trend(home_wins, away_wins, total))
-
-        if getattr(row, "recommended_side", None):
-            lines.append(
-                f"💸 *Value bet : {row.recommended_side}* | "
-                f"cote {row.recommended_odds} | "
-                f"EV {row.recommended_ev_pct}% | "
-                f"edge {row.recommended_edge_pct}%"
-            )
-
-    picks = df[df["recommended_side"].notna()] if "recommended_side" in df.columns else pd.DataFrame()
-
-    lines.append("")
-    if picks.empty:
-        lines.append("⚠️ Aucun value bet détecté avec les seuils actuels.")
-    else:
-        lines.append("🎯 *Top value bets*")
-        for row in picks.sort_values("recommended_ev_pct", ascending=False).head(5).itertuples():
-            lines.append(
-                f"• {row.homeTeam} vs {row.awayTeam} → *{row.recommended_side}* "
-                f"(cote {row.recommended_odds}, EV {row.recommended_ev_pct}%)"
-            )
 
     return "\n".join(lines)
 
@@ -641,8 +442,6 @@ def main():
     if not FD_TOKEN:
         raise RuntimeError("FOOTBALL_DATA_API_TOKEN manquant.")
 
-    load_available_odds_sports()
-
     matches = get_upcoming_matches()
     print(f"[INFO] {len(matches)} matchs récupérés")
 
@@ -659,9 +458,6 @@ def main():
 
     df.to_csv(OUTPUT_DIR / "football_matches.csv", index=False)
     df.to_json(OUTPUT_DIR / "football_matches.json", orient="records", force_ascii=False, indent=2)
-
-    picks = df[df["recommended_side"].notna()] if not df.empty and "recommended_side" in df.columns else pd.DataFrame()
-    picks.to_csv(OUTPUT_DIR / "value_bets.csv", index=False)
 
     message = render_discord_message(df)
     (OUTPUT_DIR / "notification_message.txt").write_text(message, encoding="utf-8")
