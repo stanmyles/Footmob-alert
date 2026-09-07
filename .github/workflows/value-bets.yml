@@ -2,13 +2,13 @@ name: Football Value Bets
 
 on:
   schedule:
-    - cron: '0 7,12,18 * * *'
+    - cron: '0 6,12,18 * * *'
   workflow_dispatch:
     inputs:
       days_ahead:
         description: "Nombre de jours à analyser"
         required: false
-        default: "2"
+        default: "7"
       bankroll:
         description: "Bankroll de référence"
         required: false
@@ -16,11 +16,11 @@ on:
       min_edge_pct:
         description: "Edge minimum en points de probabilité"
         required: false
-        default: "5"
+        default: "2"
       min_ev_pct:
         description: "EV minimum en pourcentage"
         required: false
-        default: "3"
+        default: "1"
       h2h_years:
         description: "Fenêtre H2H en années"
         required: false
@@ -28,7 +28,7 @@ on:
       max_matches:
         description: "Nombre max de matchs à traiter"
         required: false
-        default: "25"
+        default: "150"
 
 permissions:
   contents: read
@@ -36,7 +36,7 @@ permissions:
 jobs:
   value-bets:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
 
     env:
       FOOTBALL_DATA_API_TOKEN: ${{ secrets.FOOTBALL_DATA_API_TOKEN }}
@@ -44,12 +44,12 @@ jobs:
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-      DAYS_AHEAD: ${{ github.event.inputs.days_ahead || '2' }}
+      DAYS_AHEAD: ${{ github.event.inputs.days_ahead || '7' }}
       BANKROLL: ${{ github.event.inputs.bankroll || '1000' }}
-      MIN_EDGE_PCT: ${{ github.event.inputs.min_edge_pct || '5' }}
-      MIN_EV_PCT: ${{ github.event.inputs.min_ev_pct || '3' }}
+      MIN_EDGE_PCT: ${{ github.event.inputs.min_edge_pct || '2' }}
+      MIN_EV_PCT: ${{ github.event.inputs.min_ev_pct || '1' }}
       H2H_YEARS: ${{ github.event.inputs.h2h_years || '2' }}
-      MAX_MATCHES: ${{ github.event.inputs.max_matches || '25' }}
+      MAX_MATCHES: ${{ github.event.inputs.max_matches || '150' }}
       TZ: Europe/Paris
 
     steps:
@@ -94,6 +94,14 @@ jobs:
       - name: Run analysis
         working-directory: ${{ github.workspace }}
         run: python scripts/value_bets.py
+
+      - name: Show output files
+        if: always()
+        run: |
+          echo "===== output/ ====="
+          ls -la output || true
+          echo "===== notification_message.txt ====="
+          cat output/notification_message.txt || true
 
       - name: Upload outputs
         if: always()
