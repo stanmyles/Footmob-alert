@@ -7,6 +7,7 @@ from datetime import datetime, timedelta, timezone
 
 import pandas as pd
 import requests
+from requests.exceptions import HTTPError, RequestException
 
 BASE_FD = "https://api.football-data.org/v4"
 ODDS_BASE = "https://api.theoddsapi.com"
@@ -26,7 +27,7 @@ MIN_EV_PCT = float(os.getenv("MIN_EV_PCT", "1"))
 
 FD_HEADERS = {"X-Auth-Token": FD_TOKEN} if FD_TOKEN else {}
 SESSION = requests.Session()
-SESSION.headers.update({"User-Agent": "github-actions-football-analysis/5.0"})
+SESSION.headers.update({"User-Agent": "github-actions-football-analysis/6.0"})
 
 FD_MIN_INTERVAL = 6.5
 _last_fd_call_ts = 0.0
@@ -88,18 +89,23 @@ def request_json(url, headers=None, params=None, timeout=30, retries=3):
                 throttle_football_data()
 
             response = SESSION.get(url, headers=headers, params=params, timeout=timeout)
-
-            if response.status_code == 429:
-                retry_after = response.headers.get("Retry-After")
-                delay = int(retry_after) if retry_after and retry_after.isdigit() else (attempt + 1) * 8
-                print(f"[WARN] Limite API atteinte. Nouvelle tentative dans {delay}s.")
-                time.sleep(delay)
-                continue
-
             response.raise_for_status()
             return response.json()
 
-        except Exception as error:
+        except HTTPError as error:
+            status = error.response.status_code if error.response is not None else None
+
+            if status == 429:
+                retry_after = error.response.headers.get("Retry-After") if error.response is not None else None
+                delay = int(retry_after) if retry_after and retry_after.isdigit() else (attempt + 1) * 8
+                print(f"[WARN] Limite API atteinte. Nouvelle tentative dans {delay}s.")
+                time.sleep(delay)
+                last_error = error
+                continue
+
+            raise
+
+        except RequestException as error:
             last_error = error
             time.sleep(attempt + 1)
 
@@ -134,8 +140,7 @@ def load_available_odds_sports():
     try:
         sports = request_json(
             f"{ODDS_BASE}/sports/",
-            headers={"x-api-key": ODDS_API_KEY},
-            params={}
+            headers={"x-api-key": ODDS_API_KEY}
         )
 
         AVAILABLE_ODDS_SPORTS = {
@@ -145,6 +150,16 @@ def load_available_odds_sports():
         }
 
         print(f"[INFO] Sports odds disponibles: {len(AVAILABLE_ODDS_SPORTS)}")
+
+    except HTTPError as error:
+        status = error.response.status_code if error.response is not None else None
+        if status in {400, 401, 403, 404, 410}:
+            print(f"[INFO] Catalogue Odds non accessible: HTTP {status}")
+            AVAILABLE_ODDS_SPORTS = set()
+            return
+
+        print(f"[WARN] Impossible de charger /sports/: {error}")
+        AVAILABLE_ODDS_SPORTS = set()
 
     except Exception as error:
         print(f"[WARN] Impossible de charger /sports/: {error}")
@@ -221,6 +236,13 @@ def get_team_recent_matches(team_id, fixture_date, limit=5):
             }
         )
         return data.get("matches", [])
+    except HTTPError as error:
+        status = error.response.status_code if error.response is not None else None
+        if status in {400, 401, 403, 404, 410}:
+            print(f"[INFO] Forme récente ignorée pour équipe {team_id}: HTTP {status}")
+            return []
+        print(f"[WARN] Forme récente équipe {team_id}: {error}")
+        return []
     except Exception as error:
         print(f"[WARN] Forme récente équipe {team_id}: {error}")
         return []
@@ -275,6 +297,13 @@ def get_h2h(match_id):
             params={"limit": 5}
         )
         return data.get("matches", [])
+    except HTTPError as error:
+        status = error.response.status_code if error.response is not None else None
+        if status in {400, 401, 403, 404, 410}:
+            print(f"[INFO] H2H ignoré pour match {match_id}: HTTP {status}")
+            return []
+        print(f"[WARN] H2H match {match_id}: {error}")
+        return []
     except Exception as error:
         print(f"[WARN] H2H match {match_id}: {error}")
         return []
@@ -389,6 +418,13 @@ def get_odds(match):
                 "oddsFormat": "decimal"
             }
         )
+    except HTTPError as error:
+        status = error.response.status_code if error.response is not None else None
+        if status in {400, 401, 403, 404, 410}:
+            print(f"[INFO] Odds ignorées pour {sport_key}: HTTP {status}")
+            return {}
+        print(f"[WARN] Cotes indisponibles pour {sport_key}: {error}")
+        return {}
     except Exception as error:
         print(f"[WARN] Cotes indisponibles pour {sport_key}: {error}")
         return {}
