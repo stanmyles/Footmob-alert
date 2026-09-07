@@ -2,7 +2,8 @@ name: Football H2H & Value Bets
 
 on:
   schedule:
-    - cron: '0 6,12,18 * * *'
+    - cron: "0 6,12,18 * * *"
+
   workflow_dispatch:
     inputs:
       days_ahead:
@@ -21,12 +22,8 @@ on:
         description: "EV minimum en pourcentage"
         required: false
         default: "1"
-      h2h_years:
-        description: "Fenêtre H2H en années"
-        required: false
-        default: "2"
       max_matches:
-        description: "Nombre max de matchs à traiter"
+        description: "Nombre maximal de matchs"
         required: false
         default: "150"
 
@@ -34,7 +31,7 @@ permissions:
   contents: read
 
 jobs:
-  value-bets:
+  football-analysis:
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -42,70 +39,91 @@ jobs:
       FOOTBALL_DATA_API_TOKEN: ${{ secrets.FOOTBALL_DATA_API_TOKEN }}
       ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+
       DAYS_AHEAD: ${{ github.event.inputs.days_ahead || '7' }}
       BANKROLL: ${{ github.event.inputs.bankroll || '1000' }}
       MIN_EDGE_PCT: ${{ github.event.inputs.min_edge_pct || '2' }}
       MIN_EV_PCT: ${{ github.event.inputs.min_ev_pct || '1' }}
-      H2H_YEARS: ${{ github.event.inputs.h2h_years || '2' }}
       MAX_MATCHES: ${{ github.event.inputs.max_matches || '150' }}
+
       TZ: Europe/Paris
+      PYTHONUNBUFFERED: "1"
 
     steps:
-      - name: Checkout
+      - name: Checkout du dépôt
         uses: actions/checkout@v4
 
-      - name: Setup Python
+      - name: Installation de Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-          cache: 'pip'
+          python-version: "3.11"
+          cache: pip
 
-      - name: Install dependencies
+      - name: Installation des dépendances
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Debug files
+      - name: Vérifier les fichiers
         run: |
+          echo "Dossier courant :"
           pwd
-          ls -la
+          echo "Fichiers du dépôt :"
           find . -maxdepth 3 -type f | sort
 
-      - name: Check required secret
+      - name: Vérifier les secrets obligatoires
         run: |
           if [ -z "${FOOTBALL_DATA_API_TOKEN}" ]; then
-            echo "FOOTBALL_DATA_API_TOKEN absent"
+            echo "ERREUR : FOOTBALL_DATA_API_TOKEN est absent."
             exit 1
           fi
-          echo "FOOTBALL_DATA_API_TOKEN présent"
 
-      - name: Optional test Discord webhook
+          echo "FOOTBALL_DATA_API_TOKEN : OK"
+
+          if [ -z "${DISCORD_WEBHOOK_URL}" ]; then
+            echo "ATTENTION : DISCORD_WEBHOOK_URL absent, aucun message Discord ne sera envoyé."
+          else
+            echo "DISCORD_WEBHOOK_URL : OK"
+          fi
+
+          if [ -z "${ODDS_API_KEY}" ]; then
+            echo "ATTENTION : ODDS_API_KEY absent, les cotes et value bets ne seront pas disponibles."
+          else
+            echo "ODDS_API_KEY : OK"
+          fi
+
+      - name: Tester Discord
         if: ${{ env.DISCORD_WEBHOOK_URL != '' }}
         run: |
-          curl -s -o /tmp/discord_response.txt -w "%{http_code}" \
+          STATUS=$(curl -s -o /tmp/discord-response.txt -w "%{http_code}" \
             -H "Content-Type: application/json" \
-            -d '{"content":"Test GitHub Actions -> Discord OK"}' \
-            "${DISCORD_WEBHOOK_URL}" > /tmp/discord_status.txt
-          echo "Discord HTTP status: $(cat /tmp/discord_status.txt)"
-          cat /tmp/discord_response.txt || true
+            -d '{"content":"✅ GitHub Actions connecté : analyse football lancée."}' \
+            "${DISCORD_WEBHOOK_URL}")
 
-      - name: Run analysis
-        working-directory: ${{ github.workspace }}
-        run: python scripts/value_bets.py
+          echo "Discord HTTP status: ${STATUS}"
+          cat /tmp/discord-response.txt || true
 
-      - name: Show output files
+          if [ "${STATUS}" -lt 200 ] || [ "${STATUS}" -ge 300 ]; then
+            echo "ATTENTION : Discord a refusé le webhook."
+          fi
+
+      - name: Lancer l'analyse football
+        run: |
+          python scripts/value_bets.py
+
+      - name: Afficher le message généré
         if: always()
         run: |
-          echo "===== output/ ====="
+          echo "===== Contenu output/ ====="
           ls -la output || true
-          echo "===== notification_message.txt ====="
+
+          echo "===== Message Discord généré ====="
           cat output/notification_message.txt || true
 
-      - name: Upload outputs
+      - name: Publier les résultats
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: value-bets-output
+          name: football-analysis-output
           path: output/
+          if-no-files-found: warn
