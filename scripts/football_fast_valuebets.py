@@ -195,7 +195,6 @@ def main():
 
     # ─── ENVOI DISCORD ────────────────────────────────────────────────────────
     if DISCORD_WEBHOOK_URL and rows:
-        # Filtrer uniquement les matchs avec une équipe dominante
         dominant_rows = [r for r in rows if r["dominant_team"] != "Aucune"]
         top = dominant_rows[:10]
 
