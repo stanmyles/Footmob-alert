@@ -1,8 +1,9 @@
+import os
 import json
+import csv
 import requests
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-import pandas as pd
 
 BASE_URL = "https://api.football-data.org/v4"
 TOKEN = os.environ["FOOTBALL_DATA_API_TOKEN"]
@@ -56,18 +57,25 @@ def main():
             "fair_home_odds": round(odds_fair, 3) if odds_fair else None
         })
 
-    df = pd.DataFrame(rows)
+    # Écriture CSV
     csv_path = OUTPUT_DIR / "value_bets.csv"
+    with open(csv_path, "w", newline="", encoding="utf-8") as f:
+        if rows:
+            writer = csv.DictWriter(f, fieldnames=rows[0].keys())
+            writer.writeheader()
+            writer.writerows(rows)
+
+    # Écriture JSON
     json_path = OUTPUT_DIR / "value_bets.json"
+    with open(json_path, "w", encoding="utf-8") as f:
+        json.dump(rows, f, ensure_ascii=False, indent=2)
 
-    df.to_csv(csv_path, index=False)
-    df.to_json(json_path, orient="records", force_ascii=False, indent=2)
-
-    if DISCORD_WEBHOOK_URL and not df.empty:
-        top = df.head(10)
+    # Envoi Discord
+    if DISCORD_WEBHOOK_URL and rows:
+        top = rows[:10]
         content = "Top matchs analysés:\n" + "\n".join(
-            f"- {r.homeTeam} vs {r.awayTeam} | p_home={r.p_home_model} | fair_odds={r.fair_home_odds}"
-            for r in top.itertuples()
+            f"- {r['homeTeam']} vs {r['awayTeam']} | p_home={r['p_home_model']} | fair_odds={r['fair_home_odds']}"
+            for r in top
         )
         requests.post(DISCORD_WEBHOOK_URL, json={"content": content[:1900]}, timeout=20)
 
