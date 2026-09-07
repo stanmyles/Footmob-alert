@@ -1,4 +1,4 @@
-name: Football Value Bets
+name: Football Analysis No Odds
 
 on:
   schedule:
@@ -12,19 +12,7 @@ on:
       max_matches:
         description: "Nombre maximal de matchs analysés"
         required: false
-        default: "25"
-      bankroll:
-        description: "Bankroll de référence"
-        required: false
-        default: "1000"
-      min_edge_pct:
-        description: "Edge minimum en points de probabilité"
-        required: false
-        default: "2"
-      min_ev_pct:
-        description: "EV minimum en pourcentage"
-        required: false
-        default: "1"
+        default: "15"
 
 permissions:
   contents: read
@@ -36,15 +24,9 @@ jobs:
 
     env:
       FOOTBALL_DATA_API_TOKEN: ${{ secrets.FOOTBALL_DATA_API_TOKEN }}
-      ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-
       DAYS_AHEAD: ${{ github.event.inputs.days_ahead || '3' }}
-      MAX_MATCHES: ${{ github.event.inputs.max_matches || '25' }}
-      BANKROLL: ${{ github.event.inputs.bankroll || '1000' }}
-      MIN_EDGE_PCT: ${{ github.event.inputs.min_edge_pct || '2' }}
-      MIN_EV_PCT: ${{ github.event.inputs.min_ev_pct || '1' }}
-
+      MAX_MATCHES: ${{ github.event.inputs.max_matches || '15' }}
       TZ: Europe/Paris
       PYTHONUNBUFFERED: "1"
 
@@ -63,26 +45,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Validate secrets
+      - name: Validate secret
         run: |
           if [ -z "${FOOTBALL_DATA_API_TOKEN}" ]; then
             echo "ERREUR: FOOTBALL_DATA_API_TOKEN manquant"
             exit 1
           fi
-
           echo "FOOTBALL_DATA_API_TOKEN: OK"
-
-          if [ -z "${DISCORD_WEBHOOK_URL}" ]; then
-            echo "WARNING: DISCORD_WEBHOOK_URL absent"
-          else
-            echo "DISCORD_WEBHOOK_URL: OK"
-          fi
-
-          if [ -z "${ODDS_API_KEY}" ]; then
-            echo "WARNING: ODDS_API_KEY absent, les cotes seront ignorées"
-          else
-            echo "ODDS_API_KEY: OK"
-          fi
 
       - name: Run analysis
         run: |
