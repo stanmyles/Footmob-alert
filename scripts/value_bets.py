@@ -19,16 +19,16 @@ DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "")
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
 
-DAYS_AHEAD = int(float(os.getenv("DAYS_AHEAD", "2")))
+DAYS_AHEAD = int(float(os.getenv("DAYS_AHEAD", "5")))
 BANKROLL = float(os.getenv("BANKROLL", "1000"))
-MIN_EDGE_PCT = float(os.getenv("MIN_EDGE_PCT", "5"))
-MIN_EV_PCT = float(os.getenv("MIN_EV_PCT", "3"))
+MIN_EDGE_PCT = float(os.getenv("MIN_EDGE_PCT", "2"))
+MIN_EV_PCT = float(os.getenv("MIN_EV_PCT", "1"))
 H2H_YEARS = int(float(os.getenv("H2H_YEARS", "2")))
-MAX_MATCHES = int(float(os.getenv("MAX_MATCHES", "25")))
+MAX_MATCHES = int(float(os.getenv("MAX_MATCHES", "100")))
 
 FD_HEADERS = {"X-Auth-Token": FD_TOKEN} if FD_TOKEN else {}
 SESSION = requests.Session()
-SESSION.headers.update({"User-Agent": "github-actions-value-bets/1.0"})
+SESSION.headers.update({"User-Agent": "github-actions-value-bets/1.1"})
 
 COMPETITIONS = [
     "PL", "PD", "BL1", "SA", "FL1", "ELC", "PPL", "DED", "BSA", "CL", "WC"
@@ -48,6 +48,26 @@ ODDS_SPORTS_MAP = {
     "WC": "soccer_fifa_world_cup"
 }
 
+ALIASES = {
+    "paris saint-germain fc": "paris saint-germain",
+    "psg": "paris saint-germain",
+    "internazionale": "inter",
+    "inter milan": "inter",
+    "fc barcelona": "barcelona",
+    "real madrid cf": "real madrid",
+    "atletico de madrid": "atletico madrid",
+    "manchester united fc": "manchester united",
+    "manchester city fc": "manchester city",
+    "tottenham hotspur fc": "tottenham",
+    "newcastle united fc": "newcastle",
+    "wolverhampton wanderers fc": "wolves",
+    "olympique de marseille": "marseille",
+    "olympique lyonnais": "lyon",
+    "as monaco fc": "monaco",
+    "sporting clube de portugal": "sporting cp",
+}
+
+
 def request_json(url, headers=None, params=None, timeout=30, retries=3, sleep_s=1.0):
     last_err = None
     for i in range(retries):
@@ -63,8 +83,10 @@ def request_json(url, headers=None, params=None, timeout=30, retries=3, sleep_s=
             time.sleep(sleep_s * (i + 1))
     raise last_err
 
+
 def poisson_pmf(k, lam):
     return math.exp(-lam) * (lam ** k) / math.factorial(k)
+
 
 def match_outcome_probs(home_xg, away_xg, max_goals=8):
     p_home = p_draw = p_away = 0.0
@@ -82,10 +104,12 @@ def match_outcome_probs(home_xg, away_xg, max_goals=8):
     total = p_home + p_draw + p_away
     return p_home / total, p_draw / total, p_away / total
 
+
 def implied_prob(odds):
     if odds and odds > 1:
         return 1.0 / odds
     return None
+
 
 def kelly_fraction(p, odds):
     b = odds - 1.0
@@ -95,29 +119,41 @@ def kelly_fraction(p, odds):
     f = ((b * p) - q) / b
     return max(0.0, f)
 
-def safe_name(s):
-    return (s or "").strip().lower()
+
+def normalize_team_name(s):
+    s = (s or "").strip().lower()
+    cleaned = s.replace("fc", "").replace("cf", "").replace("club", "")
+    cleaned = " ".join(cleaned.split())
+    return ALIASES.get(cleaned, cleaned)
+
 
 def get_upcoming_matches():
     now = datetime.now(timezone.utc)
     date_from = now.date().isoformat()
-    date_to = (now + timedelta(days=DAYS_AHEAD)).date().isoformat()
+    date_to = (now + timedelta(days=DAYS_AHEAD + 1)).date().isoformat()
+
     all_matches = []
     for comp in COMPETITIONS:
         try:
             data = request_json(
                 f"{BASE_FD}/competitions/{comp}/matches",
                 headers=FD_HEADERS,
-                params={"dateFrom": date_from, "dateTo": date_to, "status": "SCHEDULED"},
+                params={"dateFrom": date_from, "dateTo": date_to},
             )
+            comp_matches = 0
             for m in data.get("matches", []):
-                m["_competitionCode"] = comp
-                all_matches.append(m)
+                status = m.get("status")
+                if status in {"SCHEDULED", "TIMED"}:
+                    m["_competitionCode"] = comp
+                    all_matches.append(m)
+                    comp_matches += 1
+            print(f"[INFO] {comp}: {comp_matches} match(s) retenu(s)")
         except Exception as e:
             print(f"[WARN] compétition {comp} ignorée: {e}")
             continue
     all_matches.sort(key=lambda x: x.get("utcDate", ""))
     return all_matches[:MAX_MATCHES]
+
 
 def get_team_recent_matches(team_id, date_to, limit=8):
     try:
@@ -130,6 +166,7 @@ def get_team_recent_matches(team_id, date_to, limit=8):
     except Exception as e:
         print(f"[WARN] derniers matchs équipe {team_id}: {e}")
         return []
+
 
 def summarize_recent_form(team_id, matches):
     pts = gf = ga = 0
@@ -174,6 +211,7 @@ def summarize_recent_form(team_id, matches):
         "weighted_gd": weighted_gd / count,
     }
 
+
 def get_h2h(match_id):
     date_from = (datetime.now(timezone.utc) - timedelta(days=365 * H2H_YEARS)).date().isoformat()
     try:
@@ -186,6 +224,7 @@ def get_h2h(match_id):
     except Exception as e:
         print(f"[WARN] H2H match {match_id}: {e}")
         return {}
+
 
 def extract_h2h_advantage(h2h_data, home_name, away_name):
     matches = h2h_data.get("matches", []) if isinstance(h2h_data, dict) else []
@@ -206,10 +245,10 @@ def extract_h2h_advantage(h2h_data, home_name, away_name):
             years[year]["draws"] += 1
         else:
             winner = hn if hg > ag else an
-            if safe_name(winner) == safe_name(home_name):
+            if normalize_team_name(winner) == normalize_team_name(home_name):
                 home_wins += 1
                 years[year]["home_ref_wins"] += 1
-            elif safe_name(winner) == safe_name(away_name):
+            elif normalize_team_name(winner) == normalize_team_name(away_name):
                 away_wins += 1
                 years[year]["away_ref_wins"] += 1
     total = home_wins + away_wins + draws
@@ -222,6 +261,7 @@ def extract_h2h_advantage(h2h_data, home_name, away_name):
         "h2h_bias": bias,
         "h2h_by_year": years,
     }
+
 
 def estimate_probs(match):
     utc_date = match["utcDate"]
@@ -263,6 +303,7 @@ def estimate_probs(match):
         **h2h_summary,
     }
 
+
 def get_market_odds_for_match(match):
     if not ODDS_API_KEY:
         return {}
@@ -285,27 +326,37 @@ def get_market_odds_for_match(match):
         print(f"[WARN] odds indisponibles pour {sport_key}: {e}")
         return {}
 
-    home_name = safe_name(match["homeTeam"]["name"])
-    away_name = safe_name(match["awayTeam"]["name"])
+    home_name = normalize_team_name(match["homeTeam"]["name"])
+    away_name = normalize_team_name(match["awayTeam"]["name"])
     best = {"home": None, "draw": None, "away": None, "bookmaker": None}
+
     for ev in events:
-        ev_home = safe_name(ev.get("home_team", ""))
-        ev_away = safe_name(ev.get("away_team", ""))
-        if ev_home != home_name or ev_away != away_name:
+        ev_home = normalize_team_name(ev.get("home_team", ""))
+        ev_away = normalize_team_name(ev.get("away_team", ""))
+        if {ev_home, ev_away} != {home_name, away_name}:
             continue
+
+        reverse = (ev_home == away_name and ev_away == home_name)
+
         for bk in ev.get("bookmakers", []):
             for market in bk.get("markets", []):
                 if market.get("key") != "h2h":
                     continue
                 local = {"home": None, "draw": None, "away": None}
                 for o in market.get("outcomes", []):
-                    nm = safe_name(o.get("name", ""))
+                    nm = normalize_team_name(o.get("name", ""))
                     price = o.get("price")
-                    if nm == home_name:
-                        local["home"] = price
-                    elif nm == away_name:
-                        local["away"] = price
-                    elif nm in {"draw", "tie", "match nul", "nul"}:
+                    if not reverse:
+                        if nm == home_name:
+                            local["home"] = price
+                        elif nm == away_name:
+                            local["away"] = price
+                    else:
+                        if nm == away_name:
+                            local["home"] = price
+                        elif nm == home_name:
+                            local["away"] = price
+                    if nm in {"draw", "tie", "match nul", "nul"}:
                         local["draw"] = price
                 for key in ["home", "draw", "away"]:
                     if local[key] and (best[key] is None or local[key] > best[key]):
@@ -314,6 +365,7 @@ def get_market_odds_for_match(match):
         break
     return best
 
+
 def normalize_probs_from_odds(home_odds, draw_odds, away_odds):
     probs = [implied_prob(home_odds), implied_prob(draw_odds), implied_prob(away_odds)]
     if any(p is None for p in probs):
@@ -321,12 +373,15 @@ def normalize_probs_from_odds(home_odds, draw_odds, away_odds):
     s = sum(probs)
     return probs[0], probs[1], probs[2], s
 
+
 def fractional_kelly_stake(bankroll, p, odds, fraction=0.25):
     k = kelly_fraction(p, odds)
     return round(bankroll * k * fraction, 2)
 
+
 def build_rows(matches):
     rows = []
+    odds_found = 0
     for m in matches:
         try:
             est = estimate_probs(m)
@@ -334,6 +389,8 @@ def build_rows(matches):
             home_odds = odds.get("home")
             draw_odds = odds.get("draw")
             away_odds = odds.get("away")
+            if home_odds and draw_odds and away_odds:
+                odds_found += 1
             ip_home, ip_draw, ip_away, overround = normalize_probs_from_odds(home_odds, draw_odds, away_odds)
             fair_market_home = (ip_home / overround) if ip_home and overround else None
             fair_market_draw = (ip_draw / overround) if ip_draw and overround else None
@@ -356,13 +413,12 @@ def build_rows(matches):
                 if od and ev is not None and edge is not None:
                     if ev * 100 >= MIN_EV_PCT and edge >= MIN_EDGE_PCT:
                         selections.append((side, p, od, ev, edge))
-            best_side = None
-            if selections:
-                best_side = max(selections, key=lambda x: (x[3], x[4]))
+            best_side = max(selections, key=lambda x: (x[3], x[4])) if selections else None
 
             row = {
                 "utcDate": m["utcDate"],
                 "competition": m.get("competition", {}).get("code", m.get("_competitionCode", "")),
+                "status": m.get("status"),
                 "homeTeam": m["homeTeam"]["name"],
                 "awayTeam": m["awayTeam"]["name"],
                 "home_xg": round(est["home_xg"], 3),
@@ -410,11 +466,14 @@ def build_rows(matches):
             rows.append({
                 "utcDate": m.get("utcDate"),
                 "competition": m.get("competition", {}).get("code", m.get("_competitionCode", "")),
+                "status": m.get("status"),
                 "homeTeam": m.get("homeTeam", {}).get("name"),
                 "awayTeam": m.get("awayTeam", {}).get("name"),
                 "error": str(e),
             })
+    print(f"[INFO] Matchs avec cotes trouvées: {odds_found}/{len(matches)}")
     return rows
+
 
 def send_discord(text):
     if not DISCORD_WEBHOOK_URL:
@@ -426,16 +485,13 @@ def send_discord(text):
     chunks = [text[i:i+1900] for i in range(0, len(text), 1900)]
     for idx, c in enumerate(chunks[:4], start=1):
         try:
-            r = requests.post(
-                DISCORD_WEBHOOK_URL,
-                json={"content": c},
-                timeout=20
-            )
+            r = requests.post(DISCORD_WEBHOOK_URL, json={"content": c}, timeout=20)
             print(f"Discord chunk {idx}: HTTP {r.status_code}")
             if r.status_code >= 400:
                 print(r.text)
         except Exception as e:
             print(f"Erreur Discord chunk {idx}: {e}")
+
 
 def send_telegram(text):
     if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID or not text.strip():
@@ -445,27 +501,58 @@ def send_telegram(text):
     for c in chunks[:4]:
         requests.post(url, data={"chat_id": TELEGRAM_CHAT_ID, "text": c}, timeout=20)
 
+
 def render_message(df):
+    if df.empty:
+        return "Aucun match récupéré sur la fenêtre choisie."
+
     picks = df[df["recommended_side"].notna()].copy() if "recommended_side" in df.columns else pd.DataFrame()
-    if picks.empty:
-        return "Aucun value bet trouvé avec les seuils actuels."
-    picks = picks.sort_values(["recommended_ev_pct", "recommended_edge_pct"], ascending=False).head(10)
-    lines = [
-        f"Value bets détectés | bankroll={BANKROLL:.2f} | edge>={MIN_EDGE_PCT:.1f} pts | EV>={MIN_EV_PCT:.1f}%"
-    ]
-    for r in picks.itertuples():
+    if not picks.empty:
+        picks = picks.sort_values(["recommended_ev_pct", "recommended_edge_pct"], ascending=False).head(10)
+        lines = [
+            f"Value bets détectés | bankroll={BANKROLL:.2f} | edge>={MIN_EDGE_PCT:.1f} pts | EV>={MIN_EV_PCT:.1f}%"
+        ]
+        for r in picks.itertuples():
+            dt = r.utcDate.replace("T", " ").replace("Z", " UTC") if isinstance(r.utcDate, str) else str(r.utcDate)
+            lines.append(
+                f"- {r.homeTeam} vs {r.awayTeam} [{r.competition}] | {dt} | bet={r.recommended_side} | cote={r.recommended_odds} | proba={r.recommended_prob_pct}% | EV={r.recommended_ev_pct}% | edge={r.recommended_edge_pct} pts | miseQK={r.recommended_stake_qk}"
+            )
+        return "\n".join(lines)
+
+    with_odds = df[df["odds_home"].notna()].copy() if "odds_home" in df.columns else pd.DataFrame()
+    if not with_odds.empty:
+        sortable = with_odds.copy()
+        sortable["max_ev"] = sortable[["ev_home_pct", "ev_draw_pct", "ev_away_pct"]].max(axis=1, skipna=True)
+        sortable = sortable.sort_values(["max_ev"], ascending=False).head(10)
+        lines = [
+            f"Aucun value bet validé | top matchs avec cotes trouvées | edge>={MIN_EDGE_PCT:.1f} pts | EV>={MIN_EV_PCT:.1f}%"
+        ]
+        for r in sortable.itertuples():
+            dt = r.utcDate.replace("T", " ").replace("Z", " UTC") if isinstance(r.utcDate, str) else str(r.utcDate)
+            lines.append(
+                f"- {r.homeTeam} vs {r.awayTeam} [{r.competition}] | {dt} | EV max={getattr(r, 'max_ev', None)} | cotes H/D/A={r.odds_home}/{r.odds_draw}/{r.odds_away}"
+            )
+        return "\n".join(lines)
+
+    preview = df.head(10)
+    lines = ["Aucune cote trouvée. Matchs récupérés :"]
+    for r in preview.itertuples():
         dt = r.utcDate.replace("T", " ").replace("Z", " UTC") if isinstance(r.utcDate, str) else str(r.utcDate)
-        lines.append(
-            f"- {r.homeTeam} vs {r.awayTeam} [{r.competition}] | {dt} | bet={r.recommended_side} | cote={r.recommended_odds} | proba={r.recommended_prob_pct}% | EV={r.recommended_ev_pct}% | edge={r.recommended_edge_pct} pts | miseQK={r.recommended_stake_qk}"
-        )
+        lines.append(f"- {r.homeTeam} vs {r.awayTeam} [{r.competition}] | {r.status} | {dt}")
     return "\n".join(lines)
+
 
 def main():
     if not FD_TOKEN:
         raise RuntimeError("FOOTBALL_DATA_API_TOKEN manquant")
 
     matches = get_upcoming_matches()
-    print(f"{len(matches)} matchs récupérés")
+    print(f"[INFO] {len(matches)} matchs récupérés")
+    for m in matches[:10]:
+        print(
+            f"[MATCH] {m.get('utcDate')} | {m.get('competition', {}).get('code', m.get('_competitionCode'))} | "
+            f"{m.get('status')} | {m.get('homeTeam', {}).get('name')} vs {m.get('awayTeam', {}).get('name')}"
+        )
 
     rows = build_rows(matches)
     df = pd.DataFrame(rows)
@@ -489,6 +576,7 @@ def main():
 
     send_discord(message)
     send_telegram(message)
+
 
 if __name__ == "__main__":
     main()
