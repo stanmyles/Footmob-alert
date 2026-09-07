@@ -19,16 +19,16 @@ DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "")
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
 
-DAYS_AHEAD = int(float(os.getenv("DAYS_AHEAD", "5")))
+DAYS_AHEAD = int(float(os.getenv("DAYS_AHEAD", "7")))
 BANKROLL = float(os.getenv("BANKROLL", "1000"))
 MIN_EDGE_PCT = float(os.getenv("MIN_EDGE_PCT", "2"))
 MIN_EV_PCT = float(os.getenv("MIN_EV_PCT", "1"))
 H2H_YEARS = int(float(os.getenv("H2H_YEARS", "2")))
-MAX_MATCHES = int(float(os.getenv("MAX_MATCHES", "100")))
+MAX_MATCHES = int(float(os.getenv("MAX_MATCHES", "150")))
 
 FD_HEADERS = {"X-Auth-Token": FD_TOKEN} if FD_TOKEN else {}
 SESSION = requests.Session()
-SESSION.headers.update({"User-Agent": "github-actions-value-bets/1.1"})
+SESSION.headers.update({"User-Agent": "github-actions-value-bets/1.2"})
 
 COMPETITIONS = [
     "PL", "PD", "BL1", "SA", "FL1", "ELC", "PPL", "DED", "BSA", "CL", "WC"
@@ -67,7 +67,6 @@ ALIASES = {
     "sporting clube de portugal": "sporting cp",
 }
 
-
 def request_json(url, headers=None, params=None, timeout=30, retries=3, sleep_s=1.0):
     last_err = None
     for i in range(retries):
@@ -83,10 +82,8 @@ def request_json(url, headers=None, params=None, timeout=30, retries=3, sleep_s=
             time.sleep(sleep_s * (i + 1))
     raise last_err
 
-
 def poisson_pmf(k, lam):
     return math.exp(-lam) * (lam ** k) / math.factorial(k)
-
 
 def match_outcome_probs(home_xg, away_xg, max_goals=8):
     p_home = p_draw = p_away = 0.0
@@ -104,12 +101,10 @@ def match_outcome_probs(home_xg, away_xg, max_goals=8):
     total = p_home + p_draw + p_away
     return p_home / total, p_draw / total, p_away / total
 
-
 def implied_prob(odds):
     if odds and odds > 1:
         return 1.0 / odds
     return None
-
 
 def kelly_fraction(p, odds):
     b = odds - 1.0
@@ -119,13 +114,12 @@ def kelly_fraction(p, odds):
     f = ((b * p) - q) / b
     return max(0.0, f)
 
-
 def normalize_team_name(s):
     s = (s or "").strip().lower()
-    cleaned = s.replace("fc", "").replace("cf", "").replace("club", "")
-    cleaned = " ".join(cleaned.split())
-    return ALIASES.get(cleaned, cleaned)
-
+    for token in [" fc", " cf", " club", " calcio", " futebol", " football club"]:
+        s = s.replace(token, "")
+    s = " ".join(s.split())
+    return ALIASES.get(s, s)
 
 def get_upcoming_matches():
     now = datetime.now(timezone.utc)
@@ -154,7 +148,6 @@ def get_upcoming_matches():
     all_matches.sort(key=lambda x: x.get("utcDate", ""))
     return all_matches[:MAX_MATCHES]
 
-
 def get_team_recent_matches(team_id, date_to, limit=8):
     try:
         data = request_json(
@@ -166,7 +159,6 @@ def get_team_recent_matches(team_id, date_to, limit=8):
     except Exception as e:
         print(f"[WARN] derniers matchs équipe {team_id}: {e}")
         return []
-
 
 def summarize_recent_form(team_id, matches):
     pts = gf = ga = 0
@@ -211,7 +203,6 @@ def summarize_recent_form(team_id, matches):
         "weighted_gd": weighted_gd / count,
     }
 
-
 def get_h2h(match_id):
     date_from = (datetime.now(timezone.utc) - timedelta(days=365 * H2H_YEARS)).date().isoformat()
     try:
@@ -225,11 +216,11 @@ def get_h2h(match_id):
         print(f"[WARN] H2H match {match_id}: {e}")
         return {}
 
-
 def extract_h2h_advantage(h2h_data, home_name, away_name):
     matches = h2h_data.get("matches", []) if isinstance(h2h_data, dict) else []
     home_wins = away_wins = draws = 0
     years = {}
+    recent_scores = []
     for m in matches:
         score = m.get("score", {}).get("fullTime", {})
         if score.get("home") is None:
@@ -240,6 +231,12 @@ def extract_h2h_advantage(h2h_data, home_name, away_name):
         ag = score.get("away", 0)
         year = (m.get("utcDate", "")[:4] or "unknown")
         years.setdefault(year, {"home_ref_wins": 0, "away_ref_wins": 0, "draws": 0})
+        recent_scores.append({
+            "utcDate": m.get("utcDate"),
+            "home": hn,
+            "away": an,
+            "score": f"{hg}-{ag}"
+        })
         if hg == ag:
             draws += 1
             years[year]["draws"] += 1
@@ -260,8 +257,8 @@ def extract_h2h_advantage(h2h_data, home_name, away_name):
         "h2h_draws": draws,
         "h2h_bias": bias,
         "h2h_by_year": years,
+        "recent_h2h_scores": recent_scores[:5],
     }
-
 
 def estimate_probs(match):
     utc_date = match["utcDate"]
@@ -302,7 +299,6 @@ def estimate_probs(match):
         **{f"away_{k}": v for k, v in away_form.items()},
         **h2h_summary,
     }
-
 
 def get_market_odds_for_match(match):
     if not ODDS_API_KEY:
@@ -365,7 +361,6 @@ def get_market_odds_for_match(match):
         break
     return best
 
-
 def normalize_probs_from_odds(home_odds, draw_odds, away_odds):
     probs = [implied_prob(home_odds), implied_prob(draw_odds), implied_prob(away_odds)]
     if any(p is None for p in probs):
@@ -373,11 +368,9 @@ def normalize_probs_from_odds(home_odds, draw_odds, away_odds):
     s = sum(probs)
     return probs[0], probs[1], probs[2], s
 
-
 def fractional_kelly_stake(bankroll, p, odds, fraction=0.25):
     k = kelly_fraction(p, odds)
     return round(bankroll * k * fraction, 2)
-
 
 def build_rows(matches):
     rows = []
@@ -460,6 +453,7 @@ def build_rows(matches):
                 "recommended_edge_pct": round(best_side[4], 2) if best_side else None,
                 "recommended_stake_qk": fractional_kelly_stake(BANKROLL, best_side[1], best_side[2], 0.25) if best_side else 0,
                 "h2h_by_year": json.dumps(est["h2h_by_year"], ensure_ascii=False),
+                "recent_h2h_scores": json.dumps(est["recent_h2h_scores"], ensure_ascii=False),
             }
             rows.append(row)
         except Exception as e:
@@ -473,7 +467,6 @@ def build_rows(matches):
             })
     print(f"[INFO] Matchs avec cotes trouvées: {odds_found}/{len(matches)}")
     return rows
-
 
 def send_discord(text):
     if not DISCORD_WEBHOOK_URL:
@@ -492,7 +485,6 @@ def send_discord(text):
         except Exception as e:
             print(f"Erreur Discord chunk {idx}: {e}")
 
-
 def send_telegram(text):
     if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID or not text.strip():
         return
@@ -501,46 +493,50 @@ def send_telegram(text):
     for c in chunks[:4]:
         requests.post(url, data={"chat_id": TELEGRAM_CHAT_ID, "text": c}, timeout=20)
 
-
 def render_message(df):
     if df.empty:
         return "Aucun match récupéré sur la fenêtre choisie."
 
-    picks = df[df["recommended_side"].notna()].copy() if "recommended_side" in df.columns else pd.DataFrame()
-    if not picks.empty:
-        picks = picks.sort_values(["recommended_ev_pct", "recommended_edge_pct"], ascending=False).head(10)
-        lines = [
-            f"Value bets détectés | bankroll={BANKROLL:.2f} | edge>={MIN_EDGE_PCT:.1f} pts | EV>={MIN_EV_PCT:.1f}%"
-        ]
-        for r in picks.itertuples():
-            dt = r.utcDate.replace("T", " ").replace("Z", " UTC") if isinstance(r.utcDate, str) else str(r.utcDate)
-            lines.append(
-                f"- {r.homeTeam} vs {r.awayTeam} [{r.competition}] | {dt} | bet={r.recommended_side} | cote={r.recommended_odds} | proba={r.recommended_prob_pct}% | EV={r.recommended_ev_pct}% | edge={r.recommended_edge_pct} pts | miseQK={r.recommended_stake_qk}"
-            )
-        return "\n".join(lines)
-
-    with_odds = df[df["odds_home"].notna()].copy() if "odds_home" in df.columns else pd.DataFrame()
-    if not with_odds.empty:
-        sortable = with_odds.copy()
-        sortable["max_ev"] = sortable[["ev_home_pct", "ev_draw_pct", "ev_away_pct"]].max(axis=1, skipna=True)
-        sortable = sortable.sort_values(["max_ev"], ascending=False).head(10)
-        lines = [
-            f"Aucun value bet validé | top matchs avec cotes trouvées | edge>={MIN_EDGE_PCT:.1f} pts | EV>={MIN_EV_PCT:.1f}%"
-        ]
-        for r in sortable.itertuples():
-            dt = r.utcDate.replace("T", " ").replace("Z", " UTC") if isinstance(r.utcDate, str) else str(r.utcDate)
-            lines.append(
-                f"- {r.homeTeam} vs {r.awayTeam} [{r.competition}] | {dt} | EV max={getattr(r, 'max_ev', None)} | cotes H/D/A={r.odds_home}/{r.odds_draw}/{r.odds_away}"
-            )
-        return "\n".join(lines)
+    lines = ["📊 *Confrontations directes à venir*"]
 
     preview = df.head(10)
-    lines = ["Aucune cote trouvée. Matchs récupérés :"]
     for r in preview.itertuples():
-        dt = r.utcDate.replace("T", " ").replace("Z", " UTC") if isinstance(r.utcDate, str) else str(r.utcDate)
-        lines.append(f"- {r.homeTeam} vs {r.awayTeam} [{r.competition}] | {r.status} | {dt}")
-    return "\n".join(lines)
+        h2h_total = getattr(r, "h2h_matches", 0) or 0
+        home_wins = getattr(r, "h2h_home_wins", 0) or 0
+        away_wins = getattr(r, "h2h_away_wins", 0) or 0
+        draws = getattr(r, "h2h_draws", 0) or 0
 
+        if h2h_total == 0:
+            trend = "⚪ Pas d'historique exploitable"
+        elif abs(home_wins - away_wins) >= 4:
+            trend = "🔥 Domination nette"
+        elif abs(home_wins - away_wins) >= 2:
+            trend = "📈 Léger avantage"
+        else:
+            trend = "⚖️ Confrontation équilibrée"
+
+        lines.append("")
+        lines.append(f"⚽ *{r.homeTeam} vs {r.awayTeam}*")
+        lines.append(f"✅ {r.homeTeam} : {home_wins} victoire(s)")
+        lines.append(f"🤝 Nuls : {draws}")
+        lines.append(f"❌ {r.awayTeam} : {away_wins} victoire(s)")
+        lines.append(f"📅 {h2h_total} confrontation(s) analysée(s)")
+        lines.append(f"{trend}")
+
+    with_odds = df[df['odds_home'].notna()].copy() if 'odds_home' in df.columns else pd.DataFrame()
+    if not with_odds.empty:
+        lines.append("")
+        lines.append("💸 *Matchs avec cotes trouvées*")
+        best = with_odds.head(5)
+        for r in best.itertuples():
+            lines.append(
+                f"• {r.homeTeam} vs {r.awayTeam} | H/D/A = {r.odds_home}/{r.odds_draw}/{r.odds_away}"
+            )
+    else:
+        lines.append("")
+        lines.append("⚠️ Aucune cote trouvée pour les matchs listés.")
+
+    return "\n".join(lines)
 
 def main():
     if not FD_TOKEN:
@@ -576,7 +572,6 @@ def main():
 
     send_discord(message)
     send_telegram(message)
-
 
 if __name__ == "__main__":
     main()
