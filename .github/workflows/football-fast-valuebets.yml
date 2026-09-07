@@ -4,26 +4,41 @@ on:
   schedule:
     - cron: "17 6 * * *"
     - cron: "17 12 * * *"
+
   workflow_dispatch:
     inputs:
       days_ahead:
         description: "Nombre de jours à analyser"
         required: false
         default: "5"
+
       max_matches:
-        description: "Nombre max de matchs à analyser"
+        description: "Nombre maximum de matchs à analyser"
         required: false
         default: "15"
+
       h2h_limit:
-        description: "Nombre de H2H à analyser"
+        description: "Nombre maximum de confrontations H2H à analyser"
         required: false
         default: "10"
-      min_h2h_wins:
-        description: "Victoires H2H minimales pour équipe dominante"
+
+      min_h2h_matches:
+        description: "Nombre minimum de confrontations H2H exploitables"
         required: false
-        default: "7"
+        default: "5"
+
+      min_h2h_wins:
+        description: "Nombre minimum de victoires H2H de l'équipe dominante"
+        required: false
+        default: "4"
+
+      min_h2h_gap:
+        description: "Écart minimal de victoires H2H entre les deux équipes"
+        required: false
+        default: "2"
+
       min_ev_pct:
-        description: "EV minimale (%)"
+        description: "EV minimale pour afficher une value bet (%)"
         required: false
         default: "2"
 
@@ -43,61 +58,64 @@ jobs:
       DAYS_AHEAD: ${{ github.event.inputs.days_ahead || '5' }}
       MAX_MATCHES: ${{ github.event.inputs.max_matches || '15' }}
       H2H_LIMIT: ${{ github.event.inputs.h2h_limit || '10' }}
-      MIN_H2H_WINS: ${{ github.event.inputs.min_h2h_wins || '7' }}
+      MIN_H2H_MATCHES: ${{ github.event.inputs.min_h2h_matches || '5' }}
+      MIN_H2H_WINS: ${{ github.event.inputs.min_h2h_wins || '4' }}
+      MIN_H2H_GAP: ${{ github.event.inputs.min_h2h_gap || '2' }}
       MIN_EV_PCT: ${{ github.event.inputs.min_ev_pct || '2' }}
 
       PYTHONUNBUFFERED: "1"
       TZ: Europe/Paris
 
     steps:
-      - name: Checkout repository
+      - name: Récupérer le dépôt
         uses: actions/checkout@v4
 
-      - name: Setup Python
+      - name: Installer Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: "pip"
 
-      - name: Install dependencies
+      - name: Installer les dépendances
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Validate secrets
+      - name: Vérifier les secrets
         run: |
           if [ -z "${FOOTBALL_DATA_API_TOKEN}" ]; then
-            echo "ERREUR: FOOTBALL_DATA_API_TOKEN manquant"
+            echo "ERREUR : FOOTBALL_DATA_API_TOKEN manquant"
             exit 1
           fi
 
-          echo "FOOTBALL_DATA_API_TOKEN: OK"
+          echo "FOOTBALL_DATA_API_TOKEN : OK"
 
           if [ -z "${ODDS_API_KEY}" ]; then
-            echo "WARNING: ODDS_API_KEY absent - pas de value bets"
+            echo "ATTENTION : ODDS_API_KEY absent, aucune value bet ne sera calculée."
           else
-            echo "ODDS_API_KEY: OK"
+            echo "ODDS_API_KEY : OK"
           fi
 
           if [ -z "${DISCORD_WEBHOOK_URL}" ]; then
-            echo "WARNING: DISCORD_WEBHOOK_URL absent"
+            echo "ATTENTION : DISCORD_WEBHOOK_URL absent, aucun message Discord ne sera envoyé."
           else
-            echo "DISCORD_WEBHOOK_URL: OK"
+            echo "DISCORD_WEBHOOK_URL : OK"
           fi
 
-      - name: Run fast football analysis
+      - name: Lancer l'analyse
         run: |
           python scripts/football_fast_valuebets.py
 
-      - name: Show outputs
+      - name: Afficher les fichiers créés
         if: always()
         run: |
-          echo "===== output/ ====="
+          echo "===== Dossier output ====="
           ls -la output || true
-          echo "===== notification_message.txt ====="
+
+          echo "===== Message Discord ====="
           cat output/notification_message.txt || true
 
-      - name: Upload artifacts
+      - name: Sauvegarder les résultats
         if: always()
         uses: actions/upload-artifact@v4
         with:
