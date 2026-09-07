@@ -1,67 +1,67 @@
-name: Football Fast H2H + Value Bets
+name: Football H2H Dominance Bot
 
 on:
+  # Heures en UTC :
+  # 06:17 UTC = 08:17 en France pendant l'heure d'été
+  # 12:17 UTC = 14:17 en France pendant l'heure d'été
   schedule:
     - cron: "17 6 * * *"
     - cron: "17 12 * * *"
 
+  # Permet un lancement manuel depuis l'onglet Actions.
   workflow_dispatch:
     inputs:
       days_ahead:
         description: "Nombre de jours à analyser"
         required: false
         default: "5"
+        type: number
 
       max_matches:
         description: "Nombre maximum de matchs à analyser"
         required: false
         default: "15"
+        type: number
 
       h2h_limit:
-        description: "Nombre maximum de confrontations H2H à analyser"
+        description: "Nombre maximum de confrontations H2H récupérées"
         required: false
         default: "10"
+        type: number
 
-      min_h2h_matches:
-        description: "Nombre minimum de confrontations H2H exploitables"
+      h2h_years_back:
+        description: "Ancienneté maximale des H2H en années"
         required: false
-        default: "5"
-
-      min_h2h_wins:
-        description: "Nombre minimum de victoires H2H de l'équipe dominante"
-        required: false
-        default: "4"
-
-      min_h2h_gap:
-        description: "Écart minimal de victoires H2H entre les deux équipes"
-        required: false
-        default: "2"
+        default: "3"
+        type: number
 
       min_ev_pct:
-        description: "EV minimale pour afficher une value bet (%)"
+        description: "EV minimale d'une value bet (%)"
         required: false
         default: "2"
+        type: number
 
 permissions:
   contents: read
 
 jobs:
   run-bot:
+    name: Analyse H2H et Discord
     runs-on: ubuntu-latest
     timeout-minutes: 25
 
     env:
+      # Secrets GitHub : Settings > Secrets and variables > Actions
       FOOTBALL_DATA_API_TOKEN: ${{ secrets.FOOTBALL_DATA_API_TOKEN }}
       ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
-      DAYS_AHEAD: ${{ github.event.inputs.days_ahead || '5' }}
-      MAX_MATCHES: ${{ github.event.inputs.max_matches || '15' }}
-      H2H_LIMIT: ${{ github.event.inputs.h2h_limit || '10' }}
-      MIN_H2H_MATCHES: ${{ github.event.inputs.min_h2h_matches || '5' }}
-      MIN_H2H_WINS: ${{ github.event.inputs.min_h2h_wins || '4' }}
-      MIN_H2H_GAP: ${{ github.event.inputs.min_h2h_gap || '2' }}
-      MIN_EV_PCT: ${{ github.event.inputs.min_ev_pct || '2' }}
+      # Valeurs par défaut utilisées lors du lancement automatique schedule.
+      DAYS_AHEAD: ${{ inputs.days_ahead || '5' }}
+      MAX_MATCHES: ${{ inputs.max_matches || '15' }}
+      H2H_LIMIT: ${{ inputs.h2h_limit || '10' }}
+      H2H_YEARS_BACK: ${{ inputs.h2h_years_back || '3' }}
+      MIN_EV_PCT: ${{ inputs.min_ev_pct || '2' }}
 
       PYTHONUNBUFFERED: "1"
       TZ: Europe/Paris
@@ -81,44 +81,56 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Vérifier les secrets
+      - name: Vérifier la configuration
         run: |
+          echo "===== PARAMÈTRES ====="
+          echo "DAYS_AHEAD=${DAYS_AHEAD}"
+          echo "MAX_MATCHES=${MAX_MATCHES}"
+          echo "H2H_LIMIT=${H2H_LIMIT}"
+          echo "H2H_YEARS_BACK=${H2H_YEARS_BACK}"
+          echo "MIN_EV_PCT=${MIN_EV_PCT}"
+
+          echo "===== SECRETS ====="
+
           if [ -z "${FOOTBALL_DATA_API_TOKEN}" ]; then
-            echo "ERREUR : FOOTBALL_DATA_API_TOKEN manquant"
+            echo "ERREUR : FOOTBALL_DATA_API_TOKEN manquant."
             exit 1
           fi
 
           echo "FOOTBALL_DATA_API_TOKEN : OK"
 
           if [ -z "${ODDS_API_KEY}" ]; then
-            echo "ATTENTION : ODDS_API_KEY absent, aucune value bet ne sera calculée."
+            echo "INFO : ODDS_API_KEY absent."
+            echo "Le bot continuera en mode H2H uniquement, sans cotes ni value bets."
           else
             echo "ODDS_API_KEY : OK"
           fi
 
           if [ -z "${DISCORD_WEBHOOK_URL}" ]; then
-            echo "ATTENTION : DISCORD_WEBHOOK_URL absent, aucun message Discord ne sera envoyé."
+            echo "ATTENTION : DISCORD_WEBHOOK_URL absent."
+            echo "Les résultats seront disponibles seulement dans les artifacts GitHub."
           else
             echo "DISCORD_WEBHOOK_URL : OK"
           fi
 
-      - name: Lancer l'analyse
+      - name: Lancer l'analyse H2H
         run: |
           python scripts/football_fast_valuebets.py
 
-      - name: Afficher les fichiers créés
+      - name: Afficher le résultat Discord
         if: always()
         run: |
-          echo "===== Dossier output ====="
+          echo "===== DOSSIER OUTPUT ====="
           ls -la output || true
 
-          echo "===== Message Discord ====="
+          echo "===== MESSAGE DISCORD ====="
           cat output/notification_message.txt || true
 
       - name: Sauvegarder les résultats
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: football-fast-valuebets-output
+          name: football-h2h-results
           path: output/
           if-no-files-found: warn
+          retention-days: 14
