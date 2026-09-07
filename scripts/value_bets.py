@@ -9,6 +9,7 @@ import pandas as pd
 import requests
 
 BASE_FD = "https://api.football-data.org/v4"
+ODDS_BASE = "https://api.theoddsapi.com"
 
 OUTPUT_DIR = Path("output")
 OUTPUT_DIR.mkdir(exist_ok=True)
@@ -25,10 +26,11 @@ MIN_EV_PCT = float(os.getenv("MIN_EV_PCT", "1"))
 
 FD_HEADERS = {"X-Auth-Token": FD_TOKEN} if FD_TOKEN else {}
 SESSION = requests.Session()
-SESSION.headers.update({"User-Agent": "github-actions-football-analysis/4.0"})
+SESSION.headers.update({"User-Agent": "github-actions-football-analysis/5.0"})
 
 FD_MIN_INTERVAL = 6.5
 _last_fd_call_ts = 0.0
+AVAILABLE_ODDS_SPORTS = set()
 
 COMPETITIONS = [
     "PL", "PD", "BL1", "SA", "FL1",
@@ -121,6 +123,34 @@ def normalize_team_name(name):
     return ALIASES.get(name, name)
 
 
+def load_available_odds_sports():
+    global AVAILABLE_ODDS_SPORTS
+
+    if not ODDS_API_KEY:
+        print("[WARN] ODDS_API_KEY absent, aucun sport odds chargé.")
+        AVAILABLE_ODDS_SPORTS = set()
+        return
+
+    try:
+        sports = request_json(
+            f"{ODDS_BASE}/sports/",
+            headers={"x-api-key": ODDS_API_KEY},
+            params={}
+        )
+
+        AVAILABLE_ODDS_SPORTS = {
+            item.get("key")
+            for item in sports
+            if item.get("key")
+        }
+
+        print(f"[INFO] Sports odds disponibles: {len(AVAILABLE_ODDS_SPORTS)}")
+
+    except Exception as error:
+        print(f"[WARN] Impossible de charger /sports/: {error}")
+        AVAILABLE_ODDS_SPORTS = set()
+
+
 def poisson_pmf(goals, expected_goals):
     return math.exp(-expected_goals) * (expected_goals ** goals) / math.factorial(goals)
 
@@ -172,7 +202,7 @@ def get_upcoming_matches():
             print(f"[INFO] {competition}: {retained} match(s) retenu(s)")
 
         except Exception as error:
-            print(f"[WARN] Compétition {competition} ignorée : {error}")
+            print(f"[WARN] Compétition {competition} ignorée: {error}")
 
     matches.sort(key=lambda item: item.get("utcDate", ""))
     return matches[:MAX_MATCHES]
@@ -305,11 +335,8 @@ def estimate_probabilities(match):
     away = match["awayTeam"]
     fixture_date = match["utcDate"]
 
-    home_form_matches = get_team_recent_matches(home["id"], fixture_date)
-    away_form_matches = get_team_recent_matches(away["id"], fixture_date)
-
-    home_form = summarize_form(home["id"], home_form_matches)
-    away_form = summarize_form(away["id"], away_form_matches)
+    home_form = summarize_form(home["id"], get_team_recent_matches(home["id"], fixture_date))
+    away_form = summarize_form(away["id"], get_team_recent_matches(away["id"], fixture_date))
     h2h_summary = summarize_h2h(get_h2h(match["id"]), home["name"], away["name"])
 
     home_xg = 1.35 + 0.22 * (home_form["ppg"] - 1.30) + 0.18 * (home_form["gfpg"] - away_form["gapg"])
@@ -337,21 +364,6 @@ def estimate_probabilities(match):
     }
 
 
-def odds_request_variants(sport_key):
-    return [
-        {
-            "url": f"https://api.the-odds-api.com/v4/sports/{sport_key}/odds",
-            "headers": {"x-api-key": ODDS_API_KEY},
-            "params": {"regions": "eu", "markets": "h2h", "oddsFormat": "decimal"}
-        },
-        {
-            "url": "https://api.theoddsapi.com/odds",
-            "headers": {"x-api-key": ODDS_API_KEY},
-            "params": {"sport_key": sport_key, "regions": "eu", "markets": "h2h", "oddsFormat": "decimal"}
-        }
-    ]
-
-
 def get_odds(match):
     if not ODDS_API_KEY:
         return {}
@@ -362,24 +374,26 @@ def get_odds(match):
     if not sport_key:
         return {}
 
-    events = None
-    last_error = None
+    if AVAILABLE_ODDS_SPORTS and sport_key not in AVAILABLE_ODDS_SPORTS:
+        print(f"[INFO] Sport odds non disponible pour ce plan: {sport_key}")
+        return {}
 
-    for variant in odds_request_variants(sport_key):
-        try:
-            events = request_json(
-                variant["url"],
-                headers=variant["headers"],
-                params=variant["params"]
-            )
-            if isinstance(events, list):
-                break
-        except Exception as error:
-            last_error = error
-            continue
+    try:
+        events = request_json(
+            f"{ODDS_BASE}/odds/",
+            headers={"x-api-key": ODDS_API_KEY},
+            params={
+                "sport_key": sport_key,
+                "regions": "eu",
+                "markets": "h2h",
+                "oddsFormat": "decimal"
+            }
+        )
+    except Exception as error:
+        print(f"[WARN] Cotes indisponibles pour {sport_key}: {error}")
+        return {}
 
     if not isinstance(events, list):
-        print(f"[WARN] Cotes indisponibles pour {sport_key}: {last_error}")
         return {}
 
     wanted_home = normalize_team_name(match["homeTeam"]["name"])
@@ -590,6 +604,8 @@ def send_discord(message):
 def main():
     if not FD_TOKEN:
         raise RuntimeError("FOOTBALL_DATA_API_TOKEN manquant.")
+
+    load_available_odds_sports()
 
     matches = get_upcoming_matches()
     print(f"[INFO] {len(matches)} matchs récupérés")
