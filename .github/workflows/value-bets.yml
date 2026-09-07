@@ -1,15 +1,18 @@
-name: Football H2H & Value Bets
+name: Football Value Bets
 
 on:
   schedule:
     - cron: "0 6,12,18 * * *"
-
   workflow_dispatch:
     inputs:
       days_ahead:
         description: "Nombre de jours à analyser"
         required: false
-        default: "7"
+        default: "3"
+      max_matches:
+        description: "Nombre maximal de matchs analysés"
+        required: false
+        default: "25"
       bankroll:
         description: "Bankroll de référence"
         required: false
@@ -22,10 +25,6 @@ on:
         description: "EV minimum en pourcentage"
         required: false
         default: "1"
-      max_matches:
-        description: "Nombre maximal de matchs"
-        required: false
-        default: "150"
 
 permissions:
   contents: read
@@ -33,94 +32,71 @@ permissions:
 jobs:
   football-analysis:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
 
     env:
       FOOTBALL_DATA_API_TOKEN: ${{ secrets.FOOTBALL_DATA_API_TOKEN }}
       ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
-      DAYS_AHEAD: ${{ github.event.inputs.days_ahead || '7' }}
+      DAYS_AHEAD: ${{ github.event.inputs.days_ahead || '3' }}
+      MAX_MATCHES: ${{ github.event.inputs.max_matches || '25' }}
       BANKROLL: ${{ github.event.inputs.bankroll || '1000' }}
       MIN_EDGE_PCT: ${{ github.event.inputs.min_edge_pct || '2' }}
       MIN_EV_PCT: ${{ github.event.inputs.min_ev_pct || '1' }}
-      MAX_MATCHES: ${{ github.event.inputs.max_matches || '150' }}
 
       TZ: Europe/Paris
       PYTHONUNBUFFERED: "1"
 
     steps:
-      - name: Checkout du dépôt
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Installation de Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-          cache: pip
+          cache: "pip"
 
-      - name: Installation des dépendances
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Vérifier les fichiers
-        run: |
-          echo "Dossier courant :"
-          pwd
-          echo "Fichiers du dépôt :"
-          find . -maxdepth 3 -type f | sort
-
-      - name: Vérifier les secrets obligatoires
+      - name: Validate secrets
         run: |
           if [ -z "${FOOTBALL_DATA_API_TOKEN}" ]; then
-            echo "ERREUR : FOOTBALL_DATA_API_TOKEN est absent."
+            echo "ERREUR: FOOTBALL_DATA_API_TOKEN manquant"
             exit 1
           fi
 
-          echo "FOOTBALL_DATA_API_TOKEN : OK"
+          echo "FOOTBALL_DATA_API_TOKEN: OK"
 
           if [ -z "${DISCORD_WEBHOOK_URL}" ]; then
-            echo "ATTENTION : DISCORD_WEBHOOK_URL absent, aucun message Discord ne sera envoyé."
+            echo "WARNING: DISCORD_WEBHOOK_URL absent"
           else
-            echo "DISCORD_WEBHOOK_URL : OK"
+            echo "DISCORD_WEBHOOK_URL: OK"
           fi
 
           if [ -z "${ODDS_API_KEY}" ]; then
-            echo "ATTENTION : ODDS_API_KEY absent, les cotes et value bets ne seront pas disponibles."
+            echo "WARNING: ODDS_API_KEY absent, les cotes seront ignorées"
           else
-            echo "ODDS_API_KEY : OK"
+            echo "ODDS_API_KEY: OK"
           fi
 
-      - name: Tester Discord
-        if: ${{ env.DISCORD_WEBHOOK_URL != '' }}
-        run: |
-          STATUS=$(curl -s -o /tmp/discord-response.txt -w "%{http_code}" \
-            -H "Content-Type: application/json" \
-            -d '{"content":"✅ GitHub Actions connecté : analyse football lancée."}' \
-            "${DISCORD_WEBHOOK_URL}")
-
-          echo "Discord HTTP status: ${STATUS}"
-          cat /tmp/discord-response.txt || true
-
-          if [ "${STATUS}" -lt 200 ] || [ "${STATUS}" -ge 300 ]; then
-            echo "ATTENTION : Discord a refusé le webhook."
-          fi
-
-      - name: Lancer l'analyse football
+      - name: Run analysis
         run: |
           python scripts/value_bets.py
 
-      - name: Afficher le message généré
+      - name: Show outputs
         if: always()
         run: |
-          echo "===== Contenu output/ ====="
+          echo "===== output/ ====="
           ls -la output || true
-
-          echo "===== Message Discord généré ====="
+          echo "===== notification_message.txt ====="
           cat output/notification_message.txt || true
 
-      - name: Publier les résultats
+      - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
