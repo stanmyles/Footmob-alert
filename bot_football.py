@@ -1,5 +1,4 @@
 import os
-import math
 import time
 import json
 from pathlib import Path
@@ -22,23 +21,23 @@ DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "").strip()
 # Aujourd'hui + les 2 prochains jours.
 DAYS_AHEAD = int(os.getenv("DAYS_AHEAD", "2"))
 
-# 25 matchs maximum : compromis entre diversité et limite API.
+# Maximum de matchs qui recevront une analyse H2H.
 MAX_MATCHES = int(os.getenv("MAX_MATCHES", "25"))
 
-# Nombre maximal de confrontations directes récupérées.
+# Nombre maximum de confrontations H2H téléchargées par match.
 H2H_LIMIT = int(os.getenv("H2H_LIMIT", "10"))
 
-# Seuls les H2H de cette période sont retenus.
+# Seules les confrontations de cette période sont utilisées.
 H2H_YEARS_BACK = int(os.getenv("H2H_YEARS_BACK", "3"))
 
 FD_HEADERS = {"X-Auth-Token": FD_TOKEN} if FD_TOKEN else {}
 
 SESSION = requests.Session()
 SESSION.headers.update({
-    "User-Agent": "github-actions-football-h2h/1.0"
+    "User-Agent": "github-actions-football-h2h/2.0"
 })
 
-# Rythme prudent pour respecter les limites de football-data.org.
+# Pause prudente entre les appels à football-data.org.
 FD_MIN_INTERVAL = 6.5
 _last_fd_call_ts = 0.0
 
@@ -74,7 +73,6 @@ ALIASES = {
     "rb bragantino": "bragantino",
     "stade rennais fc 1901": "rennes",
     "stade rennais": "rennes",
-    "olympique de marseille": "marseille",
     "west bromwich albion fc": "west bromwich albion",
     "birmingham city fc": "birmingham city",
     "norwich city fc": "norwich city",
@@ -123,8 +121,7 @@ def request_json(url, headers=None, params=None, timeout=30, retries=3):
             if status == 429:
                 retry_after = (
                     error.response.headers.get("Retry-After")
-                    if error.response
-                    else None
+                    if error.response else None
                 )
 
                 delay = (
@@ -201,49 +198,6 @@ def parse_utc_datetime(utc_str):
     return datetime.fromisoformat(utc_str.replace("Z", "+00:00"))
 
 
-def poisson_pmf(goals, expected_goals):
-    return (
-        math.exp(-expected_goals)
-        * (expected_goals ** goals)
-        / math.factorial(goals)
-    )
-
-
-def match_outcome_probabilities(home_xg, away_xg, max_goals=8):
-    home_win = 0.0
-    draw = 0.0
-    away_win = 0.0
-
-    for home_goals in range(max_goals + 1):
-        probability_home_goals = poisson_pmf(home_goals, home_xg)
-
-        for away_goals in range(max_goals + 1):
-            probability_away_goals = poisson_pmf(
-                away_goals,
-                away_xg
-            )
-
-            probability = (
-                probability_home_goals
-                * probability_away_goals
-            )
-
-            if home_goals > away_goals:
-                home_win += probability
-            elif home_goals == away_goals:
-                draw += probability
-            else:
-                away_win += probability
-
-    total = home_win + draw + away_win
-
-    return (
-        home_win / total,
-        draw / total,
-        away_win / total
-    )
-
-
 def get_available_competitions():
     data = request_json(
         f"{BASE_FD}/competitions",
@@ -271,7 +225,7 @@ def get_upcoming_matches(competition_codes):
 
     date_from = now.date().isoformat()
 
-    # Aujourd'hui + DAYS_AHEAD jours complets.
+    # DAYS_AHEAD=2 : aujourd'hui + les deux prochains jours.
     date_to = (
         now + timedelta(days=DAYS_AHEAD + 1)
     ).date().isoformat()
@@ -326,44 +280,38 @@ def get_h2h(match_id):
 
     except Exception as error:
         print(
-            f"[WARN] Historique H2H indisponible "
-            f"pour le match {match_id} : {error}"
+            f"[WARN] H2H indisponible pour le match "
+            f"{match_id} : {error}"
         )
 
         return []
 
 
-def get_required_gap(total_h2h_matches):
-    # Aucun match avec 0, 1 ou 2 confrontation(s).
-    if 3 <= total_h2h_matches <= 5:
-        return 2
+def get_h2h_signal(total_matches, dominant_wins, dominant_losses):
+    """
+    Un seul indicateur clair :
 
-    if 6 <= total_h2h_matches <= 10:
-        return 2
+    🟢 Avantage H2H net :
+    - au moins 6 confrontations
+    - au moins 3 victoires d'écart
 
-    if total_h2h_matches > 10:
-        return 3
-
-    return None
-
-
-def get_h2h_confidence(
-    h2h_matches,
-    dominant_wins,
-    dominant_losses
-):
-    if h2h_matches < 3:
-        return "FAIBLE"
+    🟡 Avantage H2H à surveiller :
+    - 3 à 5 confrontations et au moins 2 victoires d'écart
+    - ou au moins 6 confrontations et au moins 2 victoires d'écart
+    """
 
     win_gap = dominant_wins - dominant_losses
 
-    if h2h_matches >= 6 and win_gap >= 3:
-        return "FORTE"
+    if total_matches >= 6 and win_gap >= 3:
+        return "🟢 Avantage H2H net"
 
-    if h2h_matches >= 4 and win_gap >= 2:
-        return "MOYENNE"
+    if total_matches >= 6 and win_gap >= 2:
+        return "🟡 Avantage H2H à surveiller"
 
-    return "FAIBLE"
+    if 3 <= total_matches <= 5 and win_gap >= 2:
+        return "🟡 Avantage H2H à surveiller"
+
+    return None
 
 
 def summarize_h2h(h2h_matches, current_home, current_away):
@@ -435,32 +383,34 @@ def summarize_h2h(h2h_matches, current_home, current_away):
 
         if winner_normalized == home_normalized:
             home_wins += 1
+
         elif winner_normalized == away_normalized:
             away_wins += 1
 
     total = home_wins + away_wins + draws
-    required_gap = get_required_gap(total)
 
     dominant_team = None
     dominant_wins = 0
     dominant_losses = 0
 
-    if required_gap is not None:
-        if home_wins - away_wins >= required_gap:
-            dominant_team = current_home
-            dominant_wins = home_wins
-            dominant_losses = away_wins
+    if home_wins > away_wins:
+        dominant_team = current_home
+        dominant_wins = home_wins
+        dominant_losses = away_wins
 
-        elif away_wins - home_wins >= required_gap:
-            dominant_team = current_away
-            dominant_wins = away_wins
-            dominant_losses = home_wins
+    elif away_wins > home_wins:
+        dominant_team = current_away
+        dominant_wins = away_wins
+        dominant_losses = home_wins
 
-    confidence = get_h2h_confidence(
-        total,
-        dominant_wins,
-        dominant_losses
-    )
+    signal = None
+
+    if dominant_team:
+        signal = get_h2h_signal(
+            total,
+            dominant_wins,
+            dominant_losses
+        )
 
     return {
         "h2h_matches": total,
@@ -470,40 +420,8 @@ def summarize_h2h(h2h_matches, current_home, current_away):
         "dominant_team": dominant_team,
         "dominant_wins": dominant_wins,
         "dominant_losses": dominant_losses,
-        "required_gap": required_gap,
-        "confidence": confidence,
+        "signal": signal,
         "recent_h2h": latest_results
-    }
-
-
-def estimate_probabilities_fast(h2h_summary):
-    # Estimation indicative seulement.
-    home_xg = 1.35
-    away_xg = 1.10
-
-    if h2h_summary["h2h_matches"] > 0:
-        h2h_bias = (
-            h2h_summary["home_wins"]
-            - h2h_summary["away_wins"]
-        ) / h2h_summary["h2h_matches"]
-
-        home_xg += max(-0.25, min(0.25, h2h_bias * 0.22))
-        away_xg -= max(-0.20, min(0.20, h2h_bias * 0.18))
-
-    home_xg = max(0.20, min(3.00, home_xg))
-    away_xg = max(0.20, min(2.80, away_xg))
-
-    p_home, p_draw, p_away = match_outcome_probabilities(
-        home_xg,
-        away_xg
-    )
-
-    return {
-        "home_xg": home_xg,
-        "away_xg": away_xg,
-        "p_home": p_home,
-        "p_draw": p_draw,
-        "p_away": p_away
     }
 
 
@@ -531,7 +449,8 @@ def build_rows(matches):
             if not h2h["dominant_team"]:
                 continue
 
-            probabilities = estimate_probabilities_fast(h2h)
+            if not h2h["signal"]:
+                continue
 
             rows.append({
                 "competition": match.get(
@@ -548,23 +467,10 @@ def build_rows(matches):
                 "dominant_wins": h2h["dominant_wins"],
                 "draws": h2h["draws"],
                 "dominant_losses": h2h["dominant_losses"],
-                "required_gap": h2h["required_gap"],
-                "h2h_confidence": h2h["confidence"],
+                "h2h_signal": h2h["signal"],
                 "recent_h2h": json.dumps(
                     h2h["recent_h2h"],
                     ensure_ascii=False
-                ),
-                "p_home_model": round(
-                    probabilities["p_home"] * 100,
-                    2
-                ),
-                "p_draw_model": round(
-                    probabilities["p_draw"] * 100,
-                    2
-                ),
-                "p_away_model": round(
-                    probabilities["p_away"] * 100,
-                    2
                 )
             })
 
@@ -580,16 +486,16 @@ def build_rows(matches):
 def render_discord_message(df):
     if df.empty:
         return (
-            "⚠️ Aucun match avec une tendance H2H suffisamment nette "
+            "⚠️ Aucun match avec un avantage H2H suffisamment net "
             "sur la période analysée.\n"
-            "Règle : 3 à 5 H2H = au moins 2 victoires d'écart ; "
-            "6 à 10 H2H = au moins 2 victoires d'écart."
+            "Critères : 3 à 5 H2H avec 2 victoires d'écart, "
+            "ou au moins 6 H2H avec 2 victoires d'écart."
         )
 
     lines = [
-        "📊 **Football : tendances H2H**",
-        f"📅 Matchs retenus : {len(df)}",
-        "📆 Fenêtre : aujourd’hui + les 2 prochains jours."
+        "📊 **Football — confrontations directes récentes**",
+        f"📅 Matchs sélectionnés : {len(df)}",
+        "📆 Période : aujourd’hui + les 2 prochains jours."
     ]
 
     for row in df.head(15).itertuples():
@@ -598,28 +504,27 @@ def render_discord_message(df):
             f"⚽ **{row.homeTeam} vs {row.awayTeam}**"
         )
         lines.append(f"🏆 Compétition : {row.competition}")
-        lines.append(f"🗓️ {row.date_local} à {row.time_local}")
-        lines.append(f"👑 Tendance H2H : {row.dominant_team}")
+        lines.append(f"🗓️ Coup d’envoi : {row.date_local} à {row.time_local}")
         lines.append(
-            f"📚 Bilan : {row.dominant_wins}V | "
-            f"{row.draws}N | {row.dominant_losses}D "
-            f"sur {row.h2h_matches} confrontation(s)"
+            f"📌 Avantage historique : {row.dominant_team}"
         )
         lines.append(
-            f"🔎 Fiabilité H2H : **{row.h2h_confidence}**"
+            f"📊 Historique : {row.dominant_team} "
+            f"{row.dominant_wins} victoire(s) | "
+            f"{row.draws} nul(s) | "
+            f"{row.dominant_losses} défaite(s)"
         )
         lines.append(
-            f"📈 Modèle indicatif : "
-            f"{row.homeTeam} {row.p_home_model}% | "
-            f"Nul {row.p_draw_model}% | "
-            f"{row.awayTeam} {row.p_away_model}%"
+            f"📚 Échantillon : {row.h2h_matches} confrontation(s) "
+            f"sur les {H2H_YEARS_BACK} dernières années"
         )
+        lines.append(row.h2h_signal)
 
     lines.append("")
     lines.append(
-        "⚠️ Information statistique uniquement : les confrontations "
-        "directes et cette estimation ne garantissent aucun résultat "
-        "et ne constituent pas un conseil de pari."
+        "ℹ️ Signal fondé uniquement sur les confrontations directes "
+        f"des {H2H_YEARS_BACK} dernières années. "
+        "Il ne prédit pas un résultat et ne garantit pas une victoire."
     )
 
     return "\n".join(lines)
