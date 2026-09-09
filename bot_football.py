@@ -19,9 +19,16 @@ OUTPUT_DIR.mkdir(exist_ok=True)
 FD_TOKEN = os.getenv("FOOTBALL_DATA_API_TOKEN", "").strip()
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "").strip()
 
+# Aujourd'hui + les 2 prochains jours.
 DAYS_AHEAD = int(os.getenv("DAYS_AHEAD", "2"))
+
+# 25 matchs maximum : compromis entre diversité et limite API.
 MAX_MATCHES = int(os.getenv("MAX_MATCHES", "25"))
+
+# Nombre maximal de confrontations directes récupérées.
 H2H_LIMIT = int(os.getenv("H2H_LIMIT", "10"))
+
+# Seuls les H2H de cette période sont retenus.
 H2H_YEARS_BACK = int(os.getenv("H2H_YEARS_BACK", "3"))
 
 FD_HEADERS = {"X-Auth-Token": FD_TOKEN} if FD_TOKEN else {}
@@ -31,11 +38,11 @@ SESSION.headers.update({
     "User-Agent": "github-actions-football-h2h/1.0"
 })
 
-# Plan gratuit football-data.org : garder un rythme prudent.
+# Rythme prudent pour respecter les limites de football-data.org.
 FD_MIN_INTERVAL = 6.5
 _last_fd_call_ts = 0.0
 
-# Corrige les différences de noms entre les endpoints de l'API.
+
 ALIASES = {
     "paris saint-germain fc": "paris saint-germain",
     "psg": "paris saint-germain",
@@ -64,7 +71,20 @@ ALIASES = {
     "são paulo fc": "sao paulo",
     "sao paulo fc": "sao paulo",
     "botafogo fr": "botafogo",
-    "rb bragantino": "bragantino"
+    "rb bragantino": "bragantino",
+    "stade rennais fc 1901": "rennes",
+    "stade rennais": "rennes",
+    "olympique de marseille": "marseille",
+    "west bromwich albion fc": "west bromwich albion",
+    "birmingham city fc": "birmingham city",
+    "norwich city fc": "norwich city",
+    "queens park rangers fc": "queens park rangers",
+    "charlton athletic fc": "charlton athletic",
+    "sport lisboa e benfica": "benfica",
+    "cf estrela da amadora": "estrela amadora",
+    "sporting clube de braga": "braga",
+    "venezia fc": "venezia",
+    "acf fiorentina": "fiorentina"
 }
 
 
@@ -103,7 +123,8 @@ def request_json(url, headers=None, params=None, timeout=30, retries=3):
             if status == 429:
                 retry_after = (
                     error.response.headers.get("Retry-After")
-                    if error.response else None
+                    if error.response
+                    else None
                 )
 
                 delay = (
@@ -113,8 +134,8 @@ def request_json(url, headers=None, params=None, timeout=30, retries=3):
                 )
 
                 print(
-                    f"[WARN] Limite API atteinte. "
-                    f"Nouvel essai dans {delay} secondes."
+                    f"[WARN] Limite football-data atteinte. "
+                    f"Nouvel essai dans {delay} seconde(s)."
                 )
 
                 time.sleep(delay)
@@ -128,10 +149,12 @@ def request_json(url, headers=None, params=None, timeout=30, retries=3):
 
             if attempt < retries - 1:
                 delay = attempt + 2
+
                 print(
                     f"[WARN] Erreur réseau : {error}. "
-                    f"Nouvel essai dans {delay} secondes."
+                    f"Nouvel essai dans {delay} seconde(s)."
                 )
+
                 time.sleep(delay)
 
     if last_error:
@@ -141,7 +164,7 @@ def request_json(url, headers=None, params=None, timeout=30, retries=3):
 
 
 def normalize_team_name(name):
-    name = (name or "").lower().strip()
+    normalized = (name or "").lower().strip()
 
     for word in [
         " football club",
@@ -152,19 +175,25 @@ def normalize_team_name(name):
         " cf",
         " club"
     ]:
-        name = name.replace(word, "")
+        normalized = normalized.replace(word, "")
 
-    name = " ".join(name.split())
-    return ALIASES.get(name, name)
+    normalized = " ".join(normalized.split())
+
+    return ALIASES.get(normalized, normalized)
 
 
 def utc_to_paris(utc_str):
-    dt = datetime.fromisoformat(utc_str.replace("Z", "+00:00"))
-    paris_time = dt.astimezone(tz.gettz("Europe/Paris"))
+    utc_datetime = datetime.fromisoformat(
+        utc_str.replace("Z", "+00:00")
+    )
+
+    paris_datetime = utc_datetime.astimezone(
+        tz.gettz("Europe/Paris")
+    )
 
     return (
-        paris_time.strftime("%d/%m/%Y"),
-        paris_time.strftime("%H:%M")
+        paris_datetime.strftime("%d/%m/%Y"),
+        paris_datetime.strftime("%H:%M")
     )
 
 
@@ -186,11 +215,18 @@ def match_outcome_probabilities(home_xg, away_xg, max_goals=8):
     away_win = 0.0
 
     for home_goals in range(max_goals + 1):
-        p_home = poisson_pmf(home_goals, home_xg)
+        probability_home_goals = poisson_pmf(home_goals, home_xg)
 
         for away_goals in range(max_goals + 1):
-            p_away = poisson_pmf(away_goals, away_xg)
-            probability = p_home * p_away
+            probability_away_goals = poisson_pmf(
+                away_goals,
+                away_xg
+            )
+
+            probability = (
+                probability_home_goals
+                * probability_away_goals
+            )
 
             if home_goals > away_goals:
                 home_win += probability
@@ -235,8 +271,10 @@ def get_upcoming_matches(competition_codes):
 
     date_from = now.date().isoformat()
 
-    # DAYS_AHEAD=2 = aujourd'hui + les 2 prochains jours.
-    date_to = (now + timedelta(days=DAYS_AHEAD + 1)).date().isoformat()
+    # Aujourd'hui + DAYS_AHEAD jours complets.
+    date_to = (
+        now + timedelta(days=DAYS_AHEAD + 1)
+    ).date().isoformat()
 
     matches = []
 
@@ -262,17 +300,17 @@ def get_upcoming_matches(competition_codes):
                 retained += 1
 
             print(
-                f"[INFO] {code} : "
-                f"{retained} match(s) programmé(s) trouvé(s)."
+                f"[INFO] {code} : {retained} match(s) "
+                "programmé(s) trouvé(s)."
             )
 
         except Exception as error:
-            print(f"[WARN] Compétition {code} ignorée : {error}")
+            print(
+                f"[WARN] Compétition {code} ignorée : {error}"
+            )
 
     matches.sort(key=lambda item: item.get("utcDate", ""))
 
-    # On répartit les matchs dans le temps avant de limiter.
-    # Cela évite que le premier championnat interrogé prenne toutes les places.
     return matches[:MAX_MATCHES]
 
 
@@ -287,14 +325,18 @@ def get_h2h(match_id):
         return data.get("matches", [])
 
     except Exception as error:
-        print(f"[WARN] H2H indisponible pour le match {match_id} : {error}")
+        print(
+            f"[WARN] Historique H2H indisponible "
+            f"pour le match {match_id} : {error}"
+        )
+
         return []
 
 
 def get_required_gap(total_h2h_matches):
-    # Version volontairement plus souple pour obtenir davantage de résultats.
-    if 2 <= total_h2h_matches <= 5:
-        return 1
+    # Aucun match avec 0, 1 ou 2 confrontation(s).
+    if 3 <= total_h2h_matches <= 5:
+        return 2
 
     if 6 <= total_h2h_matches <= 10:
         return 2
@@ -303,6 +345,25 @@ def get_required_gap(total_h2h_matches):
         return 3
 
     return None
+
+
+def get_h2h_confidence(
+    h2h_matches,
+    dominant_wins,
+    dominant_losses
+):
+    if h2h_matches < 3:
+        return "FAIBLE"
+
+    win_gap = dominant_wins - dominant_losses
+
+    if h2h_matches >= 6 and win_gap >= 3:
+        return "FORTE"
+
+    if h2h_matches >= 4 and win_gap >= 2:
+        return "MOYENNE"
+
+    return "FAIBLE"
 
 
 def summarize_h2h(h2h_matches, current_home, current_away):
@@ -315,7 +376,10 @@ def summarize_h2h(h2h_matches, current_home, current_away):
     away_normalized = normalize_team_name(current_away)
 
     now_utc = datetime.now(timezone.utc)
-    cutoff_utc = now_utc - timedelta(days=365 * H2H_YEARS_BACK)
+
+    cutoff_utc = now_utc - timedelta(
+        days=365 * H2H_YEARS_BACK
+    )
 
     filtered_matches = []
 
@@ -325,301 +389,6 @@ def summarize_h2h(h2h_matches, current_home, current_away):
         if not utc_date:
             continue
 
-        match_dt = parse_utc_datetime(utc_date)
+        match_datetime = parse_utc_datetime(utc_date)
 
-        if match_dt < cutoff_utc:
-            continue
-
-        full_time = match.get("score", {}).get("fullTime", {})
-        home_goals = full_time.get("home")
-        away_goals = full_time.get("away")
-
-        if home_goals is None or away_goals is None:
-            continue
-
-        filtered_matches.append(match)
-
-    filtered_matches.sort(
-        key=lambda match: match.get("utcDate", ""),
-        reverse=True
-    )
-
-    filtered_matches = filtered_matches[:H2H_LIMIT]
-
-    for match in filtered_matches:
-        full_time = match.get("score", {}).get("fullTime", {})
-        home_goals = full_time.get("home")
-        away_goals = full_time.get("away")
-
-        previous_home = match.get("homeTeam", {}).get("name", "")
-        previous_away = match.get("awayTeam", {}).get("name", "")
-
-        latest_results.append({
-            "date": match.get("utcDate", "")[:10],
-            "home": previous_home,
-            "away": previous_away,
-            "score": f"{home_goals}-{away_goals}"
-        })
-
-        if home_goals == away_goals:
-            draws += 1
-            continue
-
-        winner = previous_home if home_goals > away_goals else previous_away
-        winner_normalized = normalize_team_name(winner)
-
-        if winner_normalized == home_normalized:
-            home_wins += 1
-        elif winner_normalized == away_normalized:
-            away_wins += 1
-
-    total = home_wins + away_wins + draws
-    required_gap = get_required_gap(total)
-
-    dominant_team = None
-    dominant_wins = 0
-    dominant_losses = 0
-
-    if required_gap is not None:
-        if home_wins - away_wins >= required_gap:
-            dominant_team = current_home
-            dominant_wins = home_wins
-            dominant_losses = away_wins
-
-        elif away_wins - home_wins >= required_gap:
-            dominant_team = current_away
-            dominant_wins = away_wins
-            dominant_losses = home_wins
-
-    return {
-        "h2h_matches": total,
-        "home_wins": home_wins,
-        "away_wins": away_wins,
-        "draws": draws,
-        "dominant_team": dominant_team,
-        "dominant_wins": dominant_wins,
-        "dominant_losses": dominant_losses,
-        "required_gap": required_gap,
-        "recent_h2h": latest_results
-    }
-
-
-def estimate_probabilities_fast(h2h_summary):
-    home_xg = 1.35
-    away_xg = 1.10
-
-    if h2h_summary["h2h_matches"] > 0:
-        h2h_bias = (
-            h2h_summary["home_wins"]
-            - h2h_summary["away_wins"]
-        ) / h2h_summary["h2h_matches"]
-
-        home_xg += max(-0.25, min(0.25, h2h_bias * 0.22))
-        away_xg -= max(-0.20, min(0.20, h2h_bias * 0.18))
-
-    home_xg = max(0.20, min(3.00, home_xg))
-    away_xg = max(0.20, min(2.80, away_xg))
-
-    p_home, p_draw, p_away = match_outcome_probabilities(
-        home_xg,
-        away_xg
-    )
-
-    return {
-        "home_xg": home_xg,
-        "away_xg": away_xg,
-        "p_home": p_home,
-        "p_draw": p_draw,
-        "p_away": p_away
-    }
-
-
-def build_rows(matches):
-    rows = []
-
-    for index, match in enumerate(matches, start=1):
-        home_team = match["homeTeam"]["name"]
-        away_team = match["awayTeam"]["name"]
-
-        print(
-            f"[INFO] Analyse {index}/{len(matches)} : "
-            f"{home_team} vs {away_team}"
-        )
-
-        try:
-            date_local, time_local = utc_to_paris(match["utcDate"])
-
-            h2h = summarize_h2h(
-                get_h2h(match["id"]),
-                home_team,
-                away_team
-            )
-
-            if not h2h["dominant_team"]:
-                continue
-
-            probabilities = estimate_probabilities_fast(h2h)
-
-            rows.append({
-                "competition": match.get("_competitionCode", ""),
-                "utcDate": match["utcDate"],
-                "date_local": date_local,
-                "time_local": time_local,
-                "homeTeam": home_team,
-                "awayTeam": away_team,
-                "dominant_team": h2h["dominant_team"],
-                "h2h_matches": h2h["h2h_matches"],
-                "dominant_wins": h2h["dominant_wins"],
-                "draws": h2h["draws"],
-                "dominant_losses": h2h["dominant_losses"],
-                "required_gap": h2h["required_gap"],
-                "recent_h2h": json.dumps(
-                    h2h["recent_h2h"],
-                    ensure_ascii=False
-                ),
-                "p_home_model": round(probabilities["p_home"] * 100, 2),
-                "p_draw_model": round(probabilities["p_draw"] * 100, 2),
-                "p_away_model": round(probabilities["p_away"] * 100, 2)
-            })
-
-        except Exception as error:
-            print(
-                f"[WARN] Analyse impossible pour "
-                f"{home_team} vs {away_team} : {error}"
-            )
-
-    return rows
-
-
-def render_discord_message(df):
-    if df.empty:
-        return (
-            "⚠️ Aucun match avec tendance H2H nette trouvé "
-            "sur la période analysée.\n"
-            "Règle : 2 à 5 H2H = 1 victoire d'écart ; "
-            "6 à 10 H2H = 2 victoires d'écart."
-        )
-
-    lines = [
-        "📊 **Football : tendances H2H**",
-        f"📅 Matchs retenus : {len(df)}",
-        "ℹ️ Fenêtre : aujourd’hui + les 2 prochains jours."
-    ]
-
-    for row in df.head(15).itertuples():
-        lines.append("")
-        lines.append(f"⚽ **{row.homeTeam} vs {row.awayTeam}**")
-        lines.append(f"🏆 Compétition : {row.competition}")
-        lines.append(f"🗓️ {row.date_local} à {row.time_local}")
-        lines.append(f"👑 Tendance H2H : {row.dominant_team}")
-        lines.append(
-            f"📚 Bilan : {row.dominant_wins}V | "
-            f"{row.draws}N | {row.dominant_losses}D "
-            f"sur {row.h2h_matches} confrontation(s)"
-        )
-        lines.append(
-            f"📈 Modèle indicatif : "
-            f"{row.homeTeam} {row.p_home_model}% | "
-            f"Nul {row.p_draw_model}% | "
-            f"{row.awayTeam} {row.p_away_model}%"
-        )
-
-    lines.append("")
-    lines.append(
-        "⚠️ Information statistique : le H2H seul ne garantit pas "
-        "un résultat et ne constitue pas un conseil de pari."
-    )
-
-    return "\n".join(lines)
-
-
-def send_discord(message):
-    if not DISCORD_WEBHOOK_URL:
-        print("[WARN] DISCORD_WEBHOOK_URL absent : aucun message envoyé.")
-        return
-
-    chunks = [
-        message[index:index + 1900]
-        for index in range(0, len(message), 1900)
-    ]
-
-    for index, chunk in enumerate(chunks[:5], start=1):
-        try:
-            response = requests.post(
-                DISCORD_WEBHOOK_URL,
-                json={"content": chunk},
-                timeout=20
-            )
-
-            response.raise_for_status()
-
-            print(
-                f"[INFO] Message Discord {index} envoyé "
-                f"(HTTP {response.status_code})."
-            )
-
-        except RequestException as error:
-            print(
-                f"[WARN] Envoi Discord {index} impossible : {error}"
-            )
-
-
-def main():
-    if not FD_TOKEN:
-        raise RuntimeError(
-            "Le secret FOOTBALL_DATA_API_TOKEN est manquant."
-        )
-
-    competition_codes = get_available_competitions()
-
-    if not competition_codes:
-        raise RuntimeError(
-            "Aucune compétition disponible avec ce token."
-        )
-
-    print(
-        f"[INFO] {len(competition_codes)} compétition(s) accessible(s)."
-    )
-
-    matches = get_upcoming_matches(competition_codes)
-
-    print(
-        f"[INFO] {len(matches)} match(s) présélectionné(s) "
-        f"(maximum : {MAX_MATCHES})."
-    )
-
-    rows = build_rows(matches)
-    df = pd.DataFrame(rows)
-
-    if not df.empty:
-        df = df.sort_values(
-            ["utcDate", "competition", "homeTeam"]
-        )
-
-    df.to_csv(
-        OUTPUT_DIR / "football_h2h_alerts.csv",
-        index=False
-    )
-
-    df.to_json(
-        OUTPUT_DIR / "football_h2h_alerts.json",
-        orient="records",
-        force_ascii=False,
-        indent=2
-    )
-
-    message = render_discord_message(df)
-
-    (OUTPUT_DIR / "notification_message.txt").write_text(
-        message,
-        encoding="utf-8"
-    )
-
-    print("\n===== MESSAGE DISCORD =====")
-    print(message)
-
-    send_discord(message)
-
-
-if __name__ == "__main__":
-    main()
+        if match_datetime <
