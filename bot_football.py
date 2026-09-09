@@ -21,23 +21,24 @@ DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "").strip()
 # Aujourd'hui + les 2 prochains jours.
 DAYS_AHEAD = int(os.getenv("DAYS_AHEAD", "2"))
 
-# Maximum de matchs qui recevront une analyse H2H.
+# Nombre maximal de matchs à analyser à chaque lancement.
 MAX_MATCHES = int(os.getenv("MAX_MATCHES", "25"))
 
-# Nombre maximum de confrontations H2H téléchargées par match.
-H2H_LIMIT = int(os.getenv("H2H_LIMIT", "10"))
+# Nombre maximal de H2H demandés à l'API.
+# 20 laisse une marge si plusieurs matchs sont hors période.
+H2H_LIMIT = int(os.getenv("H2H_LIMIT", "20"))
 
-# Seules les confrontations de cette période sont utilisées.
+# Fenêtre d'analyse H2H.
 H2H_YEARS_BACK = int(os.getenv("H2H_YEARS_BACK", "3"))
 
 FD_HEADERS = {"X-Auth-Token": FD_TOKEN} if FD_TOKEN else {}
 
 SESSION = requests.Session()
 SESSION.headers.update({
-    "User-Agent": "github-actions-football-h2h/2.0"
+    "User-Agent": "github-actions-football-h2h/3.0"
 })
 
-# Pause prudente entre les appels à football-data.org.
+# Prudence avec la limite de requêtes football-data.org.
 FD_MIN_INTERVAL = 6.5
 _last_fd_call_ts = 0.0
 
@@ -131,7 +132,7 @@ def request_json(url, headers=None, params=None, timeout=30, retries=3):
                 )
 
                 print(
-                    f"[WARN] Limite football-data atteinte. "
+                    f"[WARN] Limite API atteinte. "
                     f"Nouvel essai dans {delay} seconde(s)."
                 )
 
@@ -204,13 +205,11 @@ def get_available_competitions():
         headers=FD_HEADERS
     )
 
-    competitions = [
+    competitions = sorted({
         competition.get("code")
         for competition in data.get("competitions", [])
         if competition.get("code")
-    ]
-
-    competitions = sorted(set(competitions))
+    })
 
     print(
         "[INFO] Compétitions accessibles : "
@@ -224,8 +223,6 @@ def get_upcoming_matches(competition_codes):
     now = datetime.now(timezone.utc)
 
     date_from = now.date().isoformat()
-
-    # DAYS_AHEAD=2 : aujourd'hui + les deux prochains jours.
     date_to = (
         now + timedelta(days=DAYS_AHEAD + 1)
     ).date().isoformat()
@@ -268,15 +265,31 @@ def get_upcoming_matches(competition_codes):
     return matches[:MAX_MATCHES]
 
 
-def get_h2h(match_id):
+def get_h2h(match_id, date_from, date_to):
+    """
+    Récupère les confrontations directes en demandant explicitement
+    la période des 3 dernières années à football-data.org.
+    """
+
     try:
         data = request_json(
             f"{BASE_FD}/matches/{match_id}/head2head",
             headers=FD_HEADERS,
-            params={"limit": H2H_LIMIT}
+            params={
+                "limit": H2H_LIMIT,
+                "dateFrom": date_from,
+                "dateTo": date_to
+            }
         )
 
-        return data.get("matches", [])
+        matches = data.get("matches", [])
+
+        print(
+            f"[INFO] H2H API : {len(matches)} match(s) reçu(s) "
+            f"pour la période {date_from} -> {date_to}."
+        )
+
+        return matches
 
     except Exception as error:
         print(
@@ -289,15 +302,15 @@ def get_h2h(match_id):
 
 def get_h2h_signal(total_matches, dominant_wins, dominant_losses):
     """
-    Un seul indicateur clair :
+    Règles claires :
 
     🟢 Avantage H2H net :
     - au moins 6 confrontations
     - au moins 3 victoires d'écart
 
     🟡 Avantage H2H à surveiller :
-    - 3 à 5 confrontations et au moins 2 victoires d'écart
-    - ou au moins 6 confrontations et au moins 2 victoires d'écart
+    - 3 à 5 confrontations avec au moins 2 victoires d'écart
+    - ou 6 à 10 confrontations avec au moins 2 victoires d'écart
     """
 
     win_gap = dominant_wins - dominant_losses
@@ -324,10 +337,7 @@ def summarize_h2h(h2h_matches, current_home, current_away):
     away_normalized = normalize_team_name(current_away)
 
     now_utc = datetime.now(timezone.utc)
-
-    cutoff_utc = now_utc - timedelta(
-        days=365 * H2H_YEARS_BACK
-    )
+    cutoff_utc = now_utc - timedelta(days=365 * H2H_YEARS_BACK)
 
     filtered_matches = []
 
@@ -349,6 +359,24 @@ def summarize_h2h(h2h_matches, current_home, current_away):
         if home_goals is None or away_goals is None:
             continue
 
+        previous_home = match.get("homeTeam", {}).get("name", "")
+        previous_away = match.get("awayTeam", {}).get("name", "")
+
+        # Sécurité : ne garde que les matchs entre les deux équipes actuelles.
+        previous_home_normalized = normalize_team_name(previous_home)
+        previous_away_normalized = normalize_team_name(previous_away)
+
+        teams_match = {
+            previous_home_normalized,
+            previous_away_normalized
+        } == {
+            home_normalized,
+            away_normalized
+        }
+
+        if not teams_match:
+            continue
+
         filtered_matches.append(match)
 
     filtered_matches.sort(
@@ -358,6 +386,18 @@ def summarize_h2h(h2h_matches, current_home, current_away):
 
     filtered_matches = filtered_matches[:H2H_LIMIT]
 
+    print(
+        f"\n[INFO] H2H RETENUS — {current_home} vs {current_away}"
+    )
+    print(
+        f"[INFO] Fenêtre réellement analysée : "
+        f"{cutoff_utc.date().isoformat()} -> "
+        f"{now_utc.date().isoformat()}"
+    )
+
+    if not filtered_matches:
+        print("[INFO] Aucun H2H valide retenu.")
+
     for match in filtered_matches:
         full_time = match.get("score", {}).get("fullTime", {})
 
@@ -366,9 +406,15 @@ def summarize_h2h(h2h_matches, current_home, current_away):
 
         previous_home = match.get("homeTeam", {}).get("name", "")
         previous_away = match.get("awayTeam", {}).get("name", "")
+        match_date = match.get("utcDate", "")[:10]
+
+        print(
+            f"[INFO] - {match_date} | "
+            f"{previous_home} {home_goals}-{away_goals} {previous_away}"
+        )
 
         latest_results.append({
-            "date": match.get("utcDate", "")[:10],
+            "date": match_date,
             "home": previous_home,
             "away": previous_away,
             "score": f"{home_goals}-{away_goals}"
@@ -412,6 +458,14 @@ def summarize_h2h(h2h_matches, current_home, current_away):
             dominant_losses
         )
 
+    print(
+        f"[INFO] Bilan calculé : "
+        f"{current_home} {home_wins}V | "
+        f"{draws}N | "
+        f"{current_away} {away_wins}V "
+        f"({total} H2H).\n"
+    )
+
     return {
         "h2h_matches": total,
         "home_wins": home_wins,
@@ -428,6 +482,12 @@ def summarize_h2h(h2h_matches, current_home, current_away):
 def build_rows(matches):
     rows = []
 
+    now_utc = datetime.now(timezone.utc)
+    h2h_date_from = (
+        now_utc - timedelta(days=365 * H2H_YEARS_BACK)
+    ).date().isoformat()
+    h2h_date_to = now_utc.date().isoformat()
+
     for index, match in enumerate(matches, start=1):
         home_team = match["homeTeam"]["name"]
         away_team = match["awayTeam"]["name"]
@@ -440,8 +500,14 @@ def build_rows(matches):
         try:
             date_local, time_local = utc_to_paris(match["utcDate"])
 
+            h2h_matches = get_h2h(
+                match["id"],
+                h2h_date_from,
+                h2h_date_to
+            )
+
             h2h = summarize_h2h(
-                get_h2h(match["id"]),
+                h2h_matches,
                 home_team,
                 away_team
             )
@@ -486,16 +552,18 @@ def build_rows(matches):
 def render_discord_message(df):
     if df.empty:
         return (
-            "⚠️ Aucun match avec un avantage H2H suffisamment net "
-            "sur la période analysée.\n"
-            "Critères : 3 à 5 H2H avec 2 victoires d'écart, "
-            "ou au moins 6 H2H avec 2 victoires d'écart."
+            "⚠️ Aucun match ne répond aux critères H2H.\n"
+            f"Analyse : confrontations renvoyées par l’API et "
+            f"jouées sur les {H2H_YEARS_BACK} dernières années.\n"
+            "Règles : 3 à 5 H2H avec 2 victoires d’écart, "
+            "ou au moins 6 H2H avec 2 victoires d’écart."
         )
 
     lines = [
         "📊 **Football — confrontations directes récentes**",
         f"📅 Matchs sélectionnés : {len(df)}",
-        "📆 Période : aujourd’hui + les 2 prochains jours."
+        "📆 Période des matchs : aujourd’hui + les 2 prochains jours.",
+        f"🔎 Fenêtre H2H : les {H2H_YEARS_BACK} dernières années."
     ]
 
     for row in df.head(15).itertuples():
@@ -504,27 +572,30 @@ def render_discord_message(df):
             f"⚽ **{row.homeTeam} vs {row.awayTeam}**"
         )
         lines.append(f"🏆 Compétition : {row.competition}")
-        lines.append(f"🗓️ Coup d’envoi : {row.date_local} à {row.time_local}")
+        lines.append(
+            f"🗓️ Coup d’envoi : {row.date_local} à {row.time_local}"
+        )
         lines.append(
             f"📌 Avantage historique : {row.dominant_team}"
         )
         lines.append(
-            f"📊 Historique : {row.dominant_team} "
+            f"📊 Bilan H2H : {row.dominant_team} "
             f"{row.dominant_wins} victoire(s) | "
             f"{row.draws} nul(s) | "
             f"{row.dominant_losses} défaite(s)"
         )
         lines.append(
-            f"📚 Échantillon : {row.h2h_matches} confrontation(s) "
-            f"sur les {H2H_YEARS_BACK} dernières années"
+            f"📚 Échantillon retenu : {row.h2h_matches} "
+            "confrontation(s)"
         )
         lines.append(row.h2h_signal)
 
     lines.append("")
     lines.append(
-        "ℹ️ Signal fondé uniquement sur les confrontations directes "
-        f"des {H2H_YEARS_BACK} dernières années. "
-        "Il ne prédit pas un résultat et ne garantit pas une victoire."
+        "ℹ️ Les H2H sont demandés à l’API sur la période indiquée, "
+        "puis vérifiés et comptés par le script. "
+        "Ce signal ne prédit pas un résultat et ne garantit pas "
+        "une victoire."
     )
 
     return "\n".join(lines)
