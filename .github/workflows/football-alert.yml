@@ -1,0 +1,58 @@
+name: Football H2H Alerts
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    # Tous les jours à 08:00, 13:00 et 18:00 UTC.
+    # En France : +1 h en hiver, +2 h en été.
+    - cron: "0 8,13,18 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: football-h2h-alert
+  cancel-in-progress: false
+
+jobs:
+  run-bot:
+    name: Analyse football et notification Discord
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+
+      - name: Installer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Installer les dépendances
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Lancer le bot
+        env:
+          FOOTBALL_DATA_API_TOKEN: ${{ secrets.FOOTBALL_DATA_API_TOKEN }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+          # Réglages du bot
+          DAYS_AHEAD: "2"
+          MAX_MATCHES: "25"
+          H2H_LIMIT: "10"
+          H2H_YEARS_BACK: "3"
+        run: python bot_football.py
+
+      - name: Sauvegarder les fichiers de résultat
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: football-h2h-results
+          path: output/
+          if-no-files-found: warn
+          retention-days: 14
