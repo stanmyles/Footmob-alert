@@ -4,34 +4,28 @@ on:
   workflow_dispatch:
 
   schedule:
-    # Horaires UTC.
-    # En septembre en France (CEST = UTC+2) :
-    # 08:00 UTC = environ 10:00
-    # 13:00 UTC = environ 15:00
-    # 18:00 UTC = environ 20:00
+    # Heures UTC.
+    # En septembre en France (CEST, UTC+2) :
+    # 08:00 UTC = 10:00
+    # 13:00 UTC = 15:00
+    # 18:00 UTC = 20:00
     - cron: "0 8,13,18 * * *"
 
 permissions:
   contents: read
 
 concurrency:
-  group: football-h2h-alerts
+  group: football-h2h-alert
   cancel-in-progress: false
 
 jobs:
   football-h2h:
+    name: Analyse H2H et envoi Discord
     runs-on: ubuntu-latest
+
+    # 25 analyses H2H, plus les appels de compétitions.
+    # 30 min évite que GitHub coupe le job trop tôt.
     timeout-minutes: 30
-
-    env:
-      FOOTBALL_DATA_API_TOKEN: ${{ secrets.FOOTBALL_DATA_API_TOKEN }}
-      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-
-      # Réglages du bot
-      DAYS_AHEAD: "2"
-      MAX_MATCHES: "25"
-      H2H_LIMIT: "20"
-      H2H_YEARS_BACK: "3"
 
     steps:
       - name: Récupérer le dépôt
@@ -41,7 +35,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-          cache: "pip"
+          cache: pip
           cache-dependency-path: requirements.txt
 
       - name: Installer les dépendances
@@ -49,8 +43,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Lancer l'analyse H2H
-        run: python football_h2h.py
+      - name: Lancer le bot
+        env:
+          FOOTBALL_DATA_API_TOKEN: ${{ secrets.FOOTBALL_DATA_API_TOKEN }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+          # Aujourd'hui + 7 jours, 25 analyses maximum.
+          DAYS_AHEAD: "7"
+          MAX_MATCHES: "25"
+
+          # Jusqu'à 20 résultats H2H demandés, puis filtrage des 3 dernières années.
+          H2H_LIMIT: "20"
+          H2H_YEARS_BACK: "3"
+        run: python bot_football.py
 
       - name: Sauvegarder les résultats
         if: always()
