@@ -4,27 +4,34 @@ on:
   workflow_dispatch:
 
   schedule:
-    # Heures en UTC :
-    # 08:00 UTC = 09:00 France hiver / 10:00 France été
-    # 13:00 UTC = 14:00 France hiver / 15:00 France été
-    # 18:00 UTC = 19:00 France hiver / 20:00 France été
+    # Horaires UTC.
+    # En septembre en France (CEST = UTC+2) :
+    # 08:00 UTC = environ 10:00
+    # 13:00 UTC = environ 15:00
+    # 18:00 UTC = environ 20:00
     - cron: "0 8,13,18 * * *"
 
 permissions:
   contents: read
 
 concurrency:
-  group: football-h2h-alert
+  group: football-h2h-alerts
   cancel-in-progress: false
 
 jobs:
   football-h2h:
-    name: Analyse H2H et envoi Discord
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
-    # Suffisant pour au plus 25 appels H2H,
-    # avec environ 6,5 secondes entre chaque requête.
-    timeout-minutes: 15
+    env:
+      FOOTBALL_DATA_API_TOKEN: ${{ secrets.FOOTBALL_DATA_API_TOKEN }}
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+      # Réglages du bot
+      DAYS_AHEAD: "2"
+      MAX_MATCHES: "25"
+      H2H_LIMIT: "20"
+      H2H_YEARS_BACK: "3"
 
     steps:
       - name: Récupérer le dépôt
@@ -42,17 +49,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Lancer le bot
-        env:
-          FOOTBALL_DATA_API_TOKEN: ${{ secrets.FOOTBALL_DATA_API_TOKEN }}
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-
-          # Paramètres modifiables sans toucher au Python.
-          DAYS_AHEAD: "2"
-          MAX_MATCHES: "25"
-          H2H_LIMIT: "10"
-          H2H_YEARS_BACK: "3"
-        run: python bot_football.py
+      - name: Lancer l'analyse H2H
+        run: python football_h2h.py
 
       - name: Sauvegarder les résultats
         if: always()
