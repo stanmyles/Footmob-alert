@@ -1,4 +1,4 @@
-name: .github/workflows/football-h2h-alerts.yml
+name: Football H2H Alerts
 
 on:
   workflow_dispatch:
