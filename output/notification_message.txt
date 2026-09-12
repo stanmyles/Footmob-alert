@@ -1,10 +1,10 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 9
+📅 Matchs avec signal : 20
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
 
 ⚽ **Tottenham Hotspur FC vs Everton FC**
-🏆 Compétition : PL
+🏆 Compétition : Premier League (Angleterre)
 🗓️ Coup d’envoi : 12/09/2026 à 18:30
 📌 Avantage historique : Tottenham Hotspur FC
 📊 Bilan H2H : Tottenham Hotspur FC 4 victoire(s) | 1 nul(s) | 1 défaite(s)
@@ -12,23 +12,79 @@
 🟢 Avantage H2H net
 
 ⚽ **Go Ahead Eagles vs FC Groningen**
-🏆 Compétition : DED
+🏆 Compétition : Eredivisie (Pays-Bas)
 🗓️ Coup d’envoi : 12/09/2026 à 18:45
 📌 Avantage historique : Go Ahead Eagles
 📊 Bilan H2H : Go Ahead Eagles 2 victoire(s) | 2 nul(s) | 0 défaite(s)
 📚 Échantillon : 4 confrontation(s)
 🟡 Avantage H2H à surveiller
 
+⚽ **Casa Pia AC vs FC Porto**
+🏆 Compétition : Primeira Liga (Portugal)
+🗓️ Coup d’envoi : 12/09/2026 à 19:00
+📌 Avantage historique : FC Porto
+📊 Bilan H2H : FC Porto 5 victoire(s) | 0 nul(s) | 1 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟢 Avantage H2H net
+
+⚽ **Fortuna Sittard vs AFC Ajax**
+🏆 Compétition : Eredivisie (Pays-Bas)
+🗓️ Coup d’envoi : 12/09/2026 à 20:00
+📌 Avantage historique : AFC Ajax
+📊 Bilan H2H : AFC Ajax 4 victoire(s) | 1 nul(s) | 0 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **FC Lorient vs Toulouse FC**
+🏆 Compétition : Ligue 1 (France)
+🗓️ Coup d’envoi : 12/09/2026 à 20:45
+📌 Avantage historique : Toulouse FC
+📊 Bilan H2H : Toulouse FC 2 victoire(s) | 2 nul(s) | 0 défaite(s)
+📚 Échantillon : 4 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Real Madrid CF vs Rayo Vallecano de Madrid**
+🏆 Compétition : LaLiga (Espagne)
+🗓️ Coup d’envoi : 12/09/2026 à 21:00
+📌 Avantage historique : Real Madrid CF
+📊 Bilan H2H : Real Madrid CF 2 victoire(s) | 4 nul(s) | 0 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **SE Palmeiras vs São Paulo FC**
+🏆 Compétition : Brasileirão Série A (Brésil)
+🗓️ Coup d’envoi : 12/09/2026 à 23:30
+📌 Avantage historique : SE Palmeiras
+📊 Bilan H2H : SE Palmeiras 5 victoire(s) | 1 nul(s) | 0 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟢 Avantage H2H net
+
+⚽ **Botafogo FR vs RB Bragantino**
+🏆 Compétition : Brasileirão Série A (Brésil)
+🗓️ Coup d’envoi : 13/09/2026 à 01:30
+📌 Avantage historique : Botafogo FR
+📊 Bilan H2H : Botafogo FR 5 victoire(s) | 2 nul(s) | 1 défaite(s)
+📚 Échantillon : 8 confrontation(s)
+🟢 Avantage H2H net
+
 ⚽ **Como 1907 vs Parma Calcio 1913**
-🏆 Compétition : SA
+🏆 Compétition : Serie A (Italie)
 🗓️ Coup d’envoi : 14/09/2026 à 18:30
 📌 Avantage historique : Como 1907
 📊 Bilan H2H : Como 1907 2 victoire(s) | 2 nul(s) | 0 défaite(s)
 📚 Échantillon : 4 confrontation(s)
 🟡 Avantage H2H à surveiller
 
+⚽ **Torino FC vs AS Roma**
+🏆 Compétition : Serie A (Italie)
+🗓️ Coup d’envoi : 14/09/2026 à 18:30
+📌 Avantage historique : AS Roma
+📊 Bilan H2H : AS Roma 4 victoire(s) | 1 nul(s) | 1 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟢 Avantage H2H net
+
 ⚽ **Rio Ave FC vs CF Estrela da Amadora**
-🏆 Compétition : PPL
+🏆 Compétition : Primeira Liga (Portugal)
 🗓️ Coup d’envoi : 14/09/2026 à 19:45
 📌 Avantage historique : Rio Ave FC
 📊 Bilan H2H : Rio Ave FC 3 victoire(s) | 2 nul(s) | 1 défaite(s)
@@ -36,43 +92,35 @@
 🟡 Avantage H2H à surveiller
 
 ⚽ **FC Internazionale Milano vs Udinese Calcio**
-🏆 Compétition : SA
+🏆 Compétition : Serie A (Italie)
 🗓️ Coup d’envoi : 14/09/2026 à 20:45
 📌 Avantage historique : FC Internazionale Milano
 📊 Bilan H2H : FC Internazionale Milano 5 victoire(s) | 0 nul(s) | 1 défaite(s)
 📚 Échantillon : 6 confrontation(s)
 🟢 Avantage H2H net
 
+⚽ **Sporting Clube de Braga vs GD Estoril Praia**
+🏆 Compétition : Primeira Liga (Portugal)
+🗓️ Coup d’envoi : 14/09/2026 à 21:45
+📌 Avantage historique : Sporting Clube de Braga
+📊 Bilan H2H : Sporting Clube de Braga 3 victoire(s) | 2 nul(s) | 1 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Rayo Vallecano de Madrid vs RCD Espanyol de Barcelona**
+🏆 Compétition : LaLiga (Espagne)
+🗓️ Coup d’envoi : 15/09/2026 à 19:00
+📌 Avantage historique : RCD Espanyol de Barcelona
+📊 Bilan H2H : RCD Espanyol de Barcelona 3 victoire(s) | 0 nul(s) | 1 défaite(s)
+📚 Échantillon : 4 confrontation(s)
+🟡 Avantage H2H à surveiller
+
 ⚽ **Club Atlético de Madrid vs CA Osasuna**
-🏆 Compétition : PD
+🏆 Compétition : LaLiga (Espagne)
 🗓️ Coup d’envoi : 16/09/2026 à 19:00
 📌 Avantage historique : Club Atlético de Madrid
 📊 Bilan H2H : Club Atlético de Madrid 4 victoire(s) | 0 nul(s) | 2 défaite(s)
 📚 Échantillon : 6 confrontation(s)
 🟡 Avantage H2H à surveiller
-
-⚽ **Real Betis Balompié vs Getafe CF**
-🏆 Compétition : PD
-🗓️ Coup d’envoi : 17/09/2026 à 19:00
-📌 Avantage historique : Real Betis Balompié
-📊 Bilan H2H : Real Betis Balompié 3 victoire(s) | 2 nul(s) | 1 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **FC Bayern München vs 1. FC Union Berlin**
-🏆 Compétition : BL1
-🗓️ Coup d’envoi : 18/09/2026 à 20:30
-📌 Avantage historique : FC Bayern München
-📊 Bilan H2H : FC Bayern München 4 victoire(s) | 2 nul(s) | 0 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟢 Avantage H2H net
-
-⚽ **Bologna FC 1909 vs Torino FC**
-🏆 Compétition : SA
-🗓️ Coup d’envoi : 19/09/2026 à 15:00
-📌 Avantage historique : Bologna FC 1909
-📊 Bilan H2H : Bologna FC 1909 4 victoire(s) | 2 nul(s) | 0 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟢 Avantage H2H net
 
 ℹ️ Signal fondé uniquement sur les confrontations directes des 3 dernières années. Il ne prédit pas un résultat et ne garantit pas une victoire.
