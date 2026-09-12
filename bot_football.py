@@ -18,26 +18,26 @@ OUTPUT_DIR.mkdir(exist_ok=True)
 FD_TOKEN = os.getenv("FOOTBALL_DATA_API_TOKEN", "").strip()
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "").strip()
 
-# Aujourd'hui + les 7 prochains jours.
+# Aujourd'hui inclus + les 7 jours suivants.
 DAYS_AHEAD = int(os.getenv("DAYS_AHEAD", "7"))
 
-# Maximum de matchs analysés par lancement.
-MAX_MATCHES = int(os.getenv("MAX_MATCHES", "25"))
+# Analyse jusqu'à 50 matchs sur cette période.
+MAX_MATCHES = int(os.getenv("MAX_MATCHES", "50"))
 
-# Nombre maximum de confrontations directes demandées à l'API.
+# Nombre maximal de confrontations H2H demandées à l'API.
 H2H_LIMIT = int(os.getenv("H2H_LIMIT", "20"))
 
-# Les confrontations plus anciennes sont écartées.
+# Ignore les confrontations plus anciennes.
 H2H_YEARS_BACK = int(os.getenv("H2H_YEARS_BACK", "3"))
 
 FD_HEADERS = {"X-Auth-Token": FD_TOKEN} if FD_TOKEN else {}
 
 SESSION = requests.Session()
 SESSION.headers.update({
-    "User-Agent": "github-actions-football-h2h/3.1"
+    "User-Agent": "github-actions-football-h2h/3.2"
 })
 
-# Environ 10 requêtes/minute autorisées sur l'offre gratuite.
+# Offre gratuite football-data.org : environ 10 requêtes par minute.
 FD_MIN_INTERVAL = 6.5
 _last_fd_call_ts = 0.0
 
@@ -221,11 +221,10 @@ def get_available_competitions():
 def get_upcoming_matches(competition_codes):
     now = datetime.now(timezone.utc)
 
+    # Aujourd'hui inclus + DAYS_AHEAD jours suivants.
     date_from = now.date().isoformat()
-
-    # Aujourd'hui + 7 jours : huit dates calendrier possibles.
     date_to = (
-        now + timedelta(days=DAYS_AHEAD + 1)
+        now + timedelta(days=DAYS_AHEAD)
     ).date().isoformat()
 
     all_matches = []
@@ -261,7 +260,7 @@ def get_upcoming_matches(competition_codes):
                 f"[WARN] Compétition {code} ignorée : {error}"
             )
 
-    # Supprime les doublons sur l'identifiant du match.
+    # Supprime les doublons potentiels.
     unique_matches = {}
 
     for match in all_matches:
@@ -271,33 +270,32 @@ def get_upcoming_matches(competition_codes):
             unique_matches[match_id] = match
 
     all_matches = list(unique_matches.values())
-
     all_matches.sort(
         key=lambda item: item.get("utcDate", "")
     )
 
-    # Répartit d'abord les matchs par date.
+    # Range les matchs par journée afin d'éviter que les premières
+    # dates remplissent toutes les places disponibles.
     matches_by_day = {}
 
     for match in all_matches:
         match_day = match.get("utcDate", "")[:10]
-
-        if match_day not in matches_by_day:
-            matches_by_day[match_day] = []
-
-        matches_by_day[match_day].append(match)
+        matches_by_day.setdefault(match_day, []).append(match)
 
     selected = []
     selected_ids = set()
 
-    # 25 matchs sur 8 dates maximum = environ 3 par jour.
+    # Aujourd'hui + DAYS_AHEAD jours = DAYS_AHEAD + 1 journées.
     total_calendar_days = DAYS_AHEAD + 1
+
+    # Avec DAYS_AHEAD=7 et MAX_MATCHES=50 :
+    # environ 6 matchs sélectionnés d'abord pour chaque journée.
     matches_per_day = max(
         1,
         MAX_MATCHES // total_calendar_days
     )
 
-    # Première sélection : diversité par journée.
+    # Première passe : sélection équilibrée par date.
     for match_day in sorted(matches_by_day):
         for match in matches_by_day[match_day][:matches_per_day]:
             match_id = match.get("id")
@@ -306,7 +304,7 @@ def get_upcoming_matches(competition_codes):
                 selected.append(match)
                 selected_ids.add(match_id)
 
-    # Seconde sélection : complète les places restantes par date.
+    # Seconde passe : complète avec les matchs les plus proches.
     for match in all_matches:
         if len(selected) >= MAX_MATCHES:
             break
@@ -323,7 +321,7 @@ def get_upcoming_matches(competition_codes):
 
     print(
         f"[INFO] {len(all_matches)} match(s) disponible(s) "
-        f"sur les {DAYS_AHEAD} prochains jours."
+        f"sur aujourd'hui + {DAYS_AHEAD} jour(s)."
     )
 
     print(
@@ -367,12 +365,9 @@ def get_h2h(match_id, date_from, date_to):
 def get_h2h_signal(total_matches, dominant_wins, dominant_losses):
     win_gap = dominant_wins - dominant_losses
 
-    # Signal vert : échantillon d'au moins 6 matchs
-    # et au moins 3 victoires d'écart.
     if total_matches >= 6 and win_gap >= 3:
         return "🟢 Avantage H2H net"
 
-    # Signal jaune : avantage moins large mais présent.
     if total_matches >= 6 and win_gap >= 2:
         return "🟡 Avantage H2H à surveiller"
 
@@ -483,7 +478,7 @@ def summarize_h2h(h2h_matches, current_home, current_away):
     elif away_wins > home_wins:
         dominant_team = current_away
         dominant_wins = away_wins
-        dominant_losses = home_wins
+        dominant_losses = away_wins
 
     signal = None
 
@@ -550,6 +545,8 @@ def build_rows(matches):
                 away_team
             )
 
+            # Discord, CSV et JSON ne reçoivent que les signaux
+            # jaunes ou verts.
             if not h2h["dominant_team"]:
                 continue
 
@@ -591,7 +588,7 @@ def render_discord_message(df):
     if df.empty:
         return (
             "⚠️ Aucun match ne répond aux critères H2H "
-            "sur les 7 prochains jours.\n"
+            f"sur aujourd’hui + les {DAYS_AHEAD} prochains jours.\n"
             f"🔎 Historique analysé : les {H2H_YEARS_BACK} "
             "dernières années.\n"
             "Règles : 🟡 dès 2 victoires d’écart ; "
@@ -600,8 +597,11 @@ def render_discord_message(df):
 
     lines = [
         "📊 **Football — confrontations directes récentes**",
-        f"📅 Matchs sélectionnés : {len(df)}",
-        "📆 Période des matchs : aujourd’hui + les 7 prochains jours.",
+        f"📅 Matchs avec signal : {len(df)}",
+        (
+            "📆 Période des matchs : aujourd’hui + les "
+            f"{DAYS_AHEAD} prochains jours."
+        ),
         f"🔎 Fenêtre H2H : les {H2H_YEARS_BACK} dernières années."
     ]
 
@@ -692,7 +692,6 @@ def main():
     )
 
     matches = get_upcoming_matches(competition_codes)
-
     rows = build_rows(matches)
 
     df = pd.DataFrame(rows)
