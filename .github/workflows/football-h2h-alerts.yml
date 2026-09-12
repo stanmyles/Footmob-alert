@@ -1,67 +1,84 @@
 name: Football H2H Alerts
 
 on:
+  schedule:
+    # Tous les jours à 12:00 UTC.
+    # France : 14:00 en heure d'été / 13:00 en heure d'hiver.
+    - cron: "0 12 * * *"
+
+  # Permet de lancer le script manuellement depuis l'onglet Actions.
   workflow_dispatch:
 
-  schedule:
-    # Heures UTC.
-    # En septembre en France (CEST, UTC+2) :
-    # 08:00 UTC = 10:00
-    # 13:00 UTC = 15:00
-    # 18:00 UTC = 20:00
-    - cron: "0 8,13,18 * * *"
-
 permissions:
-  contents: read
-
-concurrency:
-  group: football-h2h-alert
-  cancel-in-progress: false
+  # Nécessaire uniquement si tu gardes l'étape qui commit output/.
+  contents: write
 
 jobs:
-  football-h2h:
-    name: Analyse H2H et envoi Discord
+  analyse-h2h:
+    name: Analyse des confrontations directes
     runs-on: ubuntu-latest
 
-    # 25 analyses H2H, plus les appels de compétitions.
-    # 30 min évite que GitHub coupe le job trop tôt.
-    timeout-minutes: 30
+    # 50 analyses H2H avec une attente de 6,5 s prend plus de 5 min.
+    # On laisse une marge pour les appels aux compétitions et les retries.
+    timeout-minutes: 15
 
     steps:
       - name: Récupérer le dépôt
         uses: actions/checkout@v4
 
-      - name: Installer Python
+      - name: Installer Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: pip
           cache-dependency-path: requirements.txt
 
-      - name: Installer les dépendances
+      - name: Installer les dépendances Python
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Lancer le bot
+      - name: Lancer l'analyse H2H et envoyer Discord
         env:
           FOOTBALL_DATA_API_TOKEN: ${{ secrets.FOOTBALL_DATA_API_TOKEN }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
-          # Aujourd'hui + 7 jours, 25 analyses maximum.
+          # Aujourd'hui + 7 jours suivants.
           DAYS_AHEAD: "7"
-          MAX_MATCHES: "25"
 
-          # Jusqu'à 20 résultats H2H demandés, puis filtrage des 3 dernières années.
+          # Au lieu de seulement 25 matchs, le script peut en analyser 50.
+          MAX_MATCHES: "50"
+
+          # Jusqu'à 20 confrontations pour chaque affiche.
           H2H_LIMIT: "20"
-          H2H_YEARS_BACK: "3"
-        run: python bot_football.py
 
-      - name: Sauvegarder les résultats
-        if: always()
+          # Historique H2H limité aux trois dernières années.
+          H2H_YEARS_BACK: "3"
+
+        run: python football_h2h_alerts.py
+
+      - name: Conserver les résultats en artefact
         uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: football-h2h-results
+          name: football-h2h-results-${{ github.run_number }}
           path: output/
           if-no-files-found: warn
           retention-days: 14
+
+      - name: Enregistrer les résultats dans le dépôt
+        # Cette étape est facultative.
+        # Elle ajoute/actualise les fichiers du dossier output/ dans GitHub.
+        if: success()
+        run: |
+          if [ -z "$(git status --porcelain output/)" ]; then
+            echo "Aucune modification dans output/."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add output/
+          git commit -m "Mise à jour des alertes H2H"
+          git push
