@@ -3,21 +3,21 @@
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
 
-⚽ **SC Freiburg vs Borussia Mönchengladbach**
-🏆 Compétition : BL1
-🗓️ Coup d’envoi : 12/09/2026 à 15:30
-📌 Avantage historique : SC Freiburg
-📊 Bilan H2H : SC Freiburg 4 victoire(s) | 2 nul(s) | 0 défaite(s)
+⚽ **Tottenham Hotspur FC vs Everton FC**
+🏆 Compétition : PL
+🗓️ Coup d’envoi : 12/09/2026 à 18:30
+📌 Avantage historique : Tottenham Hotspur FC
+📊 Bilan H2H : Tottenham Hotspur FC 4 victoire(s) | 1 nul(s) | 1 défaite(s)
 📚 Échantillon : 6 confrontation(s)
 🟢 Avantage H2H net
 
-⚽ **Blackburn Rovers FC vs Millwall FC**
-🏆 Compétition : ELC
-🗓️ Coup d’envoi : 12/09/2026 à 16:00
-📌 Avantage historique : Blackburn Rovers FC
-📊 Bilan H2H : Blackburn Rovers FC 4 victoire(s) | 1 nul(s) | 1 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟢 Avantage H2H net
+⚽ **Go Ahead Eagles vs FC Groningen**
+🏆 Compétition : DED
+🗓️ Coup d’envoi : 12/09/2026 à 18:45
+📌 Avantage historique : Go Ahead Eagles
+📊 Bilan H2H : Go Ahead Eagles 2 victoire(s) | 2 nul(s) | 0 défaite(s)
+📚 Échantillon : 4 confrontation(s)
+🟡 Avantage H2H à surveiller
 
 ⚽ **Como 1907 vs Parma Calcio 1913**
 🏆 Compétition : SA
