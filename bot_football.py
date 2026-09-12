@@ -21,10 +21,10 @@ DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "").strip()
 # Aujourd'hui inclus + les 7 jours suivants.
 DAYS_AHEAD = int(os.getenv("DAYS_AHEAD", "7"))
 
-# Analyse jusqu'à 50 matchs sur cette période.
-MAX_MATCHES = int(os.getenv("MAX_MATCHES", "50"))
+# Plus de matchs analysés = plus de chances de détecter un H2H net.
+MAX_MATCHES = int(os.getenv("MAX_MATCHES", "70"))
 
-# Nombre maximal de confrontations H2H demandées à l'API.
+# Nombre maximum de confrontations directes demandées à l'API.
 H2H_LIMIT = int(os.getenv("H2H_LIMIT", "20"))
 
 # Ignore les confrontations plus anciennes.
@@ -34,10 +34,11 @@ FD_HEADERS = {"X-Auth-Token": FD_TOKEN} if FD_TOKEN else {}
 
 SESSION = requests.Session()
 SESSION.headers.update({
-    "User-Agent": "github-actions-football-h2h/3.2"
+    "User-Agent": "github-actions-football-h2h/3.3"
 })
 
-# Offre gratuite football-data.org : environ 10 requêtes par minute.
+# Environ 10 requêtes/minute sur le plan gratuit.
+# 6,5 secondes garde une marge de sécurité.
 FD_MIN_INTERVAL = 6.5
 _last_fd_call_ts = 0.0
 
@@ -83,6 +84,22 @@ ALIASES = {
     "sporting clube de braga": "braga",
     "venezia fc": "venezia",
     "acf fiorentina": "fiorentina"
+}
+
+COMPETITION_NAMES = {
+    "BL1": "Bundesliga (Allemagne)",
+    "BSA": "Brasileirão Série A (Brésil)",
+    "CL": "Ligue des champions UEFA",
+    "CLI": "Copa Libertadores",
+    "DED": "Eredivisie (Pays-Bas)",
+    "EC": "Euro — Championnat d’Europe",
+    "ELC": "Championship (Angleterre)",
+    "FL1": "Ligue 1 (France)",
+    "PD": "LaLiga (Espagne)",
+    "PL": "Premier League (Angleterre)",
+    "PPL": "Primeira Liga (Portugal)",
+    "SA": "Serie A (Italie)",
+    "WC": "Coupe du monde FIFA"
 }
 
 
@@ -260,7 +277,7 @@ def get_upcoming_matches(competition_codes):
                 f"[WARN] Compétition {code} ignorée : {error}"
             )
 
-    # Supprime les doublons potentiels.
+    # Évite les doublons éventuels entre les réponses API.
     unique_matches = {}
 
     for match in all_matches:
@@ -270,32 +287,38 @@ def get_upcoming_matches(competition_codes):
             unique_matches[match_id] = match
 
     all_matches = list(unique_matches.values())
+
+    # Ordre chronologique avant la sélection.
     all_matches.sort(
         key=lambda item: item.get("utcDate", "")
     )
 
-    # Range les matchs par journée afin d'éviter que les premières
-    # dates remplissent toutes les places disponibles.
+    # Répartit les analyses par journée, afin qu'une seule date
+    # ne prenne pas toutes les places.
     matches_by_day = {}
 
     for match in all_matches:
         match_day = match.get("utcDate", "")[:10]
-        matches_by_day.setdefault(match_day, []).append(match)
+
+        if match_day not in matches_by_day:
+            matches_by_day[match_day] = []
+
+        matches_by_day[match_day].append(match)
 
     selected = []
     selected_ids = set()
 
-    # Aujourd'hui + DAYS_AHEAD jours = DAYS_AHEAD + 1 journées.
+    # Aujourd'hui + 7 jours = 8 journées calendaires.
     total_calendar_days = DAYS_AHEAD + 1
 
-    # Avec DAYS_AHEAD=7 et MAX_MATCHES=50 :
-    # environ 6 matchs sélectionnés d'abord pour chaque journée.
+    # Avec DAYS_AHEAD=7 et MAX_MATCHES=70 :
+    # jusqu'à 8 matchs par journée pendant la première passe.
     matches_per_day = max(
         1,
         MAX_MATCHES // total_calendar_days
     )
 
-    # Première passe : sélection équilibrée par date.
+    # Première passe : diversité par date.
     for match_day in sorted(matches_by_day):
         for match in matches_by_day[match_day][:matches_per_day]:
             match_id = match.get("id")
@@ -304,7 +327,7 @@ def get_upcoming_matches(competition_codes):
                 selected.append(match)
                 selected_ids.add(match_id)
 
-    # Seconde passe : complète avec les matchs les plus proches.
+    # Seconde passe : complète les places avec les matchs les plus proches.
     for match in all_matches:
         if len(selected) >= MAX_MATCHES:
             break
@@ -365,12 +388,16 @@ def get_h2h(match_id, date_from, date_to):
 def get_h2h_signal(total_matches, dominant_wins, dominant_losses):
     win_gap = dominant_wins - dominant_losses
 
+    # Signal vert : au moins 6 H2H et 3 victoires d'écart.
     if total_matches >= 6 and win_gap >= 3:
         return "🟢 Avantage H2H net"
 
+    # Signal jaune : au moins 6 H2H et 2 victoires d'écart.
     if total_matches >= 6 and win_gap >= 2:
         return "🟡 Avantage H2H à surveiller"
 
+    # Signal jaune possible avec un échantillon de 3 à 5 matchs,
+    # si l'écart est déjà de 2 victoires.
     if 3 <= total_matches <= 5 and win_gap >= 2:
         return "🟡 Avantage H2H à surveiller"
 
@@ -387,6 +414,7 @@ def summarize_h2h(h2h_matches, current_home, current_away):
     away_normalized = normalize_team_name(current_away)
 
     now_utc = datetime.now(timezone.utc)
+
     cutoff_utc = now_utc - timedelta(
         days=365 * H2H_YEARS_BACK
     )
@@ -414,8 +442,12 @@ def summarize_h2h(h2h_matches, current_home, current_away):
         previous_home = match.get("homeTeam", {}).get("name", "")
         previous_away = match.get("awayTeam", {}).get("name", "")
 
-        previous_home_normalized = normalize_team_name(previous_home)
-        previous_away_normalized = normalize_team_name(previous_away)
+        previous_home_normalized = normalize_team_name(
+            previous_home
+        )
+        previous_away_normalized = normalize_team_name(
+            previous_away
+        )
 
         teams_match = {
             previous_home_normalized,
@@ -478,7 +510,7 @@ def summarize_h2h(h2h_matches, current_home, current_away):
     elif away_wins > home_wins:
         dominant_team = current_away
         dominant_wins = away_wins
-        dominant_losses = away_wins
+        dominant_losses = home_wins
 
     signal = None
 
@@ -545,8 +577,7 @@ def build_rows(matches):
                 away_team
             )
 
-            # Discord, CSV et JSON ne reçoivent que les signaux
-            # jaunes ou verts.
+            # Seuls les signaux jaunes et verts sont stockés et envoyés.
             if not h2h["dominant_team"]:
                 continue
 
@@ -606,11 +637,18 @@ def render_discord_message(df):
     ]
 
     for row in df.head(15).itertuples():
+        competition_name = COMPETITION_NAMES.get(
+            row.competition,
+            row.competition
+        )
+
         lines.append("")
         lines.append(
             f"⚽ **{row.homeTeam} vs {row.awayTeam}**"
         )
-        lines.append(f"🏆 Compétition : {row.competition}")
+        lines.append(
+            f"🏆 Compétition : {competition_name}"
+        )
         lines.append(
             f"🗓️ Coup d’envoi : {row.date_local} à {row.time_local}"
         )
