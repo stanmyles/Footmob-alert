@@ -2,51 +2,79 @@ name: Alerte Football 12 BTTS vers Discord
 
 on:
   schedule:
-    # GitHub Actions utilise UTC.
-    # 07:25 UTC = 09:25 à Paris pendant l'heure d'été.
-    # En hiver, l'exécution se fera à 08:25 heure de Paris.
-    - cron: "25 7 * * *"
+    # Tous les jours à 12:35 UTC.
+    # France : 14:35 en été / 13:35 en hiver.
+    # Ton bot H2H démarre à 12:00 UTC : on laisse 35 minutes d'écart.
+    - cron: "35 12 * * *"
 
+  # Permet un lancement manuel depuis GitHub > Actions.
   workflow_dispatch:
     inputs:
       target_date:
-        description: "Date à analyser : YYYY-MM-DD. Vide = aujourd'hui."
+        description: "Date à analyser : YYYY-MM-DD. Vide = aujourd'hui + demain."
         required: false
         default: ""
 
 permissions:
+  # Le bot lit seulement les fichiers du dépôt.
   contents: read
 
 jobs:
   analyse-12-btts:
+    name: Analyse 12 plus BTTS
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+
+    # Le bot attend entre les appels API pour respecter football-data.org.
+    timeout-minutes: 25
 
     steps:
       - name: Récupérer le dépôt
         uses: actions/checkout@v4
 
-      - name: Installer Python
+      - name: Installer Python 3.11
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.11"
           cache: pip
+          cache-dependency-path: requirements.txt
 
       - name: Installer les dépendances Python
-        run: pip install -r requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Vérifier les fichiers du dépôt
+        run: |
+          echo "=== Dossier courant ==="
+          pwd
+          echo "=== Fichiers du dépôt ==="
+          find . -maxdepth 3 -type f | sort
 
       - name: Lancer le bot 12 plus BTTS
         env:
-          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+          # Même token football-data.org que ton bot H2H existant.
+          FOOTBALL_DATA_API_TOKEN: ${{ secrets.FOOTBALL_DATA_API_TOKEN }}
+
+          # Même webhook que ton bot H2H.
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
-          # Réglages du filtre
-          LOOKBACK_FIXTURES: "20"
-          MIN_COMPARABLE_MATCHES: "5"
-          MIN_SCORE: "80"
-          MAX_CANDIDATES: "8"
+          # Analyse aujourd'hui et demain.
+          DAYS_AHEAD: "1"
 
-          # Date renseignée seulement lors d'un lancement manuel.
+          # Récupère les 10 derniers matchs domicile / extérieur par équipe.
+          LOOKBACK_MATCHES: "10"
+
+          # Minimum de résultats comparables pour garder une équipe.
+          MIN_COMPARABLE_MATCHES: "5"
+
+          # Score minimum sur 100 pour envoyer un match sur Discord.
+          MIN_SCORE: "80"
+
+          # Maximum de matchs affichés dans Discord.
+          MAX_CANDIDATES: "6"
+
+          # Date définie uniquement lors d'un lancement manuel.
+          # Vide = aujourd'hui + demain.
           TARGET_DATE: ${{ github.event.inputs.target_date || '' }}
 
         run: python bot_12_btts.py
