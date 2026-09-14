@@ -1,0 +1,52 @@
+name: Alerte Football 12 BTTS vers Discord
+
+on:
+  schedule:
+    # GitHub Actions utilise UTC.
+    # 07:25 UTC = 09:25 à Paris pendant l'heure d'été.
+    # En hiver, l'exécution se fera à 08:25 heure de Paris.
+    - cron: "25 7 * * *"
+
+  workflow_dispatch:
+    inputs:
+      target_date:
+        description: "Date à analyser : YYYY-MM-DD. Vide = aujourd'hui."
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  analyse-12-btts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+
+      - name: Installer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Installer les dépendances Python
+        run: pip install -r requirements.txt
+
+      - name: Lancer le bot 12 plus BTTS
+        env:
+          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+          # Réglages du filtre
+          LOOKBACK_FIXTURES: "20"
+          MIN_COMPARABLE_MATCHES: "5"
+          MIN_SCORE: "80"
+          MAX_CANDIDATES: "8"
+
+          # Date renseignée seulement lors d'un lancement manuel.
+          TARGET_DATE: ${{ github.event.inputs.target_date || '' }}
+
+        run: python bot_12_btts.py
