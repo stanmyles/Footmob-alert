@@ -1,46 +1,57 @@
-name: Alerte Football 1 ou 2 + BTTS vers Discord
+name: Alerte Football 12 + BTTS Oui vers Discord
 
 on:
   schedule:
-    # Tous les jours à 12:35 UTC.
-    # En France :
-    # - 14:35 en période d'heure d'été
-    # - 13:35 en période d'heure d'hiver
+    # Exécution chaque jour à 12:35 UTC.
+    #
+    # Heure France :
+    # - 14:35 pendant l'heure d'été
+    # - 13:35 pendant l'heure d'hiver
+    #
+    # GitHub Actions interprète normalement cron en UTC.
     - cron: "35 12 * * *"
 
-  # Permet de lancer le bot à la main depuis GitHub > Actions.
+  # Permet de tester le bot manuellement :
+  # GitHub > Actions > Alerte Football 12 + BTTS Oui vers Discord
+  # > Run workflow.
   workflow_dispatch:
     inputs:
       target_date:
         description: "Date à analyser (YYYY-MM-DD). Vide = aujourd'hui + demain."
         required: false
         default: ""
+        type: string
 
       min_score:
-        description: "Score minimal des profils retenus. Vide = 65."
+        description: "Score minimal pour les profils retenus. Vide = 60."
         required: false
         default: ""
+        type: string
 
       days_ahead:
-        description: "Nombre de jours après aujourd'hui. 1 = aujourd'hui + demain."
+        description: "Nombre de jours à analyser après aujourd'hui. 1 = aujourd'hui + demain."
         required: false
         default: ""
+        type: string
 
 permissions:
+  # Le workflow a uniquement besoin de lire les fichiers du dépôt.
   contents: read
 
-# Empêche deux analyses simultanées si une analyse est encore en cours.
+# Empêche deux analyses identiques de tourner en même temps.
+# Si le bot est encore en cours quand le prochain lancement arrive,
+# le nouveau lancement reste en attente.
 concurrency:
   group: football-12-btts
   cancel-in-progress: false
 
 jobs:
   analyse-12-btts:
-    name: Analyse 1 ou 2 plus BTTS
+    name: Analyse 12 + BTTS Oui
     runs-on: ubuntu-latest
 
-    # L'analyse peut être longue si beaucoup de matchs sont disponibles
-    # et que l'API impose une attente entre chaque appel.
+    # Le script attend volontairement entre les appels API.
+    # 55 minutes limite le risque de coupure sur un calendrier chargé.
     timeout-minutes: 55
 
     steps:
@@ -66,37 +77,76 @@ jobs:
           echo "=== Fichiers du dépôt ==="
           find . -maxdepth 3 -type f | sort
 
-      - name: Lancer le bot 1 ou 2 plus BTTS
+      - name: Lancer le bot 12 + BTTS Oui
         env:
-          # Secrets à créer dans :
-          # Settings > Secrets and variables > Actions > Repository secrets
+          # Secrets obligatoires.
+          #
+          # GitHub > Settings > Secrets and variables > Actions
+          # > Repository secrets
+          #
+          # Secret 1 : FOOTBALL_DATA_API_TOKEN
+          # Secret 2 : DISCORD_WEBHOOK_URL
           FOOTBALL_DATA_API_TOKEN: ${{ secrets.FOOTBALL_DATA_API_TOKEN }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
-          # Période par défaut :
-          # 1 = aujourd'hui + demain.
-          DAYS_AHEAD: ${{ github.event.inputs.days_ahead || '1' }}
+          # --------------------------------------------------
+          # PERIODE ANALYSEE
+          # --------------------------------------------------
 
-          # Historique utilisé pour les statistiques comparables.
+          # 1 = aujourd'hui + demain.
+          # Lors d'un lancement manuel, la valeur saisie dans
+          # "days_ahead" remplace la valeur par défaut.
+          DAYS_AHEAD: ${{ inputs.days_ahead || '1' }}
+
+          # Lors d'un lancement manuel :
+          # - renseigne 2026-09-17 pour analyser seulement le 17/09/2026 ;
+          # - laisse vide pour analyser aujourd'hui + demain.
+          TARGET_DATE: ${{ inputs.target_date || '' }}
+
+          # --------------------------------------------------
+          # HISTORIQUE STATISTIQUE
+          # --------------------------------------------------
+
+          # Récupère les 10 derniers matchs comparables :
+          # - domicile pour l'équipe qui reçoit ;
+          # - extérieur pour l'équipe qui se déplace.
           LOOKBACK_MATCHES: "10"
 
-          # Minimum de matchs domicile / extérieur disponibles.
+          # Une équipe doit disposer d'au moins cinq matchs
+          # comparables avant d'être analysée.
           MIN_COMPARABLE_MATCHES: "5"
 
-          # Seuil principal.
-          # 65 conseillé pour obtenir plus de profils,
-          # sans retenir presque tous les matchs.
-          MIN_SCORE: ${{ github.event.inputs.min_score || '65' }}
+          # --------------------------------------------------
+          # FILTRE 12 + BTTS OUI
+          # --------------------------------------------------
 
-          # Limites d'affichage Discord.
-          MAX_CANDIDATES: "5"
-          MAX_WATCHLIST: "3"
+          # 60/100 est le seuil conseillé pour ton filtre simplifié :
+          #
+          # - BTTS domicile >= 60 % ;
+          # - BTTS extérieur >= 50 % ;
+          # - domicile marque >= 70 % ;
+          # - extérieur marque >= 70 % ;
+          # - moyenne des nuls <= 30 %.
+          #
+          # Lors d'un lancement manuel, tu peux saisir :
+          # - 55 : plus de matchs, filtre plus large ;
+          # - 60 : réglage conseillé ;
+          # - 70 : beaucoup plus sélectif.
+          MIN_SCORE: ${{ inputs.min_score || '60' }}
 
-          # Délai volontaire entre deux appels à football-data.org.
+          # Nombre maximal de matchs qualifiés affichés sur Discord.
+          MAX_CANDIDATES: "6"
+
+          # Même s'il n'y a aucun match qualifié, le bot affiche
+          # les quatre meilleurs scores sous le seuil.
+          MAX_WATCHLIST: "4"
+
+          # --------------------------------------------------
+          # PROTECTION API FOOTBALL-DATA.ORG
+          # --------------------------------------------------
+
+          # Attente minimale entre deux requêtes API.
+          # Ne pas réduire sans connaître les limites de ton forfait.
           FD_MIN_INTERVAL: "6.5"
-
-          # Utilisé seulement pour un lancement manuel.
-          # Vide = aujourd'hui + demain.
-          TARGET_DATE: ${{ github.event.inputs.target_date || '' }}
 
         run: python bot_12_btts.py
