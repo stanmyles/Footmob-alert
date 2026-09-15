@@ -1,31 +1,45 @@
-name: Alerte Football 12 BTTS vers Discord
+name: Alerte Football 1 ou 2 + BTTS vers Discord
 
 on:
   schedule:
     # Tous les jours à 12:35 UTC.
-    # France : 14:35 en été / 13:35 en hiver.
-    # Ton bot H2H démarre à 12:00 UTC : on laisse 35 minutes d'écart.
+    # France métropolitaine :
+    # - 14:35 pendant l'heure d'été (CEST)
+    # - 13:35 pendant l'heure d'hiver (CET)
     - cron: "35 12 * * *"
 
-  # Permet un lancement manuel depuis GitHub > Actions.
   workflow_dispatch:
     inputs:
       target_date:
-        description: "Date à analyser : YYYY-MM-DD. Vide = aujourd'hui + demain."
+        description: "Date à analyser (YYYY-MM-DD). Vide = aujourd'hui + demain."
+        required: false
+        default: ""
+
+      min_score:
+        description: "Seuil d'alerte principal. Vide = 70."
+        required: false
+        default: ""
+
+      days_ahead:
+        description: "Jours après aujourd'hui à analyser. 1 = aujourd'hui + demain."
         required: false
         default: ""
 
 permissions:
-  # Le bot lit seulement les fichiers du dépôt.
   contents: read
+
+concurrency:
+  group: football-12-btts
+  cancel-in-progress: false
 
 jobs:
   analyse-12-btts:
-    name: Analyse 12 plus BTTS
+    name: Analyse 1 ou 2 plus BTTS
     runs-on: ubuntu-latest
 
-    # Le bot attend entre les appels API pour respecter football-data.org.
-    timeout-minutes: 25
+    # Avec 6,5 secondes d'attente entre les appels API,
+    # 25 minutes peut être insuffisant si beaucoup de matchs sont analysés.
+    timeout-minutes: 55
 
     steps:
       - name: Récupérer le dépôt
@@ -50,31 +64,39 @@ jobs:
           echo "=== Fichiers du dépôt ==="
           find . -maxdepth 3 -type f | sort
 
-      - name: Lancer le bot 12 plus BTTS
+      - name: Lancer le bot 1 ou 2 plus BTTS
         env:
-          # Même token football-data.org que ton bot H2H existant.
           FOOTBALL_DATA_API_TOKEN: ${{ secrets.FOOTBALL_DATA_API_TOKEN }}
-
-          # Même webhook que ton bot H2H.
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
-          # Analyse aujourd'hui et demain.
-          DAYS_AHEAD: "1"
+          # Aujourd'hui et demain automatiquement.
+          # Lors d'un lancement manuel, la valeur saisie dans
+          # "days_ahead" remplace la valeur 1.
+          DAYS_AHEAD: ${{ github.event.inputs.days_ahead || '1' }}
 
-          # Récupère les 10 derniers matchs domicile / extérieur par équipe.
+          # Historique domicile ou extérieur par équipe.
           LOOKBACK_MATCHES: "10"
 
-          # Minimum de résultats comparables pour garder une équipe.
+          # Le bot ignore les équipes avec trop peu de données comparables.
           MIN_COMPARABLE_MATCHES: "5"
 
-          # Score minimum sur 100 pour envoyer un match sur Discord.
-          MIN_SCORE: "80"
+          # Seuil des vrais candidats.
+          # 70 conseillé pour démarrer.
+          MIN_SCORE: ${{ github.event.inputs.min_score || '70' }}
 
-          # Maximum de matchs affichés dans Discord.
+          # Affichage Discord.
           MAX_CANDIDATES: "6"
+          MAX_WATCHLIST: "3"
 
-          # Date définie uniquement lors d'un lancement manuel.
-          # Vide = aujourd'hui + demain.
+          # Les scores 60 à 69 sont affichés comme "à surveiller",
+          # mais ne sont pas présentés comme sélection validée.
+          WATCHLIST_MIN_SCORE: "60"
+
+          # 6,5 s évite de surcharger l'API.
+          FD_MIN_INTERVAL: "6.5"
+
+          # Vide en exécution programmée.
+          # Peut être saisi à la main dans Actions > Run workflow.
           TARGET_DATE: ${{ github.event.inputs.target_date || '' }}
 
         run: python bot_12_btts.py
