@@ -18,47 +18,43 @@ PARIS_TZ = ZoneInfo("Europe/Paris")
 FD_TOKEN = os.getenv("FOOTBALL_DATA_API_TOKEN", "").strip()
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "").strip()
 
-# Analyse aujourd'hui + les DAYS_AHEAD jours suivants.
-# DAYS_AHEAD = 1 = aujourd'hui et demain.
+# DAYS_AHEAD = 1 : analyse aujourd'hui et demain.
 DAYS_AHEAD = int(os.getenv("DAYS_AHEAD", "1"))
 
-# Nombre de résultats récents comparables par équipe.
-# Domicile pour l'équipe qui reçoit, extérieur pour l'adversaire.
+# Nombre de résultats domicile / extérieur analysés par équipe.
 LOOKBACK_MATCHES = int(os.getenv("LOOKBACK_MATCHES", "10"))
 
-# Minimum de matchs comparables réellement exploitables.
+# Une équipe doit avoir au moins ce nombre de résultats comparables.
 MIN_COMPARABLE_MATCHES = int(
     os.getenv("MIN_COMPARABLE_MATCHES", "5")
 )
 
-# Seuil principal conseillé avec ce nouveau score.
-# 70 = alertes intéressantes.
-# 75 = plus sélectif.
-# 80 = très strict et donc peu d'alertes.
-MIN_SCORE = int(os.getenv("MIN_SCORE", "70"))
+# Seuil des alertes principales.
+# 65 : plus de profils, tout en restant filtré.
+# 70 : plus sélectif.
+# 75+ : très sélectif.
+MIN_SCORE = int(os.getenv("MIN_SCORE", "65"))
 
-# Nombre maximal de matchs retenus dans le message Discord.
-MAX_CANDIDATES = int(os.getenv("MAX_CANDIDATES", "6"))
+# Nombre maximum de profils validés envoyés dans Discord.
+MAX_CANDIDATES = int(os.getenv("MAX_CANDIDATES", "5"))
 
-# Nombre de matchs "à surveiller" affichés sous le seuil.
+# Nombre maximum de meilleurs matchs sous le seuil à afficher.
+# Ils seront toujours affichés s'il existe des matchs analysés.
 MAX_WATCHLIST = int(os.getenv("MAX_WATCHLIST", "3"))
 
-# Score minimal pour la liste "à surveiller".
-WATCHLIST_MIN_SCORE = int(
-    os.getenv("WATCHLIST_MIN_SCORE", "60")
-)
-
-# Facultatif, utile pour le test manuel GitHub Actions.
-# Exemple : 2026-09-15
+# Facultatif : analyse une date précise en lancement manuel.
+# Exemple : TARGET_DATE = 2026-09-15
 TARGET_DATE = os.getenv("TARGET_DATE", "").strip()
 
-# Intervalle minimum entre deux appels football-data.org.
+# Délai minimal entre les appels football-data.org.
+# 6,5 secondes est volontairement prudent.
 FD_MIN_INTERVAL = float(os.getenv("FD_MIN_INTERVAL", "6.5"))
+
 last_api_call = 0.0
 
 session = requests.Session()
 session.headers.update({
-    "User-Agent": "github-actions-football-12-btts/2.0",
+    "User-Agent": "github-actions-football-12-btts/3.0",
     "Accept": "application/json",
 })
 
@@ -68,7 +64,7 @@ session.headers.update({
 # ============================================================
 
 def throttle():
-    """Respecte l'intervalle minimal entre les appels API."""
+    """Attend si nécessaire avant un nouvel appel API."""
     global last_api_call
 
     now = time.time()
@@ -82,11 +78,11 @@ def throttle():
 
 def api_get(endpoint, params=None, retries=3):
     """
-    Exécute une requête GET vers football-data.org avec :
-    - token X-Auth-Token ;
-    - limitation volontaire des appels ;
-    - reprise sur erreur réseau ;
-    - reprise spécifique après HTTP 429.
+    Requête GET football-data.org avec :
+    - authentification X-Auth-Token ;
+    - attente entre les appels ;
+    - reprise après erreur réseau ;
+    - reprise après erreur HTTP 429.
     """
     url = f"{BASE_FD}{endpoint}"
     last_error = None
@@ -120,11 +116,10 @@ def api_get(endpoint, params=None, retries=3):
                     ""
                 )
 
-                delay = (
-                    int(retry_after)
-                    if retry_after.isdigit()
-                    else (attempt + 1) * 20
-                )
+                if retry_after.isdigit():
+                    delay = int(retry_after)
+                else:
+                    delay = (attempt + 1) * 20
 
                 print(
                     f"[WARN] Limite API atteinte (HTTP 429). "
@@ -157,16 +152,18 @@ def api_get(endpoint, params=None, retries=3):
 
 
 # ============================================================
-# RECUPERATION DES MATCHS
+# DATES ET MATCHS A VENIR
 # ============================================================
 
 def get_target_dates():
     """
-    Retourne les dates à analyser.
+    Retourne les dates analysées.
 
-    TARGET_DATE :
-    - renseigné : analyse seulement cette date ;
-    - vide : analyse aujourd'hui et les jours suivants.
+    TARGET_DATE renseigné :
+    - analyse uniquement cette date.
+
+    TARGET_DATE vide :
+    - analyse aujourd'hui et les DAYS_AHEAD jours suivants.
     """
     if TARGET_DATE:
         try:
@@ -179,7 +176,7 @@ def get_target_dates():
 
         except ValueError as error:
             raise ValueError(
-                "TARGET_DATE doit respecter le format YYYY-MM-DD."
+                "TARGET_DATE doit être au format YYYY-MM-DD."
             ) from error
 
     today = datetime.now(PARIS_TZ).date()
@@ -191,7 +188,7 @@ def get_target_dates():
 
 
 def get_available_competitions():
-    """Récupère les compétitions accessibles avec le token API."""
+    """Récupère les compétitions accessibles avec ton token."""
     data = api_get("/competitions")
 
     codes = sorted({
@@ -210,7 +207,7 @@ def get_available_competitions():
 
 def get_upcoming_matches(competition_codes, dates):
     """
-    Récupère les matchs SCHEDULED ou TIMED pour la période choisie.
+    Récupère les matchs SCHEDULED et TIMED pendant la période.
     """
     date_from = min(dates).isoformat()
     date_to = max(dates).isoformat()
@@ -243,6 +240,7 @@ def get_upcoming_matches(competition_codes, dates):
                     continue
 
                 match["_competition_code"] = competition_code
+
                 matches.append(match)
                 seen_match_ids.add(match_id)
                 count += 1
@@ -258,17 +256,19 @@ def get_upcoming_matches(competition_codes, dates):
                 f"{error}"
             )
 
-    matches.sort(key=lambda match: match.get("utcDate", ""))
+    matches.sort(
+        key=lambda match: match.get("utcDate", "")
+    )
 
     return matches
 
 
 def get_team_finished_matches(team_id, venue):
     """
-    Récupère les derniers matchs terminés comparables.
+    Récupère les derniers matchs terminés comparables :
 
-    venue='HOME' : seulement les matchs à domicile.
-    venue='AWAY' : seulement les matchs à l'extérieur.
+    - HOME : résultats à domicile uniquement ;
+    - AWAY : résultats à l'extérieur uniquement.
     """
     data = api_get(
         f"/teams/{team_id}/matches",
@@ -290,11 +290,11 @@ def get_team_finished_matches(team_id, venue):
 
 
 # ============================================================
-# STATISTIQUES EQUIPE
+# CALCUL DES STATISTIQUES
 # ============================================================
 
 def get_full_time_goals(match):
-    """Extrait le score final d'un match ou renvoie (None, None)."""
+    """Retourne les buts finaux domicile/extérieur ou (None, None)."""
     full_time = match.get("score", {}).get("fullTime", {})
 
     home_goals = full_time.get("home")
@@ -308,15 +308,15 @@ def get_full_time_goals(match):
 
 def team_stats(matches, team_id):
     """
-    Calcule les statistiques d'une équipe sur ses matchs comparables :
+    Calcule les statistiques d'une équipe à partir de ses matchs
+    comparables domicile ou extérieur.
 
+    Statistiques calculées :
     - BTTS ;
-    - équipe qui marque ;
-    - équipe qui encaisse ;
-    - victoire, nul, défaite ;
-    - moyenne de buts marqués et encaissés.
-
-    Les matchs fournis sont déjà filtrés HOME ou AWAY.
+    - l'équipe marque ;
+    - l'équipe encaisse ;
+    - victoire / nul / défaite ;
+    - buts marqués et encaissés par match.
     """
     rows = []
 
@@ -379,33 +379,38 @@ def team_stats(matches, team_id):
 
 
 # ============================================================
-# SCORE 1 + BTTS / 2 + BTTS
+# SCORE 1 + BTTS OUI / 2 + BTTS OUI
 # ============================================================
 
-def calculate_side_score(
-    winner_stats,
-    opponent_stats,
-    winner_side
-):
+def calculate_side_score(winner_stats, opponent_stats, winner_side):
     """
-    Calcule un score pour une équipe susceptible de gagner,
-    avec BTTS Oui.
+    Calcule le score du scénario où une équipe précise gagne
+    et les deux équipes marquent.
 
-    winner_stats : statistiques de l'équipe censée gagner.
-    opponent_stats : statistiques de l'adversaire.
-    winner_side : 'HOME' ou 'AWAY'.
+    winner_stats :
+    statistiques de l'équipe supposée gagner.
+
+    opponent_stats :
+    statistiques de l'équipe adverse.
+
+    winner_side :
+    HOME ou AWAY.
     """
     score = 0
     signals = []
 
     side_label = "domicile" if winner_side == "HOME" else "extérieur"
+
     opponent_label = (
-        "extérieur" if winner_side == "HOME" else "domicile"
+        "extérieur"
+        if winner_side == "HOME"
+        else "domicile"
     )
 
-    # --------------------------------------------------------
-    # 1. L'équipe supposée gagner doit marquer régulièrement.
-    # --------------------------------------------------------
+    # ========================================================
+    # 1. L'équipe supposée gagner doit marquer.
+    # ========================================================
+
     if winner_stats["scored_pct"] >= 80:
         score += 15
         signals.append(
@@ -421,19 +426,21 @@ def calculate_side_score(
     if winner_stats["goals_for_avg"] >= 1.60:
         score += 8
         signals.append(
-            f"{side_label} {winner_stats['goals_for_avg']} but(s) marqué(s)"
+            f"{side_label} marque "
+            f"{winner_stats['goals_for_avg']} but(s)/match"
         )
 
     elif winner_stats["goals_for_avg"] >= 1.30:
         score += 4
         signals.append(
-            f"{side_label} {winner_stats['goals_for_avg']} but(s) marqué(s)"
+            f"{side_label} marque "
+            f"{winner_stats['goals_for_avg']} but(s)/match"
         )
 
-    # --------------------------------------------------------
-    # 2. L'adversaire doit avoir une vraie capacité à marquer.
-    # Cela protège la partie BTTS Oui.
-    # --------------------------------------------------------
+    # ========================================================
+    # 2. L'adversaire doit pouvoir marquer : BTTS Oui.
+    # ========================================================
+
     if opponent_stats["scored_pct"] >= 75:
         score += 15
         signals.append(
@@ -451,15 +458,22 @@ def calculate_side_score(
     if opponent_stats["goals_for_avg"] >= 1.10:
         score += 6
         signals.append(
-            f"{opponent_label} "
-            f"{opponent_stats['goals_for_avg']} but(s) marqué(s)"
+            f"{opponent_label} marque "
+            f"{opponent_stats['goals_for_avg']} but(s)/match"
         )
 
-    # --------------------------------------------------------
-    # 3. BTTS observé dans les historiques comparables.
-    # --------------------------------------------------------
+    # ========================================================
+    # 3. BTTS observé dans les matchs comparables.
+    # ========================================================
+
     if winner_stats["btts_pct"] >= 60:
         score += 8
+        signals.append(
+            f"BTTS {side_label} {winner_stats['btts_pct']} %"
+        )
+
+    elif winner_stats["btts_pct"] >= 50:
+        score += 4
         signals.append(
             f"BTTS {side_label} {winner_stats['btts_pct']} %"
         )
@@ -467,12 +481,21 @@ def calculate_side_score(
     if opponent_stats["btts_pct"] >= 55:
         score += 8
         signals.append(
-            f"BTTS {opponent_label} {opponent_stats['btts_pct']} %"
+            f"BTTS {opponent_label} "
+            f"{opponent_stats['btts_pct']} %"
         )
 
-    # --------------------------------------------------------
-    # 4. L'adversaire doit concéder suffisamment.
-    # --------------------------------------------------------
+    elif opponent_stats["btts_pct"] >= 50:
+        score += 4
+        signals.append(
+            f"BTTS {opponent_label} "
+            f"{opponent_stats['btts_pct']} %"
+        )
+
+    # ========================================================
+    # 4. L'adversaire concède pour laisser une chance au vainqueur.
+    # ========================================================
+
     if opponent_stats["conceded_pct"] >= 70:
         score += 8
         signals.append(
@@ -490,13 +513,14 @@ def calculate_side_score(
     if opponent_stats["goals_against_avg"] >= 1.30:
         score += 5
         signals.append(
-            f"{opponent_label} "
-            f"{opponent_stats['goals_against_avg']} but(s) encaissé(s)"
+            f"{opponent_label} encaisse "
+            f"{opponent_stats['goals_against_avg']} but(s)/match"
         )
 
-    # --------------------------------------------------------
-    # 5. Signal victoire pour l'équipe choisie.
-    # --------------------------------------------------------
+    # ========================================================
+    # 5. Signal de victoire.
+    # ========================================================
+
     if winner_stats["win_pct"] >= 60:
         score += 15
         signals.append(
@@ -509,7 +533,6 @@ def calculate_side_score(
             f"{side_label} gagne {winner_stats['win_pct']} %"
         )
 
-    # L'adversaire perd régulièrement dans le même contexte.
     if opponent_stats["loss_pct"] >= 50:
         score += 8
         signals.append(
@@ -522,9 +545,10 @@ def calculate_side_score(
             f"{opponent_label} perd {opponent_stats['loss_pct']} %"
         )
 
-    # --------------------------------------------------------
-    # 6. Protection contre les nuls.
-    # --------------------------------------------------------
+    # ========================================================
+    # 6. Protection contre le nul.
+    # ========================================================
+
     average_draw_pct = (
         winner_stats["draw_pct"] + opponent_stats["draw_pct"]
     ) / 2
@@ -546,12 +570,12 @@ def calculate_side_score(
 
 def calculate_score(home_stats, away_stats):
     """
-    Compare les deux scénarios :
+    Compare les deux options :
 
-    - 1 + BTTS Oui : équipe domicile gagne + BTTS Oui.
-    - 2 + BTTS Oui : équipe extérieure gagne + BTTS Oui.
+    - 1 + BTTS Oui : domicile gagne et les deux équipes marquent.
+    - 2 + BTTS Oui : extérieur gagne et les deux équipes marquent.
 
-    Le script conserve le sens ayant le meilleur score.
+    La meilleure des deux options est retournée.
     """
     home_score, home_signals, home_draw_avg = calculate_side_score(
         winner_stats=home_stats,
@@ -586,11 +610,11 @@ def calculate_score(home_stats, away_stats):
 
 
 # ============================================================
-# ANALYSE DES MATCHS
+# ANALYSE D'UN MATCH
 # ============================================================
 
 def to_paris_time(utc_date):
-    """Convertit une date UTC football-data.org vers Paris."""
+    """Convertit la date UTC de l'API vers l'heure de Paris."""
     utc_datetime = datetime.fromisoformat(
         utc_date.replace("Z", "+00:00")
     )
@@ -600,13 +624,13 @@ def to_paris_time(utc_date):
 
 def analyze_match(match, cache):
     """
-    Analyse une affiche et retourne son meilleur profil :
+    Analyse un match avec :
+    - forme domicile de l'équipe qui reçoit ;
+    - forme extérieure de l'équipe visiteuse ;
+    - comparaison 1 + BTTS et 2 + BTTS.
 
-    - 1 + BTTS Oui ;
-    - ou 2 + BTTS Oui.
-
-    Retourne un résultat même sous MIN_SCORE afin de permettre
-    l'affichage des matchs "à surveiller".
+    Un résultat est renvoyé même sous le seuil afin de pouvoir
+    afficher les meilleurs matchs dans la section "à surveiller".
     """
     home_team = match.get("homeTeam", {})
     away_team = match.get("awayTeam", {})
@@ -650,11 +674,11 @@ def analyze_match(match, cache):
         or away_stats["matches"] < MIN_COMPARABLE_MATCHES
     ):
         print(
-            "[INFO] Pas assez de résultats comparables : "
+            "[INFO] Pas assez de données comparables : "
             f"{home_team.get('name', 'Domicile')} "
-            f"({home_stats['matches']}) / "
+            f"({home_stats['matches']} match(s) domicile) / "
             f"{away_team.get('name', 'Extérieur')} "
-            f"({away_stats['matches']})."
+            f"({away_stats['matches']} match(s) extérieur)."
         )
         return None
 
@@ -702,7 +726,7 @@ def analyze_match(match, cache):
 # ============================================================
 
 def short_stats(label, stats):
-    """Construit une ligne courte de statistiques pour Discord."""
+    """Construit un résumé statistique court pour Discord."""
     return (
         f"**{label}** ({stats['matches']} matchs) — "
         f"V {stats['win_pct']} % | "
@@ -714,13 +738,13 @@ def short_stats(label, stats):
     )
 
 
-def candidate_lines(index, candidate, title_prefix=""):
-    """Construit les lignes Discord d'un match analysé."""
+def candidate_lines(index, candidate, prefix=""):
+    """Construit les lignes Discord associées à une rencontre."""
     signals = " • ".join(candidate["signals"])
 
     return [
         (
-            f"**{title_prefix}{index}. "
+            f"**{prefix}{index}. "
             f"{candidate['home']} vs {candidate['away']} — "
             f"Score {candidate['score']}/100**"
         ),
@@ -731,7 +755,8 @@ def candidate_lines(index, candidate, title_prefix=""):
             "heure Paris"
         ),
         (
-            f"📊 Comparaison : 1 + BTTS {candidate['home_score']}/100 | "
+            f"📊 Comparaison : "
+            f"1 + BTTS {candidate['home_score']}/100 | "
             f"2 + BTTS {candidate['away_score']}/100 | "
             f"nuls moyens {candidate['average_draw_pct']} %"
         ),
@@ -744,16 +769,14 @@ def candidate_lines(index, candidate, title_prefix=""):
 
 def build_discord_message(candidates, watchlist, dates):
     """
-    Construit le message Discord.
+    Construit le message final envoyé à Discord.
 
     candidates :
-    - score >= MIN_SCORE ;
-    - vrais candidats statistiques.
+    profils ayant un score >= MIN_SCORE.
 
     watchlist :
-    - score inférieur à MIN_SCORE ;
-    - mais score >= WATCHLIST_MIN_SCORE ;
-    - affichés seulement pour suivi, pas comme sélection validée.
+    meilleurs profils sous le seuil, affichés pour analyse,
+    même lorsqu'ils ont un score inférieur à 60.
     """
     first_date = min(dates).strftime("%d/%m/%Y")
     last_date = max(dates).strftime("%d/%m/%Y")
@@ -763,16 +786,6 @@ def build_discord_message(candidates, watchlist, dates):
     else:
         date_text = f"{first_date} au {last_date}"
 
-    if not candidates and not watchlist:
-        return (
-            "⚠️ **Alerte Football — 1/2 + BTTS Oui**\n"
-            f"📅 Période analysée : {date_text}\n\n"
-            "Aucun match ne présente un profil statistique suffisant.\n"
-            "Ne pas forcer une sélection est une bonne décision.\n\n"
-            "ℹ️ Le score est un filtre statistique : "
-            "il ne garantit aucun résultat."
-        )
-
     lines = [
         "📊 **Alerte Football — 1/2 + BTTS Oui**",
         f"📅 Période analysée : {date_text}",
@@ -780,43 +793,58 @@ def build_discord_message(candidates, watchlist, dates):
             "🎯 Marché analysé : une équipe précise gagne "
             "+ les deux équipes marquent."
         ),
-        f"✅ Seuil principal : {MIN_SCORE}/100",
+        f"✅ Seuil d'alerte principale : {MIN_SCORE}/100",
         "",
     ]
 
     if candidates:
-        lines.append("✅ **Profils retenus**")
-        lines.append("")
+        lines.extend([
+            "✅ **Profils retenus**",
+            "",
+        ])
 
         for index, candidate in enumerate(candidates, start=1):
-            lines.extend(candidate_lines(index, candidate))
+            lines.extend(
+                candidate_lines(index, candidate)
+            )
 
     else:
         lines.extend([
-            "⚠️ **Aucun profil ne dépasse le seuil principal.**",
+            "⚠️ **Aucun match ne dépasse le seuil principal.**",
+            "Les meilleurs profils sous le seuil sont affichés ci-dessous.",
             "",
         ])
 
     if watchlist:
         lines.extend([
-            "👀 **Matchs à surveiller — non validés**",
+            "👀 **Meilleurs matchs à surveiller — non validés**",
             (
-                f"Scores entre {WATCHLIST_MIN_SCORE}/100 "
-                f"et {MIN_SCORE - 1}/100."
+                "Ces matchs sont les meilleurs scores disponibles "
+                "sous le seuil principal."
             ),
-            "Ils demandent une vérification renforcée avant toute décision.",
+            "Ils demandent une analyse des cotes, absences et compositions.",
             "",
         ])
 
         for index, candidate in enumerate(watchlist, start=1):
             lines.extend(
-                candidate_lines(index, candidate, title_prefix="👀 ")
+                candidate_lines(
+                    index,
+                    candidate,
+                    prefix="👀 "
+                )
             )
 
+    elif not candidates:
+        lines.extend([
+            "Aucun match n'a pu être analysé avec suffisamment de données.",
+            "",
+        ])
+
     lines.extend([
-        "ℹ️ Vérifie impérativement les cotes, absences, rotations, "
-        "blessures et compositions avant le coup d'envoi.",
-        "Le filtre statistique ne garantit aucun résultat."
+        "ℹ️ Vérifie les cotes, les absences, les rotations, "
+        "les blessures et les compositions avant le coup d'envoi.",
+        "Le score est un filtre statistique : il ne garantit aucun résultat."
     ])
 
     return "\n".join(lines)
@@ -824,8 +852,8 @@ def build_discord_message(candidates, watchlist, dates):
 
 def split_message(message, max_length=1900):
     """
-    Découpe proprement un message Discord sans couper un mot
-    lorsque cela est possible.
+    Découpe le message pour respecter la limite Discord,
+    en privilégiant les retours à la ligne.
     """
     chunks = []
     remaining = message.strip()
@@ -839,7 +867,10 @@ def split_message(message, max_length=1900):
         if split_at <= 0:
             split_at = max_length
 
-        chunks.append(remaining[:split_at].strip())
+        chunks.append(
+            remaining[:split_at].strip()
+        )
+
         remaining = remaining[split_at:].strip()
 
     if remaining:
@@ -849,7 +880,7 @@ def split_message(message, max_length=1900):
 
 
 def send_to_discord(message):
-    """Envoie le message Discord, éventuellement en plusieurs parties."""
+    """Envoie un ou plusieurs messages vers le webhook Discord."""
     if not DISCORD_WEBHOOK_URL:
         raise RuntimeError("Secret DISCORD_WEBHOOK_URL manquant.")
 
@@ -880,6 +911,7 @@ def send_to_discord(message):
 # ============================================================
 
 def main():
+    """Exécute l'analyse, crée le message Discord et l'envoie."""
     if not FD_TOKEN:
         raise RuntimeError(
             "Le secret FOOTBALL_DATA_API_TOKEN est manquant."
@@ -932,8 +964,10 @@ def main():
                 analyzed_matches.append(result)
 
                 print(
-                    f"[INFO] Résultat : {result['score']}/100 — "
-                    f"{result['pick']}"
+                    f"[INFO] Score : {result['score']}/100 | "
+                    f"1 + BTTS : {result['home_score']}/100 | "
+                    f"2 + BTTS : {result['away_score']}/100 | "
+                    f"Choix : {result['pick']}"
                 )
 
         except Exception as error:
@@ -950,31 +984,32 @@ def main():
     )
 
     candidates = [
-        item for item in analyzed_matches
+        item
+        for item in analyzed_matches
         if item["qualified"]
     ][:MAX_CANDIDATES]
 
+    # Important :
+    # On affiche toujours les meilleurs scores sous le seuil.
+    # Il n'y a plus de seuil minimum caché pour la watchlist.
     watchlist = [
-        item for item in analyzed_matches
-        if (
-            not item["qualified"]
-            and item["score"] >= WATCHLIST_MIN_SCORE
-        )
+        item
+        for item in analyzed_matches
+        if not item["qualified"]
     ][:MAX_WATCHLIST]
 
     print(
-        f"[INFO] Matchs analysés avec données suffisantes : "
+        f"[INFO] Matchs avec données suffisantes : "
         f"{len(analyzed_matches)}"
     )
 
     print(
-        f"[INFO] Candidats retenus (>= {MIN_SCORE}) : "
+        f"[INFO] Profils retenus (>= {MIN_SCORE}/100) : "
         f"{len(candidates)}"
     )
 
     print(
-        f"[INFO] Matchs à surveiller "
-        f"({WATCHLIST_MIN_SCORE}-{MIN_SCORE - 1}) : "
+        f"[INFO] Meilleurs matchs sous le seuil : "
         f"{len(watchlist)}"
     )
 
