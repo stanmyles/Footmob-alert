@@ -1,0 +1,169 @@
+name: Alerte Football 12 - Faible risque de nul vers Discord
+
+on:
+  schedule:
+    # Tous les jours à 13:15 UTC.
+    #
+    # Heure de Paris :
+    # - 15:15 pendant l'heure d'été
+    # - 14:15 pendant l'heure d'hiver
+    #
+    # Le bot BTTS tourne à 12:35 UTC.
+    # Ce second bot est décalé afin de limiter les appels API simultanés.
+    - cron: "15 13 * * *"
+
+  # Permet de lancer le bot manuellement depuis GitHub > Actions.
+  workflow_dispatch:
+    inputs:
+      target_date:
+        description: "Date à analyser (YYYY-MM-DD). Vide = aujourd'hui + demain."
+        required: false
+        default: ""
+        type: string
+
+      days_ahead:
+        description: "Nombre de jours après aujourd'hui. 1 = aujourd'hui + demain."
+        required: false
+        default: ""
+        type: string
+
+      max_average_draw_pct:
+        description: "Moyenne maximale de nuls (%). Vide = 25."
+        required: false
+        default: ""
+        type: string
+
+      min_win_pct_one_team:
+        description: "Taux minimum de victoire d'une équipe (%). Vide = 40."
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  # Le workflow a seulement besoin de lire les fichiers du dépôt.
+  contents: read
+
+# Important :
+# utilise le même groupe que ton workflow 12 + BTTS.
+# Ainsi, les deux bots ne feront jamais des appels API en même temps.
+concurrency:
+  group: football-data-api-analysis
+  cancel-in-progress: false
+
+jobs:
+  analyse-12-faible-nul:
+    name: Analyse 12 - faible risque de nul
+    runs-on: ubuntu-latest
+
+    # Le script attend 6,5 secondes entre les appels API.
+    # Une journée avec beaucoup de rencontres peut donc être longue.
+    timeout-minutes: 55
+
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+
+      - name: Installer Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Installer les dépendances Python
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Vérifier les fichiers du dépôt
+        run: |
+          echo "=== Dossier courant ==="
+          pwd
+          echo "=== Fichiers du dépôt ==="
+          find . -maxdepth 3 -type f | sort
+
+      - name: Lancer le bot faible risque de nul
+        env:
+          # ==================================================
+          # SECRETS OBLIGATOIRES
+          # ==================================================
+          #
+          # À créer dans :
+          # Settings > Secrets and variables > Actions
+          # > Repository secrets
+          FOOTBALL_DATA_API_TOKEN: ${{ secrets.FOOTBALL_DATA_API_TOKEN }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+          # ==================================================
+          # PERIODE ANALYSEE
+          # ==================================================
+
+          # Valeur normale : 1 = aujourd'hui + demain.
+          # En lancement manuel, tu peux saisir 0, 1, 2, etc.
+          DAYS_AHEAD: ${{ inputs.days_ahead || '1' }}
+
+          # Vide en exécution automatique.
+          # Exemple de test manuel : 2026-09-17
+          TARGET_DATE: ${{ inputs.target_date || '' }}
+
+          # ==================================================
+          # HISTORIQUE DES EQUIPES
+          # ==================================================
+
+          # 10 derniers matchs comparables :
+          # domicile pour l'équipe qui reçoit,
+          # extérieur pour l'équipe qui se déplace.
+          LOOKBACK_MATCHES: "10"
+
+          # Minimum de matchs nécessaires pour analyser une équipe.
+          MIN_COMPARABLE_MATCHES: "5"
+
+          # ==================================================
+          # FILTRE PRINCIPAL : FAIBLE RISQUE DE NUL
+          # ==================================================
+
+          # Chaque équipe doit avoir au maximum 30 % de nuls
+          # dans son contexte domicile ou extérieur.
+          MAX_HOME_DRAW_PCT: "30"
+          MAX_AWAY_DRAW_PCT: "30"
+
+          # Moyenne de nuls maximale des deux équipes.
+          # 25 % : réglage conseillé.
+          # 20 % : filtre plus strict, moins de matchs.
+          # 30 % : filtre plus large, plus de matchs.
+          MAX_AVERAGE_DRAW_PCT: ${{ inputs.max_average_draw_pct || '25' }}
+
+          # Au moins une équipe doit avoir gagné au moins 40 %
+          # de ses matchs dans son contexte domicile / extérieur.
+          MIN_WIN_PCT_ONE_TEAM: ${{ inputs.min_win_pct_one_team || '40' }}
+
+          # ==================================================
+          # TAG COMPLEMENTAIRE : BTTS FAVORABLE
+          # ==================================================
+          #
+          # Le BTTS ne bloque pas la sélection faible nul.
+          # Il est seulement affiché dans Discord.
+          BTTS_HOME_MIN_PCT: "50"
+          BTTS_AWAY_MIN_PCT: "50"
+          BTTS_HOME_SCORED_MIN_PCT: "70"
+          BTTS_AWAY_SCORED_MIN_PCT: "60"
+
+          # ==================================================
+          # AFFICHAGE DISCORD
+          # ==================================================
+
+          # Affiche davantage de matchs validés.
+          MAX_CANDIDATES: "10"
+
+          # Affiche aussi les meilleurs matchs qui ne respectent
+          # pas tous les critères.
+          MAX_WATCHLIST: "5"
+
+          # ==================================================
+          # LIMITATION API
+          # ==================================================
+
+          # 6,5 secondes entre appels pour rester prudent.
+          FD_MIN_INTERVAL: "6.5"
+
+        run: python bot_12_faible_nul.py
