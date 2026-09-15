@@ -1,6 +1,6 @@
 import os
 import time
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
 import requests
@@ -11,46 +11,55 @@ from requests.exceptions import HTTPError, RequestException
 # CONFIGURATION
 # ============================================================
 
-# Même API que ton bot H2H actuel.
 BASE_FD = "https://api.football-data.org/v4"
 PARIS_TZ = ZoneInfo("Europe/Paris")
 
-# Même Secrets GitHub que ton bot H2H.
+# Secrets GitHub.
 FD_TOKEN = os.getenv("FOOTBALL_DATA_API_TOKEN", "").strip()
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "").strip()
 
-# Analyse aujourd'hui + demain par défaut.
-# DAYS_AHEAD = 1 signifie : aujourd'hui et demain.
+# Analyse aujourd'hui + les DAYS_AHEAD jours suivants.
+# DAYS_AHEAD = 1 = aujourd'hui et demain.
 DAYS_AHEAD = int(os.getenv("DAYS_AHEAD", "1"))
 
-# Nombre de résultats récents récupérés par équipe.
+# Nombre de résultats récents comparables par équipe.
+# Domicile pour l'équipe qui reçoit, extérieur pour l'adversaire.
 LOOKBACK_MATCHES = int(os.getenv("LOOKBACK_MATCHES", "10"))
 
-# Minimum de matchs comparables :
-# - équipe domicile : résultats à domicile
-# - équipe extérieure : résultats à l'extérieur
+# Minimum de matchs comparables réellement exploitables.
 MIN_COMPARABLE_MATCHES = int(
     os.getenv("MIN_COMPARABLE_MATCHES", "5")
 )
 
-# Score minimum sur 100 pour envoyer une alerte Discord.
-MIN_SCORE = int(os.getenv("MIN_SCORE", "80"))
+# Seuil principal conseillé avec ce nouveau score.
+# 70 = alertes intéressantes.
+# 75 = plus sélectif.
+# 80 = très strict et donc peu d'alertes.
+MIN_SCORE = int(os.getenv("MIN_SCORE", "70"))
 
-# Nombre maximal de candidats affichés dans Discord.
+# Nombre maximal de matchs retenus dans le message Discord.
 MAX_CANDIDATES = int(os.getenv("MAX_CANDIDATES", "6"))
 
-# Facultatif : pour tester une date manuellement.
-# Exemple : TARGET_DATE = 2026-09-15
+# Nombre de matchs "à surveiller" affichés sous le seuil.
+MAX_WATCHLIST = int(os.getenv("MAX_WATCHLIST", "3"))
+
+# Score minimal pour la liste "à surveiller".
+WATCHLIST_MIN_SCORE = int(
+    os.getenv("WATCHLIST_MIN_SCORE", "60")
+)
+
+# Facultatif, utile pour le test manuel GitHub Actions.
+# Exemple : 2026-09-15
 TARGET_DATE = os.getenv("TARGET_DATE", "").strip()
 
-# football-data.org impose des limites d'appels selon ton forfait.
-# Ton bot H2H utilise déjà environ 6,5 secondes entre les appels.
-FD_MIN_INTERVAL = 6.5
+# Intervalle minimum entre deux appels football-data.org.
+FD_MIN_INTERVAL = float(os.getenv("FD_MIN_INTERVAL", "6.5"))
 last_api_call = 0.0
 
 session = requests.Session()
 session.headers.update({
-    "User-Agent": "github-actions-football-12-btts/1.0",
+    "User-Agent": "github-actions-football-12-btts/2.0",
+    "Accept": "application/json",
 })
 
 
@@ -59,7 +68,7 @@ session.headers.update({
 # ============================================================
 
 def throttle():
-    """Respecte un intervalle minimal entre les appels API."""
+    """Respecte l'intervalle minimal entre les appels API."""
     global last_api_call
 
     now = time.time()
@@ -73,10 +82,11 @@ def throttle():
 
 def api_get(endpoint, params=None, retries=3):
     """
-    Fait une requête GET vers football-data.org.
-
-    Le token est transmis dans le header X-Auth-Token,
-    comme dans ton bot H2H.
+    Exécute une requête GET vers football-data.org avec :
+    - token X-Auth-Token ;
+    - limitation volontaire des appels ;
+    - reprise sur erreur réseau ;
+    - reprise spécifique après HTTP 429.
     """
     url = f"{BASE_FD}{endpoint}"
     last_error = None
@@ -104,20 +114,20 @@ def api_get(endpoint, params=None, retries=3):
                 else None
             )
 
-            # Si la limite de l'API est atteinte, attend puis réessaie.
             if status == 429 and attempt < retries - 1:
                 retry_after = error.response.headers.get(
                     "Retry-After",
                     ""
                 )
 
-                if retry_after.isdigit():
-                    delay = int(retry_after)
-                else:
-                    delay = (attempt + 1) * 15
+                delay = (
+                    int(retry_after)
+                    if retry_after.isdigit()
+                    else (attempt + 1) * 20
+                )
 
                 print(
-                    f"[WARN] Limite API atteinte. "
+                    f"[WARN] Limite API atteinte (HTTP 429). "
                     f"Nouvel essai dans {delay} seconde(s)."
                 )
 
@@ -154,10 +164,9 @@ def get_target_dates():
     """
     Retourne les dates à analyser.
 
-    - Si TARGET_DATE est renseigné manuellement :
-      analyse uniquement cette date.
-    - Sinon :
-      analyse aujourd'hui et les DAYS_AHEAD jours suivants.
+    TARGET_DATE :
+    - renseigné : analyse seulement cette date ;
+    - vide : analyse aujourd'hui et les jours suivants.
     """
     if TARGET_DATE:
         try:
@@ -170,7 +179,7 @@ def get_target_dates():
 
         except ValueError as error:
             raise ValueError(
-                "TARGET_DATE doit être au format YYYY-MM-DD."
+                "TARGET_DATE doit respecter le format YYYY-MM-DD."
             ) from error
 
     today = datetime.now(PARIS_TZ).date()
@@ -182,10 +191,7 @@ def get_target_dates():
 
 
 def get_available_competitions():
-    """
-    Récupère les compétitions auxquelles ton token donne accès.
-    Même principe que ton bot H2H.
-    """
+    """Récupère les compétitions accessibles avec le token API."""
     data = api_get("/competitions")
 
     codes = sorted({
@@ -196,7 +202,7 @@ def get_available_competitions():
 
     print(
         "[INFO] Compétitions accessibles : "
-        + ", ".join(codes)
+        + (", ".join(codes) if codes else "aucune")
     )
 
     return codes
@@ -204,7 +210,7 @@ def get_available_competitions():
 
 def get_upcoming_matches(competition_codes, dates):
     """
-    Récupère les matchs à venir dans les compétitions accessibles.
+    Récupère les matchs SCHEDULED ou TIMED pour la période choisie.
     """
     date_from = min(dates).isoformat()
     date_to = max(dates).isoformat()
@@ -233,14 +239,10 @@ def get_upcoming_matches(competition_codes, dates):
 
                 match_id = match.get("id")
 
-                if not match_id:
-                    continue
-
-                if match_id in seen_match_ids:
+                if not match_id or match_id in seen_match_ids:
                     continue
 
                 match["_competition_code"] = competition_code
-
                 matches.append(match)
                 seen_match_ids.add(match_id)
                 count += 1
@@ -252,23 +254,21 @@ def get_upcoming_matches(competition_codes, dates):
 
         except Exception as error:
             print(
-                f"[WARN] Compétition {competition_code} "
-                f"ignorée : {error}"
+                f"[WARN] Compétition {competition_code} ignorée : "
+                f"{error}"
             )
 
-    matches.sort(
-        key=lambda match: match.get("utcDate", "")
-    )
+    matches.sort(key=lambda match: match.get("utcDate", ""))
 
     return matches
 
 
 def get_team_finished_matches(team_id, venue):
     """
-    Récupère les résultats terminés d'une équipe selon son lieu :
+    Récupère les derniers matchs terminés comparables.
 
-    - venue='HOME' : seulement les matchs à domicile.
-    - venue='AWAY' : seulement les matchs à l'extérieur.
+    venue='HOME' : seulement les matchs à domicile.
+    venue='AWAY' : seulement les matchs à l'extérieur.
     """
     data = api_get(
         f"/teams/{team_id}/matches",
@@ -290,11 +290,11 @@ def get_team_finished_matches(team_id, venue):
 
 
 # ============================================================
-# STATISTIQUES BTTS / BUTS / NULS
+# STATISTIQUES EQUIPE
 # ============================================================
 
 def get_full_time_goals(match):
-    """Extrait les scores finaux, ou renvoie None si indisponibles."""
+    """Extrait le score final d'un match ou renvoie (None, None)."""
     full_time = match.get("score", {}).get("fullTime", {})
 
     home_goals = full_time.get("home")
@@ -308,11 +308,15 @@ def get_full_time_goals(match):
 
 def team_stats(matches, team_id):
     """
-    Calcule les statistiques nécessaires pour le marché :
-    12 + BTTS Oui.
+    Calcule les statistiques d'une équipe sur ses matchs comparables :
 
-    Les matchs ont déjà été demandés à l'API avec un filtre
-    domicile ou extérieur.
+    - BTTS ;
+    - équipe qui marque ;
+    - équipe qui encaisse ;
+    - victoire, nul, défaite ;
+    - moyenne de buts marqués et encaissés.
+
+    Les matchs fournis sont déjà filtrés HOME ou AWAY.
     """
     rows = []
 
@@ -323,6 +327,11 @@ def team_stats(matches, team_id):
             continue
 
         home_team_id = match.get("homeTeam", {}).get("id")
+        away_team_id = match.get("awayTeam", {}).get("id")
+
+        if team_id not in {home_team_id, away_team_id}:
+            continue
+
         is_home = home_team_id == team_id
 
         goals_for = home_goals if is_home else away_goals
@@ -332,7 +341,9 @@ def team_stats(matches, team_id):
             "btts": home_goals > 0 and away_goals > 0,
             "scored": goals_for > 0,
             "conceded": goals_against > 0,
-            "draw": home_goals == away_goals,
+            "win": goals_for > goals_against,
+            "draw": goals_for == goals_against,
+            "loss": goals_for < goals_against,
             "goals_for": goals_for,
             "goals_against": goals_against,
         })
@@ -353,7 +364,9 @@ def team_stats(matches, team_id):
         "btts_pct": pct("btts"),
         "scored_pct": pct("scored"),
         "conceded_pct": pct("conceded"),
+        "win_pct": pct("win"),
         "draw_pct": pct("draw"),
+        "loss_pct": pct("loss"),
         "goals_for_avg": round(
             sum(row["goals_for"] for row in rows) / total,
             2
@@ -366,75 +379,210 @@ def team_stats(matches, team_id):
 
 
 # ============================================================
-# SCORE POUR 12 + BTTS OUI
+# SCORE 1 + BTTS / 2 + BTTS
 # ============================================================
 
-def calculate_score(home_stats, away_stats):
+def calculate_side_score(
+    winner_stats,
+    opponent_stats,
+    winner_side
+):
     """
-    Calcule un score sur 100 pour le marché :
+    Calcule un score pour une équipe susceptible de gagner,
+    avec BTTS Oui.
 
-    - 12 : le match ne doit pas se terminer nul.
-    - BTTS Oui : les deux équipes doivent marquer.
-
-    Le score est un filtre statistique, pas une prédiction certaine.
+    winner_stats : statistiques de l'équipe censée gagner.
+    opponent_stats : statistiques de l'adversaire.
+    winner_side : 'HOME' ou 'AWAY'.
     """
     score = 0
     signals = []
 
-    # BTTS équipe qui reçoit : 20 points.
-    if home_stats["btts_pct"] >= 60:
-        score += 20
-        signals.append(
-            f"BTTS domicile {home_stats['btts_pct']} %"
-        )
+    side_label = "domicile" if winner_side == "HOME" else "extérieur"
+    opponent_label = (
+        "extérieur" if winner_side == "HOME" else "domicile"
+    )
 
-    # BTTS équipe qui se déplace : 20 points.
-    if away_stats["btts_pct"] >= 60:
-        score += 20
-        signals.append(
-            f"BTTS extérieur {away_stats['btts_pct']} %"
-        )
-
-    # L'équipe à domicile marque : 15 points.
-    if home_stats["scored_pct"] >= 80:
+    # --------------------------------------------------------
+    # 1. L'équipe supposée gagner doit marquer régulièrement.
+    # --------------------------------------------------------
+    if winner_stats["scored_pct"] >= 80:
         score += 15
         signals.append(
-            f"domicile marque {home_stats['scored_pct']} %"
+            f"{side_label} marque {winner_stats['scored_pct']} %"
         )
 
-    # L'équipe à l'extérieur marque : 15 points.
-    if away_stats["scored_pct"] >= 70:
+    elif winner_stats["scored_pct"] >= 70:
+        score += 8
+        signals.append(
+            f"{side_label} marque {winner_stats['scored_pct']} %"
+        )
+
+    if winner_stats["goals_for_avg"] >= 1.60:
+        score += 8
+        signals.append(
+            f"{side_label} {winner_stats['goals_for_avg']} but(s) marqué(s)"
+        )
+
+    elif winner_stats["goals_for_avg"] >= 1.30:
+        score += 4
+        signals.append(
+            f"{side_label} {winner_stats['goals_for_avg']} but(s) marqué(s)"
+        )
+
+    # --------------------------------------------------------
+    # 2. L'adversaire doit avoir une vraie capacité à marquer.
+    # Cela protège la partie BTTS Oui.
+    # --------------------------------------------------------
+    if opponent_stats["scored_pct"] >= 75:
         score += 15
         signals.append(
-            f"extérieur marque {away_stats['scored_pct']} %"
+            f"{opponent_label} marque "
+            f"{opponent_stats['scored_pct']} %"
         )
 
-    # L'équipe à domicile encaisse : 10 points.
-    if home_stats["conceded_pct"] >= 60:
-        score += 10
+    elif opponent_stats["scored_pct"] >= 65:
+        score += 8
         signals.append(
-            f"domicile encaisse {home_stats['conceded_pct']} %"
+            f"{opponent_label} marque "
+            f"{opponent_stats['scored_pct']} %"
         )
 
-    # L'équipe à l'extérieur encaisse : 10 points.
-    if away_stats["conceded_pct"] >= 60:
-        score += 10
+    if opponent_stats["goals_for_avg"] >= 1.10:
+        score += 6
         signals.append(
-            f"extérieur encaisse {away_stats['conceded_pct']} %"
+            f"{opponent_label} "
+            f"{opponent_stats['goals_for_avg']} but(s) marqué(s)"
         )
 
-    # Un faible taux de nuls est nécessaire pour le marché 12.
+    # --------------------------------------------------------
+    # 3. BTTS observé dans les historiques comparables.
+    # --------------------------------------------------------
+    if winner_stats["btts_pct"] >= 60:
+        score += 8
+        signals.append(
+            f"BTTS {side_label} {winner_stats['btts_pct']} %"
+        )
+
+    if opponent_stats["btts_pct"] >= 55:
+        score += 8
+        signals.append(
+            f"BTTS {opponent_label} {opponent_stats['btts_pct']} %"
+        )
+
+    # --------------------------------------------------------
+    # 4. L'adversaire doit concéder suffisamment.
+    # --------------------------------------------------------
+    if opponent_stats["conceded_pct"] >= 70:
+        score += 8
+        signals.append(
+            f"{opponent_label} encaisse "
+            f"{opponent_stats['conceded_pct']} %"
+        )
+
+    elif opponent_stats["conceded_pct"] >= 60:
+        score += 4
+        signals.append(
+            f"{opponent_label} encaisse "
+            f"{opponent_stats['conceded_pct']} %"
+        )
+
+    if opponent_stats["goals_against_avg"] >= 1.30:
+        score += 5
+        signals.append(
+            f"{opponent_label} "
+            f"{opponent_stats['goals_against_avg']} but(s) encaissé(s)"
+        )
+
+    # --------------------------------------------------------
+    # 5. Signal victoire pour l'équipe choisie.
+    # --------------------------------------------------------
+    if winner_stats["win_pct"] >= 60:
+        score += 15
+        signals.append(
+            f"{side_label} gagne {winner_stats['win_pct']} %"
+        )
+
+    elif winner_stats["win_pct"] >= 50:
+        score += 8
+        signals.append(
+            f"{side_label} gagne {winner_stats['win_pct']} %"
+        )
+
+    # L'adversaire perd régulièrement dans le même contexte.
+    if opponent_stats["loss_pct"] >= 50:
+        score += 8
+        signals.append(
+            f"{opponent_label} perd {opponent_stats['loss_pct']} %"
+        )
+
+    elif opponent_stats["loss_pct"] >= 40:
+        score += 4
+        signals.append(
+            f"{opponent_label} perd {opponent_stats['loss_pct']} %"
+        )
+
+    # --------------------------------------------------------
+    # 6. Protection contre les nuls.
+    # --------------------------------------------------------
     average_draw_pct = (
-        home_stats["draw_pct"] + away_stats["draw_pct"]
+        winner_stats["draw_pct"] + opponent_stats["draw_pct"]
     ) / 2
 
-    if average_draw_pct <= 25:
+    if average_draw_pct <= 20:
         score += 10
         signals.append(
-            f"nuls moyens {average_draw_pct:.1f} %"
+            f"nuls moyens faibles {average_draw_pct:.1f} %"
         )
 
-    return score, signals
+    elif average_draw_pct <= 25:
+        score += 5
+        signals.append(
+            f"nuls moyens modérés {average_draw_pct:.1f} %"
+        )
+
+    return score, signals, round(average_draw_pct, 1)
+
+
+def calculate_score(home_stats, away_stats):
+    """
+    Compare les deux scénarios :
+
+    - 1 + BTTS Oui : équipe domicile gagne + BTTS Oui.
+    - 2 + BTTS Oui : équipe extérieure gagne + BTTS Oui.
+
+    Le script conserve le sens ayant le meilleur score.
+    """
+    home_score, home_signals, home_draw_avg = calculate_side_score(
+        winner_stats=home_stats,
+        opponent_stats=away_stats,
+        winner_side="HOME"
+    )
+
+    away_score, away_signals, away_draw_avg = calculate_side_score(
+        winner_stats=away_stats,
+        opponent_stats=home_stats,
+        winner_side="AWAY"
+    )
+
+    if home_score >= away_score:
+        return {
+            "score": home_score,
+            "pick_type": "HOME",
+            "signals": home_signals,
+            "average_draw_pct": home_draw_avg,
+            "home_score": home_score,
+            "away_score": away_score,
+        }
+
+    return {
+        "score": away_score,
+        "pick_type": "AWAY",
+        "signals": away_signals,
+        "average_draw_pct": away_draw_avg,
+        "home_score": home_score,
+        "away_score": away_score,
+    }
 
 
 # ============================================================
@@ -442,7 +590,7 @@ def calculate_score(home_stats, away_stats):
 # ============================================================
 
 def to_paris_time(utc_date):
-    """Convertit l'heure UTC de football-data.org vers Paris."""
+    """Convertit une date UTC football-data.org vers Paris."""
     utc_datetime = datetime.fromisoformat(
         utc_date.replace("Z", "+00:00")
     )
@@ -452,10 +600,13 @@ def to_paris_time(utc_date):
 
 def analyze_match(match, cache):
     """
-    Analyse une affiche :
-    - résultats domicile de l'équipe qui reçoit ;
-    - résultats extérieur de l'équipe qui se déplace ;
-    - attribution d'un score pour 12 + BTTS Oui.
+    Analyse une affiche et retourne son meilleur profil :
+
+    - 1 + BTTS Oui ;
+    - ou 2 + BTTS Oui.
+
+    Retourne un résultat même sous MIN_SCORE afin de permettre
+    l'affichage des matchs "à surveiller".
     """
     home_team = match.get("homeTeam", {})
     away_team = match.get("awayTeam", {})
@@ -499,18 +650,28 @@ def analyze_match(match, cache):
         or away_stats["matches"] < MIN_COMPARABLE_MATCHES
     ):
         print(
-            "[INFO] Pas assez de résultats comparables "
-            "domicile / extérieur."
+            "[INFO] Pas assez de résultats comparables : "
+            f"{home_team.get('name', 'Domicile')} "
+            f"({home_stats['matches']}) / "
+            f"{away_team.get('name', 'Extérieur')} "
+            f"({away_stats['matches']})."
         )
         return None
 
-    score, signals = calculate_score(
-        home_stats,
-        away_stats
-    )
+    score_data = calculate_score(home_stats, away_stats)
 
-    if score < MIN_SCORE:
-        return None
+    if score_data["pick_type"] == "HOME":
+        pick = (
+            f"1 + BTTS Oui — "
+            f"{home_team.get('name', 'Équipe domicile')} gagne "
+            "et les deux équipes marquent"
+        )
+    else:
+        pick = (
+            f"2 + BTTS Oui — "
+            f"{away_team.get('name', 'Équipe extérieure')} gagne "
+            "et les deux équipes marquent"
+        )
 
     return {
         "home": home_team.get("name", "Équipe domicile"),
@@ -523,10 +684,16 @@ def analyze_match(match, cache):
             match.get("_competition_code", "Compétition")
         ),
         "kickoff": to_paris_time(match["utcDate"]),
-        "score": score,
-        "signals": signals,
+        "score": score_data["score"],
+        "pick_type": score_data["pick_type"],
+        "pick": pick,
+        "signals": score_data["signals"],
+        "average_draw_pct": score_data["average_draw_pct"],
+        "home_score": score_data["home_score"],
+        "away_score": score_data["away_score"],
         "home_stats": home_stats,
         "away_stats": away_stats,
+        "qualified": score_data["score"] >= MIN_SCORE,
     }
 
 
@@ -535,20 +702,58 @@ def analyze_match(match, cache):
 # ============================================================
 
 def short_stats(label, stats):
-    """Produit une ligne courte de statistiques pour Discord."""
+    """Construit une ligne courte de statistiques pour Discord."""
     return (
         f"**{label}** ({stats['matches']} matchs) — "
+        f"V {stats['win_pct']} % | "
+        f"N {stats['draw_pct']} % | "
+        f"D {stats['loss_pct']} % | "
         f"BTTS {stats['btts_pct']} % | "
         f"marque {stats['scored_pct']} % | "
-        f"encaisse {stats['conceded_pct']} % | "
-        f"nuls {stats['draw_pct']} %"
+        f"encaisse {stats['conceded_pct']} %"
     )
 
 
-def build_discord_message(candidates, dates):
+def candidate_lines(index, candidate, title_prefix=""):
+    """Construit les lignes Discord d'un match analysé."""
+    signals = " • ".join(candidate["signals"])
+
+    return [
+        (
+            f"**{title_prefix}{index}. "
+            f"{candidate['home']} vs {candidate['away']} — "
+            f"Score {candidate['score']}/100**"
+        ),
+        f"🎯 {candidate['pick']}",
+        (
+            f"🏆 {candidate['competition']} | "
+            f"🕒 {candidate['kickoff'].strftime('%d/%m %H:%M')} "
+            "heure Paris"
+        ),
+        (
+            f"📊 Comparaison : 1 + BTTS {candidate['home_score']}/100 | "
+            f"2 + BTTS {candidate['away_score']}/100 | "
+            f"nuls moyens {candidate['average_draw_pct']} %"
+        ),
+        short_stats("Domicile", candidate["home_stats"]),
+        short_stats("Extérieur", candidate["away_stats"]),
+        f"📌 Signaux : {signals}",
+        "",
+    ]
+
+
+def build_discord_message(candidates, watchlist, dates):
     """
     Construit le message Discord.
-    Discord limite le contenu à environ 2 000 caractères par message.
+
+    candidates :
+    - score >= MIN_SCORE ;
+    - vrais candidats statistiques.
+
+    watchlist :
+    - score inférieur à MIN_SCORE ;
+    - mais score >= WATCHLIST_MIN_SCORE ;
+    - affichés seulement pour suivi, pas comme sélection validée.
     """
     first_date = min(dates).strftime("%d/%m/%Y")
     last_date = max(dates).strftime("%d/%m/%Y")
@@ -558,65 +763,97 @@ def build_discord_message(candidates, dates):
     else:
         date_text = f"{first_date} au {last_date}"
 
-    if not candidates:
+    if not candidates and not watchlist:
         return (
-            "⚠️ **Alerte Football — 12 + BTTS Oui**\n"
+            "⚠️ **Alerte Football — 1/2 + BTTS Oui**\n"
             f"📅 Période analysée : {date_text}\n\n"
-            "Aucun match ne dépasse le seuil statistique défini.\n"
+            "Aucun match ne présente un profil statistique suffisant.\n"
             "Ne pas forcer une sélection est une bonne décision.\n\n"
-            "ℹ️ Filtre statistique uniquement : "
-            "il ne garantit pas un résultat."
+            "ℹ️ Le score est un filtre statistique : "
+            "il ne garantit aucun résultat."
         )
 
     lines = [
-        "📊 **Alerte Football — 12 + BTTS Oui**",
+        "📊 **Alerte Football — 1/2 + BTTS Oui**",
         f"📅 Période analysée : {date_text}",
         (
-            "🎯 Marché : une équipe gagne "
-            "(pas de nul) + les deux équipes marquent."
+            "🎯 Marché analysé : une équipe précise gagne "
+            "+ les deux équipes marquent."
         ),
+        f"✅ Seuil principal : {MIN_SCORE}/100",
         "",
     ]
 
-    for index, candidate in enumerate(candidates, start=1):
-        signals = " • ".join(candidate["signals"])
+    if candidates:
+        lines.append("✅ **Profils retenus**")
+        lines.append("")
 
+        for index, candidate in enumerate(candidates, start=1):
+            lines.extend(candidate_lines(index, candidate))
+
+    else:
         lines.extend([
-            (
-                f"**{index}. {candidate['home']} vs "
-                f"{candidate['away']} — Score {candidate['score']}/100**"
-            ),
-            (
-                f"🏆 {candidate['competition']} | "
-                f"🕒 {candidate['kickoff'].strftime('%d/%m %H:%M')} "
-                "heure Paris"
-            ),
-            short_stats("Domicile", candidate["home_stats"]),
-            short_stats("Extérieur", candidate["away_stats"]),
-            f"📌 Signaux : {signals}",
+            "⚠️ **Aucun profil ne dépasse le seuil principal.**",
             "",
         ])
 
+    if watchlist:
+        lines.extend([
+            "👀 **Matchs à surveiller — non validés**",
+            (
+                f"Scores entre {WATCHLIST_MIN_SCORE}/100 "
+                f"et {MIN_SCORE - 1}/100."
+            ),
+            "Ils demandent une vérification renforcée avant toute décision.",
+            "",
+        ])
+
+        for index, candidate in enumerate(watchlist, start=1):
+            lines.extend(
+                candidate_lines(index, candidate, title_prefix="👀 ")
+            )
+
     lines.extend([
-        "ℹ️ Vérifie les cotes, absences et compositions avant toute décision.",
-        "Le filtre ne garantit aucun résultat."
+        "ℹ️ Vérifie impérativement les cotes, absences, rotations, "
+        "blessures et compositions avant le coup d'envoi.",
+        "Le filtre statistique ne garantit aucun résultat."
     ])
 
     return "\n".join(lines)
 
 
+def split_message(message, max_length=1900):
+    """
+    Découpe proprement un message Discord sans couper un mot
+    lorsque cela est possible.
+    """
+    chunks = []
+    remaining = message.strip()
+
+    while len(remaining) > max_length:
+        split_at = remaining.rfind("\n", 0, max_length)
+
+        if split_at < max_length // 2:
+            split_at = remaining.rfind(" ", 0, max_length)
+
+        if split_at <= 0:
+            split_at = max_length
+
+        chunks.append(remaining[:split_at].strip())
+        remaining = remaining[split_at:].strip()
+
+    if remaining:
+        chunks.append(remaining)
+
+    return chunks
+
+
 def send_to_discord(message):
-    """
-    Envoie le message au webhook Discord.
-    Découpe automatiquement le message pour respecter la limite Discord.
-    """
+    """Envoie le message Discord, éventuellement en plusieurs parties."""
     if not DISCORD_WEBHOOK_URL:
         raise RuntimeError("Secret DISCORD_WEBHOOK_URL manquant.")
 
-    chunks = [
-        message[index:index + 1900]
-        for index in range(0, len(message), 1900)
-    ]
+    chunks = split_message(message)
 
     for number, chunk in enumerate(chunks[:5], start=1):
         response = requests.post(
@@ -634,7 +871,7 @@ def send_to_discord(message):
         response.raise_for_status()
 
         print(
-            f"[INFO] Message Discord {number} envoyé."
+            f"[INFO] Message Discord {number}/{len(chunks)} envoyé."
         )
 
 
@@ -677,7 +914,7 @@ def main():
     )
 
     cache = {}
-    candidates = []
+    analyzed_matches = []
 
     for index, match in enumerate(upcoming_matches, start=1):
         home_team = match.get("homeTeam", {}).get("name", "")
@@ -689,14 +926,14 @@ def main():
         )
 
         try:
-            candidate = analyze_match(match, cache)
+            result = analyze_match(match, cache)
 
-            if candidate:
-                candidates.append(candidate)
+            if result:
+                analyzed_matches.append(result)
 
                 print(
-                    f"[INFO] Candidat retenu : "
-                    f"{candidate['score']}/100"
+                    f"[INFO] Résultat : {result['score']}/100 — "
+                    f"{result['pick']}"
                 )
 
         except Exception as error:
@@ -705,21 +942,45 @@ def main():
                 f"{home_team} vs {away_team} — {error}"
             )
 
-    candidates.sort(
+    analyzed_matches.sort(
         key=lambda item: (
             -item["score"],
             item["kickoff"]
         )
     )
 
-    candidates = candidates[:MAX_CANDIDATES]
+    candidates = [
+        item for item in analyzed_matches
+        if item["qualified"]
+    ][:MAX_CANDIDATES]
+
+    watchlist = [
+        item for item in analyzed_matches
+        if (
+            not item["qualified"]
+            and item["score"] >= WATCHLIST_MIN_SCORE
+        )
+    ][:MAX_WATCHLIST]
 
     print(
-        f"[INFO] Candidats finaux : {len(candidates)}"
+        f"[INFO] Matchs analysés avec données suffisantes : "
+        f"{len(analyzed_matches)}"
+    )
+
+    print(
+        f"[INFO] Candidats retenus (>= {MIN_SCORE}) : "
+        f"{len(candidates)}"
+    )
+
+    print(
+        f"[INFO] Matchs à surveiller "
+        f"({WATCHLIST_MIN_SCORE}-{MIN_SCORE - 1}) : "
+        f"{len(watchlist)}"
     )
 
     discord_message = build_discord_message(
         candidates,
+        watchlist,
         dates
     )
 
