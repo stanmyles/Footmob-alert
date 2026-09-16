@@ -1,21 +1,6 @@
 [
   {
     "competition":"PD",
-    "utcDate":"2026-09-15T17:00:00Z",
-    "date_local":"15\/09\/2026",
-    "time_local":"19:00",
-    "homeTeam":"Rayo Vallecano de Madrid",
-    "awayTeam":"RCD Espanyol de Barcelona",
-    "dominant_team":"RCD Espanyol de Barcelona",
-    "h2h_matches":4,
-    "dominant_wins":3,
-    "draws":0,
-    "dominant_losses":1,
-    "h2h_signal":"🟡 Avantage H2H à surveiller",
-    "recent_h2h":"[{\"date\": \"2026-04-23\", \"home\": \"Rayo Vallecano de Madrid\", \"away\": \"RCD Espanyol de Barcelona\", \"score\": \"1-0\"}, {\"date\": \"2025-12-07\", \"home\": \"RCD Espanyol de Barcelona\", \"away\": \"Rayo Vallecano de Madrid\", \"score\": \"1-0\"}, {\"date\": \"2025-04-04\", \"home\": \"Rayo Vallecano de Madrid\", \"away\": \"RCD Espanyol de Barcelona\", \"score\": \"0-4\"}, {\"date\": \"2024-08-31\", \"home\": \"RCD Espanyol de Barcelona\", \"away\": \"Rayo Vallecano de Madrid\", \"score\": \"2-1\"}]"
-  },
-  {
-    "competition":"PD",
     "utcDate":"2026-09-16T17:00:00Z",
     "date_local":"16\/09\/2026",
     "time_local":"19:00",
@@ -97,12 +82,12 @@
     "homeTeam":"Udinese Calcio",
     "awayTeam":"Cagliari Calcio",
     "dominant_team":"Udinese Calcio",
-    "h2h_matches":6,
+    "h2h_matches":5,
     "dominant_wins":3,
-    "draws":3,
+    "draws":2,
     "dominant_losses":0,
-    "h2h_signal":"🟢 Avantage H2H net",
-    "recent_h2h":"[{\"date\": \"2026-05-09\", \"home\": \"Cagliari Calcio\", \"away\": \"Udinese Calcio\", \"score\": \"0-2\"}, {\"date\": \"2025-10-05\", \"home\": \"Udinese Calcio\", \"away\": \"Cagliari Calcio\", \"score\": \"1-1\"}, {\"date\": \"2025-05-03\", \"home\": \"Cagliari Calcio\", \"away\": \"Udinese Calcio\", \"score\": \"1-2\"}, {\"date\": \"2024-10-25\", \"home\": \"Udinese Calcio\", \"away\": \"Cagliari Calcio\", \"score\": \"2-0\"}, {\"date\": \"2024-02-18\", \"home\": \"Udinese Calcio\", \"away\": \"Cagliari Calcio\", \"score\": \"1-1\"}, {\"date\": \"2023-09-17\", \"home\": \"Cagliari Calcio\", \"away\": \"Udinese Calcio\", \"score\": \"0-0\"}]"
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-05-09\", \"home\": \"Cagliari Calcio\", \"away\": \"Udinese Calcio\", \"score\": \"0-2\"}, {\"date\": \"2025-10-05\", \"home\": \"Udinese Calcio\", \"away\": \"Cagliari Calcio\", \"score\": \"1-1\"}, {\"date\": \"2025-05-03\", \"home\": \"Cagliari Calcio\", \"away\": \"Udinese Calcio\", \"score\": \"1-2\"}, {\"date\": \"2024-10-25\", \"home\": \"Udinese Calcio\", \"away\": \"Cagliari Calcio\", \"score\": \"2-0\"}, {\"date\": \"2024-02-18\", \"home\": \"Udinese Calcio\", \"away\": \"Cagliari Calcio\", \"score\": \"1-1\"}]"
   },
   {
     "competition":"BL1",
@@ -208,6 +193,36 @@
     "dominant_losses":1,
     "h2h_signal":"🟢 Avantage H2H net",
     "recent_h2h":"[{\"date\": \"2026-04-04\", \"home\": \"VfB Stuttgart\", \"away\": \"Borussia Dortmund\", \"score\": \"0-2\"}, {\"date\": \"2025-11-22\", \"home\": \"Borussia Dortmund\", \"away\": \"VfB Stuttgart\", \"score\": \"3-3\"}, {\"date\": \"2025-02-08\", \"home\": \"Borussia Dortmund\", \"away\": \"VfB Stuttgart\", \"score\": \"1-2\"}, {\"date\": \"2024-09-22\", \"home\": \"VfB Stuttgart\", \"away\": \"Borussia Dortmund\", \"score\": \"5-1\"}, {\"date\": \"2024-04-06\", \"home\": \"Borussia Dortmund\", \"away\": \"VfB Stuttgart\", \"score\": \"0-1\"}, {\"date\": \"2023-11-11\", \"home\": \"VfB Stuttgart\", \"away\": \"Borussia Dortmund\", \"score\": \"2-1\"}]"
+  },
+  {
+    "competition":"PD",
+    "utcDate":"2026-09-19T19:00:00Z",
+    "date_local":"19\/09\/2026",
+    "time_local":"21:00",
+    "homeTeam":"Sevilla FC",
+    "awayTeam":"FC Barcelona",
+    "dominant_team":"FC Barcelona",
+    "h2h_matches":6,
+    "dominant_wins":5,
+    "draws":0,
+    "dominant_losses":1,
+    "h2h_signal":"🟢 Avantage H2H net",
+    "recent_h2h":"[{\"date\": \"2026-03-15\", \"home\": \"FC Barcelona\", \"away\": \"Sevilla FC\", \"score\": \"5-2\"}, {\"date\": \"2025-10-05\", \"home\": \"Sevilla FC\", \"away\": \"FC Barcelona\", \"score\": \"4-1\"}, {\"date\": \"2025-02-09\", \"home\": \"Sevilla FC\", \"away\": \"FC Barcelona\", \"score\": \"1-4\"}, {\"date\": \"2024-10-20\", \"home\": \"FC Barcelona\", \"away\": \"Sevilla FC\", \"score\": \"5-1\"}, {\"date\": \"2024-05-26\", \"home\": \"Sevilla FC\", \"away\": \"FC Barcelona\", \"score\": \"1-2\"}, {\"date\": \"2023-09-29\", \"home\": \"FC Barcelona\", \"away\": \"Sevilla FC\", \"score\": \"1-0\"}]"
+  },
+  {
+    "competition":"PPL",
+    "utcDate":"2026-09-19T19:30:00Z",
+    "date_local":"19\/09\/2026",
+    "time_local":"21:30",
+    "homeTeam":"Sporting Clube de Portugal",
+    "awayTeam":"FC Arouca",
+    "dominant_team":"Sporting Clube de Portugal",
+    "h2h_matches":6,
+    "dominant_wins":5,
+    "draws":1,
+    "dominant_losses":0,
+    "h2h_signal":"🟢 Avantage H2H net",
+    "recent_h2h":"[{\"date\": \"2026-01-24\", \"home\": \"FC Arouca\", \"away\": \"Sporting Clube de Portugal\", \"score\": \"1-2\"}, {\"date\": \"2025-08-17\", \"home\": \"Sporting Clube de Portugal\", \"away\": \"FC Arouca\", \"score\": \"6-0\"}, {\"date\": \"2025-02-15\", \"home\": \"Sporting Clube de Portugal\", \"away\": \"FC Arouca\", \"score\": \"2-2\"}, {\"date\": \"2024-09-13\", \"home\": \"FC Arouca\", \"away\": \"Sporting Clube de Portugal\", \"score\": \"0-3\"}, {\"date\": \"2024-03-10\", \"home\": \"FC Arouca\", \"away\": \"Sporting Clube de Portugal\", \"score\": \"0-3\"}, {\"date\": \"2023-10-08\", \"home\": \"Sporting Clube de Portugal\", \"away\": \"FC Arouca\", \"score\": \"2-1\"}]"
   },
   {
     "competition":"DED",

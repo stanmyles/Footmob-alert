@@ -1,15 +1,7 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 17
+📅 Matchs avec signal : 18
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
-
-⚽ **Rayo Vallecano de Madrid vs RCD Espanyol de Barcelona**
-🏆 Compétition : LaLiga (Espagne)
-🗓️ Coup d’envoi : 15/09/2026 à 19:00
-📌 Avantage historique : RCD Espanyol de Barcelona
-📊 Bilan H2H : RCD Espanyol de Barcelona 3 victoire(s) | 0 nul(s) | 1 défaite(s)
-📚 Échantillon : 4 confrontation(s)
-🟡 Avantage H2H à surveiller
 
 ⚽ **Club Atlético de Madrid vs CA Osasuna**
 🏆 Compétition : LaLiga (Espagne)
@@ -55,9 +47,9 @@
 🏆 Compétition : Serie A (Italie)
 🗓️ Coup d’envoi : 19/09/2026 à 15:00
 📌 Avantage historique : Udinese Calcio
-📊 Bilan H2H : Udinese Calcio 3 victoire(s) | 3 nul(s) | 0 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟢 Avantage H2H net
+📊 Bilan H2H : Udinese Calcio 3 victoire(s) | 2 nul(s) | 0 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
 
 ⚽ **Eintracht Frankfurt vs SC Freiburg**
 🏆 Compétition : Bundesliga (Allemagne)
@@ -115,12 +107,20 @@
 📚 Échantillon : 6 confrontation(s)
 🟢 Avantage H2H net
 
-⚽ **Feyenoord Rotterdam vs FC Utrecht**
-🏆 Compétition : Eredivisie (Pays-Bas)
-🗓️ Coup d’envoi : 20/09/2026 à 12:15
-📌 Avantage historique : Feyenoord Rotterdam
-📊 Bilan H2H : Feyenoord Rotterdam 4 victoire(s) | 0 nul(s) | 1 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
+⚽ **Sevilla FC vs FC Barcelona**
+🏆 Compétition : LaLiga (Espagne)
+🗓️ Coup d’envoi : 19/09/2026 à 21:00
+📌 Avantage historique : FC Barcelona
+📊 Bilan H2H : FC Barcelona 5 victoire(s) | 0 nul(s) | 1 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟢 Avantage H2H net
+
+⚽ **Sporting Clube de Portugal vs FC Arouca**
+🏆 Compétition : Primeira Liga (Portugal)
+🗓️ Coup d’envoi : 19/09/2026 à 21:30
+📌 Avantage historique : Sporting Clube de Portugal
+📊 Bilan H2H : Sporting Clube de Portugal 5 victoire(s) | 1 nul(s) | 0 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟢 Avantage H2H net
 
 ℹ️ Signal fondé uniquement sur les confrontations directes des 3 dernières années. Il ne prédit pas un résultat et ne garantit pas une victoire.
