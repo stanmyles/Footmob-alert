@@ -1,15 +1,7 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 18
+📅 Matchs avec signal : 20
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
-
-⚽ **Club Atlético de Madrid vs CA Osasuna**
-🏆 Compétition : LaLiga (Espagne)
-🗓️ Coup d’envoi : 16/09/2026 à 19:00
-📌 Avantage historique : Club Atlético de Madrid
-📊 Bilan H2H : Club Atlético de Madrid 4 victoire(s) | 0 nul(s) | 2 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟡 Avantage H2H à surveiller
 
 ⚽ **Real Betis Balompié vs Getafe CF**
 🏆 Compétition : LaLiga (Espagne)
@@ -122,5 +114,13 @@
 📊 Bilan H2H : Sporting Clube de Portugal 5 victoire(s) | 1 nul(s) | 0 défaite(s)
 📚 Échantillon : 6 confrontation(s)
 🟢 Avantage H2H net
+
+⚽ **Feyenoord Rotterdam vs FC Utrecht**
+🏆 Compétition : Eredivisie (Pays-Bas)
+🗓️ Coup d’envoi : 20/09/2026 à 12:15
+📌 Avantage historique : Feyenoord Rotterdam
+📊 Bilan H2H : Feyenoord Rotterdam 4 victoire(s) | 0 nul(s) | 1 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
 
 ℹ️ Signal fondé uniquement sur les confrontations directes des 3 dernières années. Il ne prédit pas un résultat et ne garantit pas une victoire.
