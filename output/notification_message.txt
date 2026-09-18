@@ -1,15 +1,7 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 20
+📅 Matchs avec signal : 19
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
-
-⚽ **Real Betis Balompié vs Getafe CF**
-🏆 Compétition : LaLiga (Espagne)
-🗓️ Coup d’envoi : 17/09/2026 à 19:00
-📌 Avantage historique : Real Betis Balompié
-📊 Bilan H2H : Real Betis Balompié 3 victoire(s) | 2 nul(s) | 1 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟡 Avantage H2H à surveiller
 
 ⚽ **FC Bayern München vs 1. FC Union Berlin**
 🏆 Compétition : Bundesliga (Allemagne)
@@ -122,5 +114,13 @@
 📊 Bilan H2H : Feyenoord Rotterdam 4 victoire(s) | 0 nul(s) | 1 défaite(s)
 📚 Échantillon : 5 confrontation(s)
 🟡 Avantage H2H à surveiller
+
+⚽ **ACF Fiorentina vs SSC Napoli**
+🏆 Compétition : Serie A (Italie)
+🗓️ Coup d’envoi : 20/09/2026 à 12:30
+📌 Avantage historique : SSC Napoli
+📊 Bilan H2H : SSC Napoli 4 victoire(s) | 1 nul(s) | 1 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟢 Avantage H2H net
 
 ℹ️ Signal fondé uniquement sur les confrontations directes des 3 dernières années. Il ne prédit pas un résultat et ne garantit pas une victoire.

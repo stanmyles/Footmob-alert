@@ -1,20 +1,5 @@
 [
   {
-    "competition":"PD",
-    "utcDate":"2026-09-17T17:00:00Z",
-    "date_local":"17\/09\/2026",
-    "time_local":"19:00",
-    "homeTeam":"Real Betis Balompié",
-    "awayTeam":"Getafe CF",
-    "dominant_team":"Real Betis Balompié",
-    "h2h_matches":6,
-    "dominant_wins":3,
-    "draws":2,
-    "dominant_losses":1,
-    "h2h_signal":"🟡 Avantage H2H à surveiller",
-    "recent_h2h":"[{\"date\": \"2026-03-08\", \"home\": \"Getafe CF\", \"away\": \"Real Betis Balompié\", \"score\": \"2-0\"}, {\"date\": \"2025-12-21\", \"home\": \"Real Betis Balompié\", \"away\": \"Getafe CF\", \"score\": \"4-0\"}, {\"date\": \"2025-02-23\", \"home\": \"Getafe CF\", \"away\": \"Real Betis Balompié\", \"score\": \"1-2\"}, {\"date\": \"2024-09-18\", \"home\": \"Real Betis Balompié\", \"away\": \"Getafe CF\", \"score\": \"2-1\"}, {\"date\": \"2024-02-04\", \"home\": \"Real Betis Balompié\", \"away\": \"Getafe CF\", \"score\": \"1-1\"}, {\"date\": \"2023-10-21\", \"home\": \"Getafe CF\", \"away\": \"Real Betis Balompié\", \"score\": \"1-1\"}]"
-  },
-  {
     "competition":"BL1",
     "utcDate":"2026-09-18T18:30:00Z",
     "date_local":"18\/09\/2026",
