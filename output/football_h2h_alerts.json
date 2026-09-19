@@ -1,35 +1,5 @@
 [
   {
-    "competition":"BL1",
-    "utcDate":"2026-09-18T18:30:00Z",
-    "date_local":"18\/09\/2026",
-    "time_local":"20:30",
-    "homeTeam":"FC Bayern München",
-    "awayTeam":"1. FC Union Berlin",
-    "dominant_team":"FC Bayern München",
-    "h2h_matches":6,
-    "dominant_wins":4,
-    "draws":2,
-    "dominant_losses":0,
-    "h2h_signal":"🟢 Avantage H2H net",
-    "recent_h2h":"[{\"date\": \"2026-03-21\", \"home\": \"FC Bayern München\", \"away\": \"1. FC Union Berlin\", \"score\": \"4-0\"}, {\"date\": \"2025-11-08\", \"home\": \"1. FC Union Berlin\", \"away\": \"FC Bayern München\", \"score\": \"2-2\"}, {\"date\": \"2025-03-15\", \"home\": \"1. FC Union Berlin\", \"away\": \"FC Bayern München\", \"score\": \"1-1\"}, {\"date\": \"2024-11-02\", \"home\": \"FC Bayern München\", \"away\": \"1. FC Union Berlin\", \"score\": \"3-0\"}, {\"date\": \"2024-04-20\", \"home\": \"1. FC Union Berlin\", \"away\": \"FC Bayern München\", \"score\": \"1-5\"}, {\"date\": \"2024-01-24\", \"home\": \"FC Bayern München\", \"away\": \"1. FC Union Berlin\", \"score\": \"1-0\"}]"
-  },
-  {
-    "competition":"ELC",
-    "utcDate":"2026-09-19T11:30:00Z",
-    "date_local":"19\/09\/2026",
-    "time_local":"13:30",
-    "homeTeam":"Stoke City FC",
-    "awayTeam":"Sheffield United FC",
-    "dominant_team":"Sheffield United FC",
-    "h2h_matches":4,
-    "dominant_wins":4,
-    "draws":0,
-    "dominant_losses":0,
-    "h2h_signal":"🟡 Avantage H2H à surveiller",
-    "recent_h2h":"[{\"date\": \"2025-12-29\", \"home\": \"Stoke City FC\", \"away\": \"Sheffield United FC\", \"score\": \"1-2\"}, {\"date\": \"2025-12-06\", \"home\": \"Sheffield United FC\", \"away\": \"Stoke City FC\", \"score\": \"4-0\"}, {\"date\": \"2025-04-25\", \"home\": \"Stoke City FC\", \"away\": \"Sheffield United FC\", \"score\": \"0-2\"}, {\"date\": \"2024-10-26\", \"home\": \"Sheffield United FC\", \"away\": \"Stoke City FC\", \"score\": \"2-0\"}]"
-  },
-  {
     "competition":"SA",
     "utcDate":"2026-09-19T13:00:00Z",
     "date_local":"19\/09\/2026",
@@ -283,5 +253,50 @@
     "dominant_losses":1,
     "h2h_signal":"🟡 Avantage H2H à surveiller",
     "recent_h2h":"[{\"date\": \"2026-05-02\", \"home\": \"Bayer 04 Leverkusen\", \"away\": \"RB Leipzig\", \"score\": \"4-1\"}, {\"date\": \"2025-12-20\", \"home\": \"RB Leipzig\", \"away\": \"Bayer 04 Leverkusen\", \"score\": \"1-3\"}, {\"date\": \"2025-01-25\", \"home\": \"RB Leipzig\", \"away\": \"Bayer 04 Leverkusen\", \"score\": \"2-2\"}, {\"date\": \"2024-08-31\", \"home\": \"Bayer 04 Leverkusen\", \"away\": \"RB Leipzig\", \"score\": \"2-3\"}, {\"date\": \"2024-01-20\", \"home\": \"RB Leipzig\", \"away\": \"Bayer 04 Leverkusen\", \"score\": \"2-3\"}]"
+  },
+  {
+    "competition":"PL",
+    "utcDate":"2026-09-20T15:30:00Z",
+    "date_local":"20\/09\/2026",
+    "time_local":"17:30",
+    "homeTeam":"Fulham FC",
+    "awayTeam":"Manchester United FC",
+    "dominant_team":"Manchester United FC",
+    "h2h_matches":6,
+    "dominant_wins":4,
+    "draws":1,
+    "dominant_losses":1,
+    "h2h_signal":"🟢 Avantage H2H net",
+    "recent_h2h":"[{\"date\": \"2026-02-01\", \"home\": \"Manchester United FC\", \"away\": \"Fulham FC\", \"score\": \"3-2\"}, {\"date\": \"2025-08-24\", \"home\": \"Fulham FC\", \"away\": \"Manchester United FC\", \"score\": \"1-1\"}, {\"date\": \"2025-01-26\", \"home\": \"Fulham FC\", \"away\": \"Manchester United FC\", \"score\": \"0-1\"}, {\"date\": \"2024-08-16\", \"home\": \"Manchester United FC\", \"away\": \"Fulham FC\", \"score\": \"1-0\"}, {\"date\": \"2024-02-24\", \"home\": \"Manchester United FC\", \"away\": \"Fulham FC\", \"score\": \"1-2\"}, {\"date\": \"2023-11-04\", \"home\": \"Fulham FC\", \"away\": \"Manchester United FC\", \"score\": \"0-1\"}]"
+  },
+  {
+    "competition":"FL1",
+    "utcDate":"2026-09-20T18:45:00Z",
+    "date_local":"20\/09\/2026",
+    "time_local":"20:45",
+    "homeTeam":"Olympique de Marseille",
+    "awayTeam":"Paris Saint-Germain FC",
+    "dominant_team":"Paris Saint-Germain FC",
+    "h2h_matches":6,
+    "dominant_wins":5,
+    "draws":0,
+    "dominant_losses":1,
+    "h2h_signal":"🟢 Avantage H2H net",
+    "recent_h2h":"[{\"date\": \"2026-02-08\", \"home\": \"Paris Saint-Germain FC\", \"away\": \"Olympique de Marseille\", \"score\": \"5-0\"}, {\"date\": \"2025-09-22\", \"home\": \"Olympique de Marseille\", \"away\": \"Paris Saint-Germain FC\", \"score\": \"1-0\"}, {\"date\": \"2025-03-16\", \"home\": \"Paris Saint-Germain FC\", \"away\": \"Olympique de Marseille\", \"score\": \"3-1\"}, {\"date\": \"2024-10-27\", \"home\": \"Olympique de Marseille\", \"away\": \"Paris Saint-Germain FC\", \"score\": \"0-3\"}, {\"date\": \"2024-03-31\", \"home\": \"Olympique de Marseille\", \"away\": \"Paris Saint-Germain FC\", \"score\": \"0-2\"}, {\"date\": \"2023-09-24\", \"home\": \"Paris Saint-Germain FC\", \"away\": \"Olympique de Marseille\", \"score\": \"4-0\"}]"
+  },
+  {
+    "competition":"SA",
+    "utcDate":"2026-09-20T18:45:00Z",
+    "date_local":"20\/09\/2026",
+    "time_local":"20:45",
+    "homeTeam":"AC Milan",
+    "awayTeam":"US Lecce",
+    "dominant_team":"AC Milan",
+    "h2h_matches":6,
+    "dominant_wins":5,
+    "draws":1,
+    "dominant_losses":0,
+    "h2h_signal":"🟢 Avantage H2H net",
+    "recent_h2h":"[{\"date\": \"2026-01-18\", \"home\": \"AC Milan\", \"away\": \"US Lecce\", \"score\": \"1-0\"}, {\"date\": \"2025-08-29\", \"home\": \"US Lecce\", \"away\": \"AC Milan\", \"score\": \"0-2\"}, {\"date\": \"2025-03-08\", \"home\": \"US Lecce\", \"away\": \"AC Milan\", \"score\": \"2-3\"}, {\"date\": \"2024-09-27\", \"home\": \"AC Milan\", \"away\": \"US Lecce\", \"score\": \"3-0\"}, {\"date\": \"2024-04-06\", \"home\": \"AC Milan\", \"away\": \"US Lecce\", \"score\": \"3-0\"}, {\"date\": \"2023-11-11\", \"home\": \"US Lecce\", \"away\": \"AC Milan\", \"score\": \"2-2\"}]"
   }
 ]

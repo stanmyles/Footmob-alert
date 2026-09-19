@@ -1,23 +1,7 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 19
+📅 Matchs avec signal : 20
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
-
-⚽ **FC Bayern München vs 1. FC Union Berlin**
-🏆 Compétition : Bundesliga (Allemagne)
-🗓️ Coup d’envoi : 18/09/2026 à 20:30
-📌 Avantage historique : FC Bayern München
-📊 Bilan H2H : FC Bayern München 4 victoire(s) | 2 nul(s) | 0 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟢 Avantage H2H net
-
-⚽ **Stoke City FC vs Sheffield United FC**
-🏆 Compétition : Championship (Angleterre)
-🗓️ Coup d’envoi : 19/09/2026 à 13:30
-📌 Avantage historique : Sheffield United FC
-📊 Bilan H2H : Sheffield United FC 4 victoire(s) | 0 nul(s) | 0 défaite(s)
-📚 Échantillon : 4 confrontation(s)
-🟡 Avantage H2H à surveiller
 
 ⚽ **Bologna FC 1909 vs Torino FC**
 🏆 Compétition : Serie A (Italie)
@@ -122,5 +106,21 @@
 📊 Bilan H2H : SSC Napoli 4 victoire(s) | 1 nul(s) | 1 défaite(s)
 📚 Échantillon : 6 confrontation(s)
 🟢 Avantage H2H net
+
+⚽ **FC Twente '65 vs PSV**
+🏆 Compétition : Eredivisie (Pays-Bas)
+🗓️ Coup d’envoi : 20/09/2026 à 14:30
+📌 Avantage historique : PSV
+📊 Bilan H2H : PSV 6 victoire(s) | 0 nul(s) | 0 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟢 Avantage H2H net
+
+⚽ **AFC Bournemouth vs Liverpool FC**
+🏆 Compétition : Premier League (Angleterre)
+🗓️ Coup d’envoi : 20/09/2026 à 15:00
+📌 Avantage historique : Liverpool FC
+📊 Bilan H2H : Liverpool FC 4 victoire(s) | 0 nul(s) | 1 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
 
 ℹ️ Signal fondé uniquement sur les confrontations directes des 3 dernières années. Il ne prédit pas un résultat et ne garantit pas une victoire.
