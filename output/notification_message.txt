@@ -1,3 +1,14 @@
-⚠️ Aucun match ne répond aux critères H2H sur aujourd’hui + les 7 prochains jours.
-🔎 Historique analysé : les 3 dernières années.
-Règles : 🟡 dès 2 victoires d’écart ; 🟢 dès 3 victoires d’écart avec au moins 6 H2H.
+📊 **Football — confrontations directes récentes**
+📅 Matchs avec signal : 1
+📆 Période des matchs : aujourd’hui + les 7 prochains jours.
+🔎 Fenêtre H2H : les 3 dernières années.
+
+⚽ **CA Mineiro vs RB Bragantino**
+🏆 Compétition : Brasileirão Série A (Brésil)
+🗓️ Coup d’envoi : 03/10/2026 à 23:30
+📌 Avantage historique : CA Mineiro
+📊 Bilan H2H : CA Mineiro 4 victoire(s) | 0 nul(s) | 2 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+ℹ️ Signal fondé uniquement sur les confrontations directes des 3 dernières années. Il ne prédit pas un résultat et ne garantit pas une victoire.
