@@ -13,5 +13,35 @@
     "dominant_losses":2,
     "h2h_signal":"🟡 Avantage H2H à surveiller",
     "recent_h2h":"[{\"date\": \"2026-02-04\", \"home\": \"RB Bragantino\", \"away\": \"CA Mineiro\", \"score\": \"1-0\"}, {\"date\": \"2025-11-16\", \"home\": \"RB Bragantino\", \"away\": \"CA Mineiro\", \"score\": \"2-0\"}, {\"date\": \"2025-08-03\", \"home\": \"CA Mineiro\", \"away\": \"RB Bragantino\", \"score\": \"2-1\"}, {\"date\": \"2024-09-22\", \"home\": \"CA Mineiro\", \"away\": \"RB Bragantino\", \"score\": \"3-0\"}, {\"date\": \"2024-06-12\", \"home\": \"RB Bragantino\", \"away\": \"CA Mineiro\", \"score\": \"1-2\"}, {\"date\": \"2023-10-25\", \"home\": \"RB Bragantino\", \"away\": \"CA Mineiro\", \"score\": \"1-2\"}]"
+  },
+  {
+    "competition":"BSA",
+    "utcDate":"2026-10-07T22:30:00Z",
+    "date_local":"08\/10\/2026",
+    "time_local":"00:30",
+    "homeTeam":"SC Internacional",
+    "awayTeam":"SC Corinthians Paulista",
+    "dominant_team":"SC Internacional",
+    "h2h_matches":6,
+    "dominant_wins":3,
+    "draws":2,
+    "dominant_losses":1,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-04-05\", \"home\": \"SC Corinthians Paulista\", \"away\": \"SC Internacional\", \"score\": \"0-1\"}, {\"date\": \"2025-10-01\", \"home\": \"SC Internacional\", \"away\": \"SC Corinthians Paulista\", \"score\": \"1-1\"}, {\"date\": \"2025-05-03\", \"home\": \"SC Corinthians Paulista\", \"away\": \"SC Internacional\", \"score\": \"4-2\"}, {\"date\": \"2024-10-05\", \"home\": \"SC Corinthians Paulista\", \"away\": \"SC Internacional\", \"score\": \"2-2\"}, {\"date\": \"2024-06-20\", \"home\": \"SC Internacional\", \"away\": \"SC Corinthians Paulista\", \"score\": \"1-0\"}, {\"date\": \"2023-12-02\", \"home\": \"SC Corinthians Paulista\", \"away\": \"SC Internacional\", \"score\": \"1-2\"}]"
+  },
+  {
+    "competition":"BSA",
+    "utcDate":"2026-10-07T23:30:00Z",
+    "date_local":"08\/10\/2026",
+    "time_local":"01:30",
+    "homeTeam":"Botafogo FR",
+    "awayTeam":"CR Vasco da Gama",
+    "dominant_team":"Botafogo FR",
+    "h2h_matches":6,
+    "dominant_wins":4,
+    "draws":1,
+    "dominant_losses":1,
+    "h2h_signal":"🟢 Avantage H2H net",
+    "recent_h2h":"[{\"date\": \"2026-04-05\", \"home\": \"CR Vasco da Gama\", \"away\": \"Botafogo FR\", \"score\": \"1-2\"}, {\"date\": \"2025-11-05\", \"home\": \"Botafogo FR\", \"away\": \"CR Vasco da Gama\", \"score\": \"3-0\"}, {\"date\": \"2025-07-12\", \"home\": \"CR Vasco da Gama\", \"away\": \"Botafogo FR\", \"score\": \"0-2\"}, {\"date\": \"2024-11-06\", \"home\": \"Botafogo FR\", \"away\": \"CR Vasco da Gama\", \"score\": \"3-0\"}, {\"date\": \"2024-06-29\", \"home\": \"CR Vasco da Gama\", \"away\": \"Botafogo FR\", \"score\": \"1-1\"}, {\"date\": \"2023-11-06\", \"home\": \"CR Vasco da Gama\", \"away\": \"Botafogo FR\", \"score\": \"1-0\"}]"
   }
 ]

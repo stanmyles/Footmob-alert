@@ -1,5 +1,5 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 1
+📅 Matchs avec signal : 3
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
 
@@ -10,5 +10,21 @@
 📊 Bilan H2H : CA Mineiro 4 victoire(s) | 0 nul(s) | 2 défaite(s)
 📚 Échantillon : 6 confrontation(s)
 🟡 Avantage H2H à surveiller
+
+⚽ **SC Internacional vs SC Corinthians Paulista**
+🏆 Compétition : Brasileirão Série A (Brésil)
+🗓️ Coup d’envoi : 08/10/2026 à 00:30
+📌 Avantage historique : SC Internacional
+📊 Bilan H2H : SC Internacional 3 victoire(s) | 2 nul(s) | 1 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Botafogo FR vs CR Vasco da Gama**
+🏆 Compétition : Brasileirão Série A (Brésil)
+🗓️ Coup d’envoi : 08/10/2026 à 01:30
+📌 Avantage historique : Botafogo FR
+📊 Bilan H2H : Botafogo FR 4 victoire(s) | 1 nul(s) | 1 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟢 Avantage H2H net
 
 ℹ️ Signal fondé uniquement sur les confrontations directes des 3 dernières années. Il ne prédit pas un résultat et ne garantit pas une victoire.
