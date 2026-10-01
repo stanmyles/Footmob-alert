@@ -1,5 +1,5 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 3
+📅 Matchs avec signal : 5
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
 
@@ -9,6 +9,14 @@
 📌 Avantage historique : CA Mineiro
 📊 Bilan H2H : CA Mineiro 4 victoire(s) | 0 nul(s) | 2 défaite(s)
 📚 Échantillon : 6 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **RB Bragantino vs Mirassol FC**
+🏆 Compétition : Brasileirão Série A (Brésil)
+🗓️ Coup d’envoi : 08/10/2026 à 00:30
+📌 Avantage historique : RB Bragantino
+📊 Bilan H2H : RB Bragantino 2 victoire(s) | 1 nul(s) | 0 défaite(s)
+📚 Échantillon : 3 confrontation(s)
 🟡 Avantage H2H à surveiller
 
 ⚽ **SC Internacional vs SC Corinthians Paulista**
@@ -24,6 +32,14 @@
 🗓️ Coup d’envoi : 08/10/2026 à 01:30
 📌 Avantage historique : Botafogo FR
 📊 Bilan H2H : Botafogo FR 4 victoire(s) | 1 nul(s) | 1 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟢 Avantage H2H net
+
+⚽ **Cruzeiro EC vs São Paulo FC**
+🏆 Compétition : Brasileirão Série A (Brésil)
+🗓️ Coup d’envoi : 08/10/2026 à 02:30
+📌 Avantage historique : São Paulo FC
+📊 Bilan H2H : São Paulo FC 4 victoire(s) | 1 nul(s) | 1 défaite(s)
 📚 Échantillon : 6 confrontation(s)
 🟢 Avantage H2H net
 

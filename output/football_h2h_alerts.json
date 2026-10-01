@@ -19,6 +19,21 @@
     "utcDate":"2026-10-07T22:30:00Z",
     "date_local":"08\/10\/2026",
     "time_local":"00:30",
+    "homeTeam":"RB Bragantino",
+    "awayTeam":"Mirassol FC",
+    "dominant_team":"RB Bragantino",
+    "h2h_matches":3,
+    "dominant_wins":2,
+    "draws":1,
+    "dominant_losses":0,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-04-05\", \"home\": \"Mirassol FC\", \"away\": \"RB Bragantino\", \"score\": \"0-1\"}, {\"date\": \"2025-10-01\", \"home\": \"Mirassol FC\", \"away\": \"RB Bragantino\", \"score\": \"1-1\"}, {\"date\": \"2025-05-05\", \"home\": \"RB Bragantino\", \"away\": \"Mirassol FC\", \"score\": \"1-0\"}]"
+  },
+  {
+    "competition":"BSA",
+    "utcDate":"2026-10-07T22:30:00Z",
+    "date_local":"08\/10\/2026",
+    "time_local":"00:30",
     "homeTeam":"SC Internacional",
     "awayTeam":"SC Corinthians Paulista",
     "dominant_team":"SC Internacional",
@@ -43,5 +58,20 @@
     "dominant_losses":1,
     "h2h_signal":"🟢 Avantage H2H net",
     "recent_h2h":"[{\"date\": \"2026-04-05\", \"home\": \"CR Vasco da Gama\", \"away\": \"Botafogo FR\", \"score\": \"1-2\"}, {\"date\": \"2025-11-05\", \"home\": \"Botafogo FR\", \"away\": \"CR Vasco da Gama\", \"score\": \"3-0\"}, {\"date\": \"2025-07-12\", \"home\": \"CR Vasco da Gama\", \"away\": \"Botafogo FR\", \"score\": \"0-2\"}, {\"date\": \"2024-11-06\", \"home\": \"Botafogo FR\", \"away\": \"CR Vasco da Gama\", \"score\": \"3-0\"}, {\"date\": \"2024-06-29\", \"home\": \"CR Vasco da Gama\", \"away\": \"Botafogo FR\", \"score\": \"1-1\"}, {\"date\": \"2023-11-06\", \"home\": \"CR Vasco da Gama\", \"away\": \"Botafogo FR\", \"score\": \"1-0\"}]"
+  },
+  {
+    "competition":"BSA",
+    "utcDate":"2026-10-08T00:30:00Z",
+    "date_local":"08\/10\/2026",
+    "time_local":"02:30",
+    "homeTeam":"Cruzeiro EC",
+    "awayTeam":"São Paulo FC",
+    "dominant_team":"São Paulo FC",
+    "h2h_matches":6,
+    "dominant_wins":4,
+    "draws":1,
+    "dominant_losses":1,
+    "h2h_signal":"🟢 Avantage H2H net",
+    "recent_h2h":"[{\"date\": \"2026-04-04\", \"home\": \"São Paulo FC\", \"away\": \"Cruzeiro EC\", \"score\": \"4-1\"}, {\"date\": \"2025-08-31\", \"home\": \"Cruzeiro EC\", \"away\": \"São Paulo FC\", \"score\": \"1-0\"}, {\"date\": \"2025-04-13\", \"home\": \"São Paulo FC\", \"away\": \"Cruzeiro EC\", \"score\": \"1-1\"}, {\"date\": \"2024-09-15\", \"home\": \"Cruzeiro EC\", \"away\": \"São Paulo FC\", \"score\": \"0-1\"}, {\"date\": \"2024-06-02\", \"home\": \"São Paulo FC\", \"away\": \"Cruzeiro EC\", \"score\": \"2-0\"}, {\"date\": \"2023-11-02\", \"home\": \"São Paulo FC\", \"away\": \"Cruzeiro EC\", \"score\": \"1-0\"}]"
   }
 ]
