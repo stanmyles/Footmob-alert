@@ -1,5 +1,5 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 10
+📅 Matchs avec signal : 27
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
 
@@ -80,6 +80,46 @@
 🗓️ Coup d’envoi : 09/10/2026 à 21:15
 📌 Avantage historique : Sporting Clube de Portugal
 📊 Bilan H2H : Sporting Clube de Portugal 2 victoire(s) | 3 nul(s) | 0 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Swansea City AFC vs Norwich City FC**
+🏆 Compétition : Championship (Angleterre)
+🗓️ Coup d’envoi : 10/10/2026 à 13:30
+📌 Avantage historique : Swansea City AFC
+📊 Bilan H2H : Swansea City AFC 3 victoire(s) | 2 nul(s) | 1 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Rayo Vallecano de Madrid vs Athletic Club**
+🏆 Compétition : LaLiga (Espagne)
+🗓️ Coup d’envoi : 10/10/2026 à 14:00
+📌 Avantage historique : Athletic Club
+📊 Bilan H2H : Athletic Club 5 victoire(s) | 1 nul(s) | 0 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟢 Avantage H2H net
+
+⚽ **Genoa CFC vs ACF Fiorentina**
+🏆 Compétition : Serie A (Italie)
+🗓️ Coup d’envoi : 10/10/2026 à 15:00
+📌 Avantage historique : ACF Fiorentina
+📊 Bilan H2H : ACF Fiorentina 2 victoire(s) | 3 nul(s) | 0 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **1. FSV Mainz 05 vs Bayer 04 Leverkusen**
+🏆 Compétition : Bundesliga (Allemagne)
+🗓️ Coup d’envoi : 10/10/2026 à 15:30
+📌 Avantage historique : Bayer 04 Leverkusen
+📊 Bilan H2H : Bayer 04 Leverkusen 3 victoire(s) | 2 nul(s) | 0 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **FC Augsburg vs FC Bayern München**
+🏆 Compétition : Bundesliga (Allemagne)
+🗓️ Coup d’envoi : 10/10/2026 à 15:30
+📌 Avantage historique : FC Bayern München
+📊 Bilan H2H : FC Bayern München 4 victoire(s) | 0 nul(s) | 1 défaite(s)
 📚 Échantillon : 5 confrontation(s)
 🟡 Avantage H2H à surveiller
 
