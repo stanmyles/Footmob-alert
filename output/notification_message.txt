@@ -1,15 +1,7 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 27
+📅 Matchs avec signal : 25
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
-
-⚽ **CA Mineiro vs RB Bragantino**
-🏆 Compétition : Brasileirão Série A (Brésil)
-🗓️ Coup d’envoi : 03/10/2026 à 23:30
-📌 Avantage historique : CA Mineiro
-📊 Bilan H2H : CA Mineiro 4 victoire(s) | 0 nul(s) | 2 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟡 Avantage H2H à surveiller
 
 ⚽ **RB Bragantino vs Mirassol FC**
 🏆 Compétition : Brasileirão Série A (Brésil)
@@ -83,14 +75,6 @@
 📚 Échantillon : 5 confrontation(s)
 🟡 Avantage H2H à surveiller
 
-⚽ **Swansea City AFC vs Norwich City FC**
-🏆 Compétition : Championship (Angleterre)
-🗓️ Coup d’envoi : 10/10/2026 à 13:30
-📌 Avantage historique : Swansea City AFC
-📊 Bilan H2H : Swansea City AFC 3 victoire(s) | 2 nul(s) | 1 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟡 Avantage H2H à surveiller
-
 ⚽ **Rayo Vallecano de Madrid vs Athletic Club**
 🏆 Compétition : LaLiga (Espagne)
 🗓️ Coup d’envoi : 10/10/2026 à 14:00
@@ -120,6 +104,22 @@
 🗓️ Coup d’envoi : 10/10/2026 à 15:30
 📌 Avantage historique : FC Bayern München
 📊 Bilan H2H : FC Bayern München 4 victoire(s) | 0 nul(s) | 1 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Preston North End FC vs Millwall FC**
+🏆 Compétition : Championship (Angleterre)
+🗓️ Coup d’envoi : 10/10/2026 à 16:00
+📌 Avantage historique : Millwall FC
+📊 Bilan H2H : Millwall FC 2 victoire(s) | 4 nul(s) | 0 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Chelsea FC vs AFC Bournemouth**
+🏆 Compétition : Premier League (Angleterre)
+🗓️ Coup d’envoi : 10/10/2026 à 16:00
+📌 Avantage historique : Chelsea FC
+📊 Bilan H2H : Chelsea FC 2 victoire(s) | 3 nul(s) | 0 défaite(s)
 📚 Échantillon : 5 confrontation(s)
 🟡 Avantage H2H à surveiller
 
