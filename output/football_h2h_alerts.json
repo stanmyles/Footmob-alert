@@ -345,33 +345,33 @@
     "recent_h2h":"[{\"date\": \"2026-03-21\", \"home\": \"Fortuna Sittard\", \"away\": \"FC Twente '65\", \"score\": \"1-2\"}, {\"date\": \"2025-09-26\", \"home\": \"FC Twente '65\", \"away\": \"Fortuna Sittard\", \"score\": \"3-2\"}, {\"date\": \"2025-04-05\", \"home\": \"FC Twente '65\", \"away\": \"Fortuna Sittard\", \"score\": \"1-1\"}, {\"date\": \"2024-11-23\", \"home\": \"Fortuna Sittard\", \"away\": \"FC Twente '65\", \"score\": \"1-2\"}, {\"date\": \"2024-04-06\", \"home\": \"FC Twente '65\", \"away\": \"Fortuna Sittard\", \"score\": \"2-0\"}, {\"date\": \"2023-10-08\", \"home\": \"Fortuna Sittard\", \"away\": \"FC Twente '65\", \"score\": \"0-3\"}]"
   },
   {
-    "competition":"PD",
-    "utcDate":"2026-10-10T19:00:00Z",
+    "competition":"FL1",
+    "utcDate":"2026-10-10T18:45:00Z",
     "date_local":"10\/10\/2026",
-    "time_local":"21:00",
-    "homeTeam":"Real Madrid CF",
-    "awayTeam":"Villarreal CF",
-    "dominant_team":"Real Madrid CF",
-    "h2h_matches":6,
-    "dominant_wins":5,
-    "draws":1,
-    "dominant_losses":0,
-    "h2h_signal":"🟢 Avantage H2H net",
-    "recent_h2h":"[{\"date\": \"2026-01-24\", \"home\": \"Villarreal CF\", \"away\": \"Real Madrid CF\", \"score\": \"0-2\"}, {\"date\": \"2025-10-04\", \"home\": \"Real Madrid CF\", \"away\": \"Villarreal CF\", \"score\": \"3-1\"}, {\"date\": \"2025-03-15\", \"home\": \"Villarreal CF\", \"away\": \"Real Madrid CF\", \"score\": \"1-2\"}, {\"date\": \"2024-10-05\", \"home\": \"Real Madrid CF\", \"away\": \"Villarreal CF\", \"score\": \"2-0\"}, {\"date\": \"2024-05-19\", \"home\": \"Villarreal CF\", \"away\": \"Real Madrid CF\", \"score\": \"4-4\"}, {\"date\": \"2023-12-17\", \"home\": \"Real Madrid CF\", \"away\": \"Villarreal CF\", \"score\": \"4-1\"}]"
-  },
-  {
-    "competition":"SA",
-    "utcDate":"2026-10-11T13:00:00Z",
-    "date_local":"11\/10\/2026",
-    "time_local":"15:00",
-    "homeTeam":"US Lecce",
-    "awayTeam":"Bologna FC 1909",
-    "dominant_team":"Bologna FC 1909",
+    "time_local":"20:45",
+    "homeTeam":"AS Monaco FC",
+    "awayTeam":"Toulouse FC",
+    "dominant_team":"AS Monaco FC",
     "h2h_matches":6,
     "dominant_wins":3,
-    "draws":3,
-    "dominant_losses":0,
-    "h2h_signal":"🟢 Avantage H2H net",
-    "recent_h2h":"[{\"date\": \"2026-04-12\", \"home\": \"Bologna FC 1909\", \"away\": \"US Lecce\", \"score\": \"2-0\"}, {\"date\": \"2025-09-28\", \"home\": \"US Lecce\", \"away\": \"Bologna FC 1909\", \"score\": \"2-2\"}, {\"date\": \"2025-02-09\", \"home\": \"US Lecce\", \"away\": \"Bologna FC 1909\", \"score\": \"0-0\"}, {\"date\": \"2024-11-02\", \"home\": \"Bologna FC 1909\", \"away\": \"US Lecce\", \"score\": \"1-0\"}, {\"date\": \"2024-02-11\", \"home\": \"Bologna FC 1909\", \"away\": \"US Lecce\", \"score\": \"4-0\"}, {\"date\": \"2023-12-03\", \"home\": \"US Lecce\", \"away\": \"Bologna FC 1909\", \"score\": \"1-1\"}]"
+    "draws":2,
+    "dominant_losses":1,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-04-25\", \"home\": \"Toulouse FC\", \"away\": \"AS Monaco FC\", \"score\": \"2-2\"}, {\"date\": \"2025-10-25\", \"home\": \"AS Monaco FC\", \"away\": \"Toulouse FC\", \"score\": \"1-0\"}, {\"date\": \"2025-03-07\", \"home\": \"Toulouse FC\", \"away\": \"AS Monaco FC\", \"score\": \"1-1\"}, {\"date\": \"2024-12-07\", \"home\": \"AS Monaco FC\", \"away\": \"Toulouse FC\", \"score\": \"2-0\"}, {\"date\": \"2024-02-18\", \"home\": \"AS Monaco FC\", \"away\": \"Toulouse FC\", \"score\": \"1-2\"}, {\"date\": \"2023-12-20\", \"home\": \"Toulouse FC\", \"away\": \"AS Monaco FC\", \"score\": \"1-2\"}]"
+  },
+  {
+    "competition":"BSA",
+    "utcDate":"2026-10-13T00:00:00Z",
+    "date_local":"13\/10\/2026",
+    "time_local":"02:00",
+    "homeTeam":"RB Bragantino",
+    "awayTeam":"Cruzeiro EC",
+    "dominant_team":"Cruzeiro EC",
+    "h2h_matches":5,
+    "dominant_wins":3,
+    "draws":1,
+    "dominant_losses":1,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-04-12\", \"home\": \"Cruzeiro EC\", \"away\": \"RB Bragantino\", \"score\": \"2-1\"}, {\"date\": \"2025-09-21\", \"home\": \"Cruzeiro EC\", \"away\": \"RB Bragantino\", \"score\": \"2-1\"}, {\"date\": \"2025-04-20\", \"home\": \"RB Bragantino\", \"away\": \"Cruzeiro EC\", \"score\": \"1-0\"}, {\"date\": \"2024-12-01\", \"home\": \"RB Bragantino\", \"away\": \"Cruzeiro EC\", \"score\": \"1-1\"}, {\"date\": \"2024-07-13\", \"home\": \"Cruzeiro EC\", \"away\": \"RB Bragantino\", \"score\": \"2-1\"}]"
   }
 ]
