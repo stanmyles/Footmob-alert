@@ -1,5 +1,5 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 25
+📅 Matchs avec signal : 24
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
 

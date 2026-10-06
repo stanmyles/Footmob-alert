@@ -315,51 +315,6 @@
     "recent_h2h":"[{\"date\": \"2026-04-25\", \"home\": \"Getafe CF\", \"away\": \"FC Barcelona\", \"score\": \"0-2\"}, {\"date\": \"2025-09-21\", \"home\": \"FC Barcelona\", \"away\": \"Getafe CF\", \"score\": \"3-0\"}, {\"date\": \"2025-01-18\", \"home\": \"Getafe CF\", \"away\": \"FC Barcelona\", \"score\": \"1-1\"}, {\"date\": \"2024-09-25\", \"home\": \"FC Barcelona\", \"away\": \"Getafe CF\", \"score\": \"1-0\"}, {\"date\": \"2024-02-24\", \"home\": \"FC Barcelona\", \"away\": \"Getafe CF\", \"score\": \"4-0\"}]"
   },
   {
-    "competition":"DED",
-    "utcDate":"2026-10-10T16:45:00Z",
-    "date_local":"10\/10\/2026",
-    "time_local":"18:45",
-    "homeTeam":"Feyenoord Rotterdam",
-    "awayTeam":"AZ",
-    "dominant_team":"Feyenoord Rotterdam",
-    "h2h_matches":6,
-    "dominant_wins":4,
-    "draws":2,
-    "dominant_losses":0,
-    "h2h_signal":"🟢 Avantage H2H net",
-    "recent_h2h":"[{\"date\": \"2026-05-10\", \"home\": \"Feyenoord Rotterdam\", \"away\": \"AZ\", \"score\": \"1-1\"}, {\"date\": \"2025-09-21\", \"home\": \"AZ\", \"away\": \"Feyenoord Rotterdam\", \"score\": \"3-3\"}, {\"date\": \"2025-04-05\", \"home\": \"AZ\", \"away\": \"Feyenoord Rotterdam\", \"score\": \"0-1\"}, {\"date\": \"2024-11-02\", \"home\": \"Feyenoord Rotterdam\", \"away\": \"AZ\", \"score\": \"3-2\"}, {\"date\": \"2024-02-04\", \"home\": \"AZ\", \"away\": \"Feyenoord Rotterdam\", \"score\": \"0-1\"}, {\"date\": \"2023-11-12\", \"home\": \"Feyenoord Rotterdam\", \"away\": \"AZ\", \"score\": \"1-0\"}]"
-  },
-  {
-    "competition":"DED",
-    "utcDate":"2026-10-10T18:00:00Z",
-    "date_local":"10\/10\/2026",
-    "time_local":"20:00",
-    "homeTeam":"Fortuna Sittard",
-    "awayTeam":"FC Twente '65",
-    "dominant_team":"FC Twente '65",
-    "h2h_matches":6,
-    "dominant_wins":5,
-    "draws":1,
-    "dominant_losses":0,
-    "h2h_signal":"🟢 Avantage H2H net",
-    "recent_h2h":"[{\"date\": \"2026-03-21\", \"home\": \"Fortuna Sittard\", \"away\": \"FC Twente '65\", \"score\": \"1-2\"}, {\"date\": \"2025-09-26\", \"home\": \"FC Twente '65\", \"away\": \"Fortuna Sittard\", \"score\": \"3-2\"}, {\"date\": \"2025-04-05\", \"home\": \"FC Twente '65\", \"away\": \"Fortuna Sittard\", \"score\": \"1-1\"}, {\"date\": \"2024-11-23\", \"home\": \"Fortuna Sittard\", \"away\": \"FC Twente '65\", \"score\": \"1-2\"}, {\"date\": \"2024-04-06\", \"home\": \"FC Twente '65\", \"away\": \"Fortuna Sittard\", \"score\": \"2-0\"}, {\"date\": \"2023-10-08\", \"home\": \"Fortuna Sittard\", \"away\": \"FC Twente '65\", \"score\": \"0-3\"}]"
-  },
-  {
-    "competition":"FL1",
-    "utcDate":"2026-10-10T18:45:00Z",
-    "date_local":"10\/10\/2026",
-    "time_local":"20:45",
-    "homeTeam":"AS Monaco FC",
-    "awayTeam":"Toulouse FC",
-    "dominant_team":"AS Monaco FC",
-    "h2h_matches":6,
-    "dominant_wins":3,
-    "draws":2,
-    "dominant_losses":1,
-    "h2h_signal":"🟡 Avantage H2H à surveiller",
-    "recent_h2h":"[{\"date\": \"2026-04-25\", \"home\": \"Toulouse FC\", \"away\": \"AS Monaco FC\", \"score\": \"2-2\"}, {\"date\": \"2025-10-25\", \"home\": \"AS Monaco FC\", \"away\": \"Toulouse FC\", \"score\": \"1-0\"}, {\"date\": \"2025-03-07\", \"home\": \"Toulouse FC\", \"away\": \"AS Monaco FC\", \"score\": \"1-1\"}, {\"date\": \"2024-12-07\", \"home\": \"AS Monaco FC\", \"away\": \"Toulouse FC\", \"score\": \"2-0\"}, {\"date\": \"2024-02-18\", \"home\": \"AS Monaco FC\", \"away\": \"Toulouse FC\", \"score\": \"1-2\"}, {\"date\": \"2023-12-20\", \"home\": \"Toulouse FC\", \"away\": \"AS Monaco FC\", \"score\": \"1-2\"}]"
-  },
-  {
     "competition":"BSA",
     "utcDate":"2026-10-13T00:00:00Z",
     "date_local":"13\/10\/2026",
@@ -373,5 +328,35 @@
     "dominant_losses":1,
     "h2h_signal":"🟡 Avantage H2H à surveiller",
     "recent_h2h":"[{\"date\": \"2026-04-12\", \"home\": \"Cruzeiro EC\", \"away\": \"RB Bragantino\", \"score\": \"2-1\"}, {\"date\": \"2025-09-21\", \"home\": \"Cruzeiro EC\", \"away\": \"RB Bragantino\", \"score\": \"2-1\"}, {\"date\": \"2025-04-20\", \"home\": \"RB Bragantino\", \"away\": \"Cruzeiro EC\", \"score\": \"1-0\"}, {\"date\": \"2024-12-01\", \"home\": \"RB Bragantino\", \"away\": \"Cruzeiro EC\", \"score\": \"1-1\"}, {\"date\": \"2024-07-13\", \"home\": \"Cruzeiro EC\", \"away\": \"RB Bragantino\", \"score\": \"2-1\"}]"
+  },
+  {
+    "competition":"ELC",
+    "utcDate":"2026-10-13T18:45:00Z",
+    "date_local":"13\/10\/2026",
+    "time_local":"20:45",
+    "homeTeam":"Cardiff City FC",
+    "awayTeam":"Watford FC",
+    "dominant_team":"Cardiff City FC",
+    "h2h_matches":3,
+    "dominant_wins":2,
+    "draws":1,
+    "dominant_losses":0,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2025-01-14\", \"home\": \"Cardiff City FC\", \"away\": \"Watford FC\", \"score\": \"1-1\"}, {\"date\": \"2024-12-29\", \"home\": \"Watford FC\", \"away\": \"Cardiff City FC\", \"score\": \"1-2\"}, {\"date\": \"2024-02-03\", \"home\": \"Watford FC\", \"away\": \"Cardiff City FC\", \"score\": \"0-1\"}]"
+  },
+  {
+    "competition":"ELC",
+    "utcDate":"2026-10-13T18:45:00Z",
+    "date_local":"13\/10\/2026",
+    "time_local":"20:45",
+    "homeTeam":"Millwall FC",
+    "awayTeam":"Swansea City AFC",
+    "dominant_team":"Millwall FC",
+    "h2h_matches":5,
+    "dominant_wins":4,
+    "draws":1,
+    "dominant_losses":0,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-01-04\", \"home\": \"Millwall FC\", \"away\": \"Swansea City AFC\", \"score\": \"2-1\"}, {\"date\": \"2025-09-27\", \"home\": \"Swansea City AFC\", \"away\": \"Millwall FC\", \"score\": \"1-1\"}, {\"date\": \"2025-04-26\", \"home\": \"Millwall FC\", \"away\": \"Swansea City AFC\", \"score\": \"1-0\"}, {\"date\": \"2024-10-26\", \"home\": \"Swansea City AFC\", \"away\": \"Millwall FC\", \"score\": \"0-1\"}, {\"date\": \"2024-05-04\", \"home\": \"Swansea City AFC\", \"away\": \"Millwall FC\", \"score\": \"0-1\"}]"
   }
 ]
