@@ -1,39 +1,7 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 20
+📅 Matchs avec signal : 21
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
-
-⚽ **RB Bragantino vs Mirassol FC**
-🏆 Compétition : Brasileirão Série A (Brésil)
-🗓️ Coup d’envoi : 08/10/2026 à 00:30
-📌 Avantage historique : RB Bragantino
-📊 Bilan H2H : RB Bragantino 2 victoire(s) | 1 nul(s) | 0 défaite(s)
-📚 Échantillon : 3 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **SC Internacional vs SC Corinthians Paulista**
-🏆 Compétition : Brasileirão Série A (Brésil)
-🗓️ Coup d’envoi : 08/10/2026 à 00:30
-📌 Avantage historique : SC Internacional
-📊 Bilan H2H : SC Internacional 3 victoire(s) | 2 nul(s) | 1 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Botafogo FR vs CR Vasco da Gama**
-🏆 Compétition : Brasileirão Série A (Brésil)
-🗓️ Coup d’envoi : 08/10/2026 à 01:30
-📌 Avantage historique : Botafogo FR
-📊 Bilan H2H : Botafogo FR 4 victoire(s) | 1 nul(s) | 1 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟢 Avantage H2H net
-
-⚽ **Cruzeiro EC vs São Paulo FC**
-🏆 Compétition : Brasileirão Série A (Brésil)
-🗓️ Coup d’envoi : 08/10/2026 à 02:30
-📌 Avantage historique : São Paulo FC
-📊 Bilan H2H : São Paulo FC 4 victoire(s) | 1 nul(s) | 1 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟢 Avantage H2H net
 
 ⚽ **SE Palmeiras vs EC Bahia**
 🏆 Compétition : Brasileirão Série A (Brésil)
@@ -120,6 +88,38 @@
 🗓️ Coup d’envoi : 10/10/2026 à 16:00
 📌 Avantage historique : Chelsea FC
 📊 Bilan H2H : Chelsea FC 2 victoire(s) | 3 nul(s) | 0 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Deportivo Alavés vs Club Atlético de Madrid**
+🏆 Compétition : LaLiga (Espagne)
+🗓️ Coup d’envoi : 10/10/2026 à 16:15
+📌 Avantage historique : Club Atlético de Madrid
+📊 Bilan H2H : Club Atlético de Madrid 3 victoire(s) | 2 nul(s) | 1 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Go Ahead Eagles vs Sparta Rotterdam**
+🏆 Compétition : Eredivisie (Pays-Bas)
+🗓️ Coup d’envoi : 10/10/2026 à 16:30
+📌 Avantage historique : Go Ahead Eagles
+📊 Bilan H2H : Go Ahead Eagles 3 victoire(s) | 2 nul(s) | 1 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Casa Pia AC vs CD Santa Clara**
+🏆 Compétition : Primeira Liga (Portugal)
+🗓️ Coup d’envoi : 10/10/2026 à 16:30
+📌 Avantage historique : CD Santa Clara
+📊 Bilan H2H : CD Santa Clara 3 victoire(s) | 1 nul(s) | 0 défaite(s)
+📚 Échantillon : 4 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Lille OSC vs Le Havre AC**
+🏆 Compétition : Ligue 1 (France)
+🗓️ Coup d’envoi : 10/10/2026 à 17:15
+📌 Avantage historique : Lille OSC
+📊 Bilan H2H : Lille OSC 3 victoire(s) | 1 nul(s) | 1 défaite(s)
 📚 Échantillon : 5 confrontation(s)
 🟡 Avantage H2H à surveiller
 
