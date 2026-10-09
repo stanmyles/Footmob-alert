@@ -1,15 +1,7 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 21
+📅 Matchs avec signal : 19
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
-
-⚽ **SE Palmeiras vs EC Bahia**
-🏆 Compétition : Brasileirão Série A (Brésil)
-🗓️ Coup d’envoi : 09/10/2026 à 02:30
-📌 Avantage historique : SE Palmeiras
-📊 Bilan H2H : SE Palmeiras 4 victoire(s) | 0 nul(s) | 2 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟡 Avantage H2H à surveiller
 
 ⚽ **PSV vs SC Heerenveen**
 🏆 Compétition : Eredivisie (Pays-Bas)
@@ -107,19 +99,27 @@
 📚 Échantillon : 6 confrontation(s)
 🟡 Avantage H2H à surveiller
 
-⚽ **Casa Pia AC vs CD Santa Clara**
-🏆 Compétition : Primeira Liga (Portugal)
-🗓️ Coup d’envoi : 10/10/2026 à 16:30
-📌 Avantage historique : CD Santa Clara
-📊 Bilan H2H : CD Santa Clara 3 victoire(s) | 1 nul(s) | 0 défaite(s)
-📚 Échantillon : 4 confrontation(s)
+⚽ **RB Bragantino vs Cruzeiro EC**
+🏆 Compétition : Brasileirão Série A (Brésil)
+🗓️ Coup d’envoi : 13/10/2026 à 02:00
+📌 Avantage historique : Cruzeiro EC
+📊 Bilan H2H : Cruzeiro EC 3 victoire(s) | 1 nul(s) | 1 défaite(s)
+📚 Échantillon : 5 confrontation(s)
 🟡 Avantage H2H à surveiller
 
-⚽ **Lille OSC vs Le Havre AC**
-🏆 Compétition : Ligue 1 (France)
-🗓️ Coup d’envoi : 10/10/2026 à 17:15
-📌 Avantage historique : Lille OSC
-📊 Bilan H2H : Lille OSC 3 victoire(s) | 1 nul(s) | 1 défaite(s)
+⚽ **Cardiff City FC vs Watford FC**
+🏆 Compétition : Championship (Angleterre)
+🗓️ Coup d’envoi : 13/10/2026 à 20:45
+📌 Avantage historique : Cardiff City FC
+📊 Bilan H2H : Cardiff City FC 2 victoire(s) | 1 nul(s) | 0 défaite(s)
+📚 Échantillon : 3 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Millwall FC vs Swansea City AFC**
+🏆 Compétition : Championship (Angleterre)
+🗓️ Coup d’envoi : 13/10/2026 à 20:45
+📌 Avantage historique : Millwall FC
+📊 Bilan H2H : Millwall FC 4 victoire(s) | 1 nul(s) | 0 défaite(s)
 📚 Échantillon : 5 confrontation(s)
 🟡 Avantage H2H à surveiller
 

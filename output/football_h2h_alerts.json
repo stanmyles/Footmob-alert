@@ -1,20 +1,5 @@
 [
   {
-    "competition":"BSA",
-    "utcDate":"2026-10-09T00:30:00Z",
-    "date_local":"09\/10\/2026",
-    "time_local":"02:30",
-    "homeTeam":"SE Palmeiras",
-    "awayTeam":"EC Bahia",
-    "dominant_team":"SE Palmeiras",
-    "h2h_matches":6,
-    "dominant_wins":4,
-    "draws":0,
-    "dominant_losses":2,
-    "h2h_signal":"🟡 Avantage H2H à surveiller",
-    "recent_h2h":"[{\"date\": \"2026-04-05\", \"home\": \"EC Bahia\", \"away\": \"SE Palmeiras\", \"score\": \"1-2\"}, {\"date\": \"2025-09-28\", \"home\": \"EC Bahia\", \"away\": \"SE Palmeiras\", \"score\": \"1-0\"}, {\"date\": \"2025-04-27\", \"home\": \"SE Palmeiras\", \"away\": \"EC Bahia\", \"score\": \"0-1\"}, {\"date\": \"2024-11-20\", \"home\": \"EC Bahia\", \"away\": \"SE Palmeiras\", \"score\": \"1-2\"}, {\"date\": \"2024-07-07\", \"home\": \"SE Palmeiras\", \"away\": \"EC Bahia\", \"score\": \"2-0\"}, {\"date\": \"2023-10-28\", \"home\": \"SE Palmeiras\", \"away\": \"EC Bahia\", \"score\": \"1-0\"}]"
-  },
-  {
     "competition":"DED",
     "utcDate":"2026-10-09T18:00:00Z",
     "date_local":"09\/10\/2026",
@@ -195,51 +180,6 @@
     "recent_h2h":"[{\"date\": \"2026-05-03\", \"home\": \"Sparta Rotterdam\", \"away\": \"Go Ahead Eagles\", \"score\": \"2-2\"}, {\"date\": \"2025-08-23\", \"home\": \"Go Ahead Eagles\", \"away\": \"Sparta Rotterdam\", \"score\": \"0-3\"}, {\"date\": \"2025-02-14\", \"home\": \"Go Ahead Eagles\", \"away\": \"Sparta Rotterdam\", \"score\": \"1-0\"}, {\"date\": \"2024-09-15\", \"home\": \"Sparta Rotterdam\", \"away\": \"Go Ahead Eagles\", \"score\": \"1-2\"}, {\"date\": \"2024-01-21\", \"home\": \"Sparta Rotterdam\", \"away\": \"Go Ahead Eagles\", \"score\": \"0-2\"}, {\"date\": \"2023-10-22\", \"home\": \"Go Ahead Eagles\", \"away\": \"Sparta Rotterdam\", \"score\": \"0-0\"}]"
   },
   {
-    "competition":"PPL",
-    "utcDate":"2026-10-10T14:30:00Z",
-    "date_local":"10\/10\/2026",
-    "time_local":"16:30",
-    "homeTeam":"Casa Pia AC",
-    "awayTeam":"CD Santa Clara",
-    "dominant_team":"CD Santa Clara",
-    "h2h_matches":4,
-    "dominant_wins":3,
-    "draws":1,
-    "dominant_losses":0,
-    "h2h_signal":"🟡 Avantage H2H à surveiller",
-    "recent_h2h":"[{\"date\": \"2026-04-18\", \"home\": \"Casa Pia AC\", \"away\": \"CD Santa Clara\", \"score\": \"0-0\"}, {\"date\": \"2025-12-06\", \"home\": \"CD Santa Clara\", \"away\": \"Casa Pia AC\", \"score\": \"1-0\"}, {\"date\": \"2025-02-01\", \"home\": \"CD Santa Clara\", \"away\": \"Casa Pia AC\", \"score\": \"2-1\"}, {\"date\": \"2024-08-24\", \"home\": \"Casa Pia AC\", \"away\": \"CD Santa Clara\", \"score\": \"0-2\"}]"
-  },
-  {
-    "competition":"FL1",
-    "utcDate":"2026-10-10T15:15:00Z",
-    "date_local":"10\/10\/2026",
-    "time_local":"17:15",
-    "homeTeam":"Lille OSC",
-    "awayTeam":"Le Havre AC",
-    "dominant_team":"Lille OSC",
-    "h2h_matches":5,
-    "dominant_wins":3,
-    "draws":1,
-    "dominant_losses":1,
-    "h2h_signal":"🟡 Avantage H2H à surveiller",
-    "recent_h2h":"[{\"date\": \"2026-05-03\", \"home\": \"Lille OSC\", \"away\": \"Le Havre AC\", \"score\": \"1-1\"}, {\"date\": \"2025-11-30\", \"home\": \"Le Havre AC\", \"away\": \"Lille OSC\", \"score\": \"0-1\"}, {\"date\": \"2025-02-08\", \"home\": \"Lille OSC\", \"away\": \"Le Havre AC\", \"score\": \"1-2\"}, {\"date\": \"2024-09-28\", \"home\": \"Le Havre AC\", \"away\": \"Lille OSC\", \"score\": \"0-3\"}, {\"date\": \"2024-02-17\", \"home\": \"Lille OSC\", \"away\": \"Le Havre AC\", \"score\": \"3-0\"}]"
-  },
-  {
-    "competition":"SA",
-    "utcDate":"2026-10-10T16:00:00Z",
-    "date_local":"10\/10\/2026",
-    "time_local":"18:00",
-    "homeTeam":"FC Internazionale Milano",
-    "awayTeam":"Parma Calcio 1913",
-    "dominant_team":"FC Internazionale Milano",
-    "h2h_matches":4,
-    "dominant_wins":3,
-    "draws":1,
-    "dominant_losses":0,
-    "h2h_signal":"🟡 Avantage H2H à surveiller",
-    "recent_h2h":"[{\"date\": \"2026-05-03\", \"home\": \"FC Internazionale Milano\", \"away\": \"Parma Calcio 1913\", \"score\": \"2-0\"}, {\"date\": \"2026-01-07\", \"home\": \"Parma Calcio 1913\", \"away\": \"FC Internazionale Milano\", \"score\": \"0-2\"}, {\"date\": \"2025-04-05\", \"home\": \"Parma Calcio 1913\", \"away\": \"FC Internazionale Milano\", \"score\": \"2-2\"}, {\"date\": \"2024-12-06\", \"home\": \"FC Internazionale Milano\", \"away\": \"Parma Calcio 1913\", \"score\": \"3-1\"}]"
-  },
-  {
     "competition":"BSA",
     "utcDate":"2026-10-13T00:00:00Z",
     "date_local":"13\/10\/2026",
@@ -313,5 +253,35 @@
     "dominant_losses":1,
     "h2h_signal":"🟡 Avantage H2H à surveiller",
     "recent_h2h":"[{\"date\": \"2026-04-25\", \"home\": \"Queens Park Rangers FC\", \"away\": \"Derby County FC\", \"score\": \"2-3\"}, {\"date\": \"2025-10-25\", \"home\": \"Derby County FC\", \"away\": \"Queens Park Rangers FC\", \"score\": \"1-0\"}, {\"date\": \"2025-02-14\", \"home\": \"Queens Park Rangers FC\", \"away\": \"Derby County FC\", \"score\": \"4-0\"}, {\"date\": \"2024-10-05\", \"home\": \"Derby County FC\", \"away\": \"Queens Park Rangers FC\", \"score\": \"2-0\"}]"
+  },
+  {
+    "competition":"CLI",
+    "utcDate":"2026-10-16T00:30:00Z",
+    "date_local":"16\/10\/2026",
+    "time_local":"02:30",
+    "homeTeam":"Estudiantes de La Plata",
+    "awayTeam":"CR Flamengo",
+    "dominant_team":"CR Flamengo",
+    "h2h_matches":4,
+    "dominant_wins":3,
+    "draws":1,
+    "dominant_losses":0,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-05-21\", \"home\": \"CR Flamengo\", \"away\": \"Estudiantes de La Plata\", \"score\": \"1-0\"}, {\"date\": \"2026-04-30\", \"home\": \"Estudiantes de La Plata\", \"away\": \"CR Flamengo\", \"score\": \"1-1\"}, {\"date\": \"2025-09-26\", \"home\": \"Estudiantes de La Plata\", \"away\": \"CR Flamengo\", \"score\": \"3-4\"}, {\"date\": \"2025-09-19\", \"home\": \"CR Flamengo\", \"away\": \"Estudiantes de La Plata\", \"score\": \"2-1\"}]"
+  },
+  {
+    "competition":"BSA",
+    "utcDate":"2026-10-16T23:00:00Z",
+    "date_local":"17\/10\/2026",
+    "time_local":"01:00",
+    "homeTeam":"Mirassol FC",
+    "awayTeam":"SC Internacional",
+    "dominant_team":"Mirassol FC",
+    "h2h_matches":3,
+    "dominant_wins":2,
+    "draws":1,
+    "dominant_losses":0,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-04-19\", \"home\": \"SC Internacional\", \"away\": \"Mirassol FC\", \"score\": \"1-2\"}, {\"date\": \"2025-10-15\", \"home\": \"Mirassol FC\", \"away\": \"SC Internacional\", \"score\": \"3-1\"}, {\"date\": \"2025-05-18\", \"home\": \"SC Internacional\", \"away\": \"Mirassol FC\", \"score\": \"1-1\"}]"
   }
 ]
