@@ -1,103 +1,55 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 19
+📅 Matchs avec signal : 15
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
 
-⚽ **PSV vs SC Heerenveen**
+⚽ **Fortuna Sittard vs FC Twente '65**
 🏆 Compétition : Eredivisie (Pays-Bas)
-🗓️ Coup d’envoi : 09/10/2026 à 20:00
-📌 Avantage historique : PSV
-📊 Bilan H2H : PSV 5 victoire(s) | 0 nul(s) | 1 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟢 Avantage H2H net
+🗓️ Coup d’envoi : 10/10/2026 à 20:00
+📌 Avantage historique : FC Twente '65
+📊 Bilan H2H : FC Twente '65 4 victoire(s) | 1 nul(s) | 0 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
 
-⚽ **Borussia Dortmund vs SV Werder Bremen**
-🏆 Compétition : Bundesliga (Allemagne)
-🗓️ Coup d’envoi : 09/10/2026 à 20:30
-📌 Avantage historique : Borussia Dortmund
-📊 Bilan H2H : Borussia Dortmund 4 victoire(s) | 2 nul(s) | 0 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟢 Avantage H2H net
-
-⚽ **Racing Club de Lens vs Olympique Lyonnais**
+⚽ **AS Monaco FC vs Toulouse FC**
 🏆 Compétition : Ligue 1 (France)
-🗓️ Coup d’envoi : 09/10/2026 à 20:45
-📌 Avantage historique : Racing Club de Lens
-📊 Bilan H2H : Racing Club de Lens 4 victoire(s) | 1 nul(s) | 1 défaite(s)
+🗓️ Coup d’envoi : 10/10/2026 à 20:45
+📌 Avantage historique : AS Monaco FC
+📊 Bilan H2H : AS Monaco FC 3 victoire(s) | 2 nul(s) | 1 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Real Madrid CF vs Villarreal CF**
+🏆 Compétition : LaLiga (Espagne)
+🗓️ Coup d’envoi : 10/10/2026 à 21:00
+📌 Avantage historique : Real Madrid CF
+📊 Bilan H2H : Real Madrid CF 5 victoire(s) | 1 nul(s) | 0 défaite(s)
 📚 Échantillon : 6 confrontation(s)
 🟢 Avantage H2H net
 
-⚽ **Sporting Clube de Braga vs Sporting Clube de Portugal**
+⚽ **Casa Pia AC vs CD Santa Clara**
 🏆 Compétition : Primeira Liga (Portugal)
-🗓️ Coup d’envoi : 09/10/2026 à 21:15
-📌 Avantage historique : Sporting Clube de Portugal
-📊 Bilan H2H : Sporting Clube de Portugal 2 victoire(s) | 3 nul(s) | 0 défaite(s)
-📚 Échantillon : 5 confrontation(s)
+🗓️ Coup d’envoi : 10/10/2026 à 21:30
+📌 Avantage historique : CD Santa Clara
+📊 Bilan H2H : CD Santa Clara 3 victoire(s) | 1 nul(s) | 0 défaite(s)
+📚 Échantillon : 4 confrontation(s)
 🟡 Avantage H2H à surveiller
 
-⚽ **Rayo Vallecano de Madrid vs Athletic Club**
-🏆 Compétition : LaLiga (Espagne)
-🗓️ Coup d’envoi : 10/10/2026 à 14:00
-📌 Avantage historique : Athletic Club
-📊 Bilan H2H : Athletic Club 5 victoire(s) | 1 nul(s) | 0 défaite(s)
+⚽ **SS Lazio vs AC Monza**
+🏆 Compétition : Serie A (Italie)
+🗓️ Coup d’envoi : 11/10/2026 à 15:00
+📌 Avantage historique : SS Lazio
+📊 Bilan H2H : SS Lazio 2 victoire(s) | 1 nul(s) | 0 défaite(s)
+📚 Échantillon : 3 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **US Lecce vs Bologna FC 1909**
+🏆 Compétition : Serie A (Italie)
+🗓️ Coup d’envoi : 11/10/2026 à 15:00
+📌 Avantage historique : Bologna FC 1909
+📊 Bilan H2H : Bologna FC 1909 3 victoire(s) | 3 nul(s) | 0 défaite(s)
 📚 Échantillon : 6 confrontation(s)
 🟢 Avantage H2H net
-
-⚽ **Genoa CFC vs ACF Fiorentina**
-🏆 Compétition : Serie A (Italie)
-🗓️ Coup d’envoi : 10/10/2026 à 15:00
-📌 Avantage historique : ACF Fiorentina
-📊 Bilan H2H : ACF Fiorentina 2 victoire(s) | 3 nul(s) | 0 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **1. FSV Mainz 05 vs Bayer 04 Leverkusen**
-🏆 Compétition : Bundesliga (Allemagne)
-🗓️ Coup d’envoi : 10/10/2026 à 15:30
-📌 Avantage historique : Bayer 04 Leverkusen
-📊 Bilan H2H : Bayer 04 Leverkusen 3 victoire(s) | 2 nul(s) | 0 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **FC Augsburg vs FC Bayern München**
-🏆 Compétition : Bundesliga (Allemagne)
-🗓️ Coup d’envoi : 10/10/2026 à 15:30
-📌 Avantage historique : FC Bayern München
-📊 Bilan H2H : FC Bayern München 4 victoire(s) | 0 nul(s) | 1 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Preston North End FC vs Millwall FC**
-🏆 Compétition : Championship (Angleterre)
-🗓️ Coup d’envoi : 10/10/2026 à 16:00
-📌 Avantage historique : Millwall FC
-📊 Bilan H2H : Millwall FC 2 victoire(s) | 4 nul(s) | 0 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Chelsea FC vs AFC Bournemouth**
-🏆 Compétition : Premier League (Angleterre)
-🗓️ Coup d’envoi : 10/10/2026 à 16:00
-📌 Avantage historique : Chelsea FC
-📊 Bilan H2H : Chelsea FC 2 victoire(s) | 3 nul(s) | 0 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Deportivo Alavés vs Club Atlético de Madrid**
-🏆 Compétition : LaLiga (Espagne)
-🗓️ Coup d’envoi : 10/10/2026 à 16:15
-📌 Avantage historique : Club Atlético de Madrid
-📊 Bilan H2H : Club Atlético de Madrid 3 victoire(s) | 2 nul(s) | 1 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Go Ahead Eagles vs Sparta Rotterdam**
-🏆 Compétition : Eredivisie (Pays-Bas)
-🗓️ Coup d’envoi : 10/10/2026 à 16:30
-📌 Avantage historique : Go Ahead Eagles
-📊 Bilan H2H : Go Ahead Eagles 3 victoire(s) | 2 nul(s) | 1 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟡 Avantage H2H à surveiller
 
 ⚽ **RB Bragantino vs Cruzeiro EC**
 🏆 Compétition : Brasileirão Série A (Brésil)
@@ -120,6 +72,54 @@
 🗓️ Coup d’envoi : 13/10/2026 à 20:45
 📌 Avantage historique : Millwall FC
 📊 Bilan H2H : Millwall FC 4 victoire(s) | 1 nul(s) | 0 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Portsmouth FC vs Sheffield United FC**
+🏆 Compétition : Championship (Angleterre)
+🗓️ Coup d’envoi : 14/10/2026 à 20:45
+📌 Avantage historique : Sheffield United FC
+📊 Bilan H2H : Sheffield United FC 3 victoire(s) | 1 nul(s) | 0 défaite(s)
+📚 Échantillon : 4 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Queens Park Rangers FC vs Derby County FC**
+🏆 Compétition : Championship (Angleterre)
+🗓️ Coup d’envoi : 14/10/2026 à 20:45
+📌 Avantage historique : Derby County FC
+📊 Bilan H2H : Derby County FC 3 victoire(s) | 0 nul(s) | 1 défaite(s)
+📚 Échantillon : 4 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Estudiantes de La Plata vs CR Flamengo**
+🏆 Compétition : Copa Libertadores
+🗓️ Coup d’envoi : 16/10/2026 à 02:30
+📌 Avantage historique : CR Flamengo
+📊 Bilan H2H : CR Flamengo 3 victoire(s) | 1 nul(s) | 0 défaite(s)
+📚 Échantillon : 4 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Mirassol FC vs SC Internacional**
+🏆 Compétition : Brasileirão Série A (Brésil)
+🗓️ Coup d’envoi : 17/10/2026 à 01:00
+📌 Avantage historique : Mirassol FC
+📊 Bilan H2H : Mirassol FC 2 victoire(s) | 1 nul(s) | 0 défaite(s)
+📚 Échantillon : 3 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Middlesbrough FC vs Cardiff City FC**
+🏆 Compétition : Championship (Angleterre)
+🗓️ Coup d’envoi : 17/10/2026 à 13:30
+📌 Avantage historique : Middlesbrough FC
+📊 Bilan H2H : Middlesbrough FC 2 victoire(s) | 1 nul(s) | 0 défaite(s)
+📚 Échantillon : 3 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **1. FC Union Berlin vs Borussia Dortmund**
+🏆 Compétition : Bundesliga (Allemagne)
+🗓️ Coup d’envoi : 17/10/2026 à 15:30
+📌 Avantage historique : Borussia Dortmund
+📊 Bilan H2H : Borussia Dortmund 4 victoire(s) | 0 nul(s) | 1 défaite(s)
 📚 Échantillon : 5 confrontation(s)
 🟡 Avantage H2H à surveiller
 
