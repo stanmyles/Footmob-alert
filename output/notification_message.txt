@@ -3,53 +3,21 @@
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
 
-⚽ **Fortuna Sittard vs FC Twente '65**
-🏆 Compétition : Eredivisie (Pays-Bas)
-🗓️ Coup d’envoi : 10/10/2026 à 20:00
-📌 Avantage historique : FC Twente '65
-📊 Bilan H2H : FC Twente '65 4 victoire(s) | 1 nul(s) | 0 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **AS Monaco FC vs Toulouse FC**
-🏆 Compétition : Ligue 1 (France)
-🗓️ Coup d’envoi : 10/10/2026 à 20:45
-📌 Avantage historique : AS Monaco FC
-📊 Bilan H2H : AS Monaco FC 3 victoire(s) | 2 nul(s) | 1 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Real Madrid CF vs Villarreal CF**
-🏆 Compétition : LaLiga (Espagne)
-🗓️ Coup d’envoi : 10/10/2026 à 21:00
-📌 Avantage historique : Real Madrid CF
-📊 Bilan H2H : Real Madrid CF 5 victoire(s) | 1 nul(s) | 0 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟢 Avantage H2H net
-
-⚽ **Casa Pia AC vs CD Santa Clara**
-🏆 Compétition : Primeira Liga (Portugal)
-🗓️ Coup d’envoi : 10/10/2026 à 21:30
-📌 Avantage historique : CD Santa Clara
-📊 Bilan H2H : CD Santa Clara 3 victoire(s) | 1 nul(s) | 0 défaite(s)
-📚 Échantillon : 4 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **SS Lazio vs AC Monza**
+⚽ **Cagliari Calcio vs Juventus FC**
 🏆 Compétition : Serie A (Italie)
-🗓️ Coup d’envoi : 11/10/2026 à 15:00
-📌 Avantage historique : SS Lazio
-📊 Bilan H2H : SS Lazio 2 victoire(s) | 1 nul(s) | 0 défaite(s)
+🗓️ Coup d’envoi : 11/10/2026 à 20:45
+📌 Avantage historique : Juventus FC
+📊 Bilan H2H : Juventus FC 3 victoire(s) | 2 nul(s) | 1 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **CA Mineiro vs Santos FC**
+🏆 Compétition : Brasileirão Série A (Brésil)
+🗓️ Coup d’envoi : 11/10/2026 à 21:00
+📌 Avantage historique : Santos FC
+📊 Bilan H2H : Santos FC 2 victoire(s) | 1 nul(s) | 0 défaite(s)
 📚 Échantillon : 3 confrontation(s)
 🟡 Avantage H2H à surveiller
-
-⚽ **US Lecce vs Bologna FC 1909**
-🏆 Compétition : Serie A (Italie)
-🗓️ Coup d’envoi : 11/10/2026 à 15:00
-📌 Avantage historique : Bologna FC 1909
-📊 Bilan H2H : Bologna FC 1909 3 victoire(s) | 3 nul(s) | 0 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟢 Avantage H2H net
 
 ⚽ **RB Bragantino vs Cruzeiro EC**
 🏆 Compétition : Brasileirão Série A (Brésil)
@@ -73,6 +41,14 @@
 📌 Avantage historique : Millwall FC
 📊 Bilan H2H : Millwall FC 4 victoire(s) | 1 nul(s) | 0 défaite(s)
 📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Birmingham City FC vs Preston North End FC**
+🏆 Compétition : Championship (Angleterre)
+🗓️ Coup d’envoi : 13/10/2026 à 21:00
+📌 Avantage historique : Birmingham City FC
+📊 Bilan H2H : Birmingham City FC 3 victoire(s) | 0 nul(s) | 0 défaite(s)
+📚 Échantillon : 3 confrontation(s)
 🟡 Avantage H2H à surveiller
 
 ⚽ **Portsmouth FC vs Sheffield United FC**
@@ -121,6 +97,30 @@
 📌 Avantage historique : Borussia Dortmund
 📊 Bilan H2H : Borussia Dortmund 4 victoire(s) | 0 nul(s) | 1 défaite(s)
 📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **PEC Zwolle vs Go Ahead Eagles**
+🏆 Compétition : Eredivisie (Pays-Bas)
+🗓️ Coup d’envoi : 18/10/2026 à 12:15
+📌 Avantage historique : Go Ahead Eagles
+📊 Bilan H2H : Go Ahead Eagles 2 victoire(s) | 3 nul(s) | 0 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Udinese Calcio vs US Lecce**
+🏆 Compétition : Serie A (Italie)
+🗓️ Coup d’envoi : 18/10/2026 à 12:30
+📌 Avantage historique : Udinese Calcio
+📊 Bilan H2H : Udinese Calcio 4 victoire(s) | 1 nul(s) | 1 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟢 Avantage H2H net
+
+⚽ **Angers SCO vs Olympique de Marseille**
+🏆 Compétition : Ligue 1 (France)
+🗓️ Coup d’envoi : 18/10/2026 à 15:00
+📌 Avantage historique : Olympique de Marseille
+📊 Bilan H2H : Olympique de Marseille 2 victoire(s) | 2 nul(s) | 0 défaite(s)
+📚 Échantillon : 4 confrontation(s)
 🟡 Avantage H2H à surveiller
 
 ℹ️ Signal fondé uniquement sur les confrontations directes des 3 dernières années. Il ne prédit pas un résultat et ne garantit pas une victoire.
