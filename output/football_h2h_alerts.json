@@ -1,35 +1,5 @@
 [
   {
-    "competition":"SA",
-    "utcDate":"2026-10-11T18:45:00Z",
-    "date_local":"11\/10\/2026",
-    "time_local":"20:45",
-    "homeTeam":"Cagliari Calcio",
-    "awayTeam":"Juventus FC",
-    "dominant_team":"Juventus FC",
-    "h2h_matches":6,
-    "dominant_wins":3,
-    "draws":2,
-    "dominant_losses":1,
-    "h2h_signal":"🟡 Avantage H2H à surveiller",
-    "recent_h2h":"[{\"date\": \"2026-01-17\", \"home\": \"Cagliari Calcio\", \"away\": \"Juventus FC\", \"score\": \"1-0\"}, {\"date\": \"2025-11-29\", \"home\": \"Juventus FC\", \"away\": \"Cagliari Calcio\", \"score\": \"2-1\"}, {\"date\": \"2025-02-23\", \"home\": \"Cagliari Calcio\", \"away\": \"Juventus FC\", \"score\": \"0-1\"}, {\"date\": \"2024-10-06\", \"home\": \"Juventus FC\", \"away\": \"Cagliari Calcio\", \"score\": \"1-1\"}, {\"date\": \"2024-04-19\", \"home\": \"Cagliari Calcio\", \"away\": \"Juventus FC\", \"score\": \"2-2\"}, {\"date\": \"2023-11-11\", \"home\": \"Juventus FC\", \"away\": \"Cagliari Calcio\", \"score\": \"2-1\"}]"
-  },
-  {
-    "competition":"BSA",
-    "utcDate":"2026-10-11T19:00:00Z",
-    "date_local":"11\/10\/2026",
-    "time_local":"21:00",
-    "homeTeam":"CA Mineiro",
-    "awayTeam":"Santos FC",
-    "dominant_team":"Santos FC",
-    "h2h_matches":3,
-    "dominant_wins":2,
-    "draws":1,
-    "dominant_losses":0,
-    "h2h_signal":"🟡 Avantage H2H à surveiller",
-    "recent_h2h":"[{\"date\": \"2026-04-11\", \"home\": \"Santos FC\", \"away\": \"CA Mineiro\", \"score\": \"1-0\"}, {\"date\": \"2025-09-14\", \"home\": \"CA Mineiro\", \"away\": \"Santos FC\", \"score\": \"1-1\"}, {\"date\": \"2025-04-17\", \"home\": \"Santos FC\", \"away\": \"CA Mineiro\", \"score\": \"2-0\"}]"
-  },
-  {
     "competition":"BSA",
     "utcDate":"2026-10-13T00:00:00Z",
     "date_local":"13\/10\/2026",
@@ -223,5 +193,35 @@
     "dominant_losses":0,
     "h2h_signal":"🟡 Avantage H2H à surveiller",
     "recent_h2h":"[{\"date\": \"2026-01-17\", \"home\": \"Angers SCO\", \"away\": \"Olympique de Marseille\", \"score\": \"2-5\"}, {\"date\": \"2025-10-29\", \"home\": \"Olympique de Marseille\", \"away\": \"Angers SCO\", \"score\": \"2-2\"}, {\"date\": \"2025-02-09\", \"home\": \"Angers SCO\", \"away\": \"Olympique de Marseille\", \"score\": \"0-2\"}, {\"date\": \"2024-10-04\", \"home\": \"Olympique de Marseille\", \"away\": \"Angers SCO\", \"score\": \"1-1\"}]"
+  },
+  {
+    "competition":"PD",
+    "utcDate":"2026-10-19T19:00:00Z",
+    "date_local":"19\/10\/2026",
+    "time_local":"21:00",
+    "homeTeam":"Getafe CF",
+    "awayTeam":"Rayo Vallecano de Madrid",
+    "dominant_team":"Rayo Vallecano de Madrid",
+    "h2h_matches":6,
+    "dominant_wins":3,
+    "draws":3,
+    "dominant_losses":0,
+    "h2h_signal":"🟢 Avantage H2H net",
+    "recent_h2h":"[{\"date\": \"2026-05-03\", \"home\": \"Getafe CF\", \"away\": \"Rayo Vallecano de Madrid\", \"score\": \"0-2\"}, {\"date\": \"2026-01-02\", \"home\": \"Rayo Vallecano de Madrid\", \"away\": \"Getafe CF\", \"score\": \"1-1\"}, {\"date\": \"2025-05-02\", \"home\": \"Rayo Vallecano de Madrid\", \"away\": \"Getafe CF\", \"score\": \"1-0\"}, {\"date\": \"2024-08-24\", \"home\": \"Getafe CF\", \"away\": \"Rayo Vallecano de Madrid\", \"score\": \"0-0\"}, {\"date\": \"2024-04-13\", \"home\": \"Rayo Vallecano de Madrid\", \"away\": \"Getafe CF\", \"score\": \"0-0\"}, {\"date\": \"2024-01-02\", \"home\": \"Getafe CF\", \"away\": \"Rayo Vallecano de Madrid\", \"score\": \"0-2\"}]"
+  },
+  {
+    "competition":"BSA",
+    "utcDate":"2026-10-19T23:00:00Z",
+    "date_local":"20\/10\/2026",
+    "time_local":"01:00",
+    "homeTeam":"SC Corinthians Paulista",
+    "awayTeam":"EC Vitória",
+    "dominant_team":"SC Corinthians Paulista",
+    "h2h_matches":5,
+    "dominant_wins":3,
+    "draws":2,
+    "dominant_losses":0,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-04-18\", \"home\": \"EC Vitória\", \"away\": \"SC Corinthians Paulista\", \"score\": \"0-0\"}, {\"date\": \"2025-10-25\", \"home\": \"EC Vitória\", \"away\": \"SC Corinthians Paulista\", \"score\": \"0-1\"}, {\"date\": \"2025-06-01\", \"home\": \"SC Corinthians Paulista\", \"away\": \"EC Vitória\", \"score\": \"0-0\"}, {\"date\": \"2024-11-09\", \"home\": \"EC Vitória\", \"away\": \"SC Corinthians Paulista\", \"score\": \"1-2\"}, {\"date\": \"2024-07-04\", \"home\": \"SC Corinthians Paulista\", \"away\": \"EC Vitória\", \"score\": \"3-2\"}]"
   }
 ]
