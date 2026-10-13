@@ -1,31 +1,7 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 15
+📅 Matchs avec signal : 12
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
-
-⚽ **RB Bragantino vs Cruzeiro EC**
-🏆 Compétition : Brasileirão Série A (Brésil)
-🗓️ Coup d’envoi : 13/10/2026 à 02:00
-📌 Avantage historique : Cruzeiro EC
-📊 Bilan H2H : Cruzeiro EC 3 victoire(s) | 1 nul(s) | 1 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Cardiff City FC vs Watford FC**
-🏆 Compétition : Championship (Angleterre)
-🗓️ Coup d’envoi : 13/10/2026 à 20:45
-📌 Avantage historique : Cardiff City FC
-📊 Bilan H2H : Cardiff City FC 2 victoire(s) | 1 nul(s) | 0 défaite(s)
-📚 Échantillon : 3 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Millwall FC vs Swansea City AFC**
-🏆 Compétition : Championship (Angleterre)
-🗓️ Coup d’envoi : 13/10/2026 à 20:45
-📌 Avantage historique : Millwall FC
-📊 Bilan H2H : Millwall FC 4 victoire(s) | 1 nul(s) | 0 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
 
 ⚽ **Birmingham City FC vs Preston North End FC**
 🏆 Compétition : Championship (Angleterre)
