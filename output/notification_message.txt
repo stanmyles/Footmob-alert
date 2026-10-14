@@ -1,15 +1,7 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 12
+📅 Matchs avec signal : 11
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
-
-⚽ **Birmingham City FC vs Preston North End FC**
-🏆 Compétition : Championship (Angleterre)
-🗓️ Coup d’envoi : 13/10/2026 à 21:00
-📌 Avantage historique : Birmingham City FC
-📊 Bilan H2H : Birmingham City FC 3 victoire(s) | 0 nul(s) | 0 défaite(s)
-📚 Échantillon : 3 confrontation(s)
-🟡 Avantage H2H à surveiller
 
 ⚽ **Portsmouth FC vs Sheffield United FC**
 🏆 Compétition : Championship (Angleterre)

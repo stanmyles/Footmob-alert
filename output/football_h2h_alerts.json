@@ -1,21 +1,6 @@
 [
   {
     "competition":"ELC",
-    "utcDate":"2026-10-13T19:00:00Z",
-    "date_local":"13\/10\/2026",
-    "time_local":"21:00",
-    "homeTeam":"Birmingham City FC",
-    "awayTeam":"Preston North End FC",
-    "dominant_team":"Birmingham City FC",
-    "h2h_matches":3,
-    "dominant_wins":3,
-    "draws":0,
-    "dominant_losses":0,
-    "h2h_signal":"🟡 Avantage H2H à surveiller",
-    "recent_h2h":"[{\"date\": \"2026-04-22\", \"home\": \"Birmingham City FC\", \"away\": \"Preston North End FC\", \"score\": \"2-1\"}, {\"date\": \"2025-10-21\", \"home\": \"Preston North End FC\", \"away\": \"Birmingham City FC\", \"score\": \"0-1\"}, {\"date\": \"2024-04-01\", \"home\": \"Birmingham City FC\", \"away\": \"Preston North End FC\", \"score\": \"1-0\"}]"
-  },
-  {
-    "competition":"ELC",
     "utcDate":"2026-10-14T18:45:00Z",
     "date_local":"14\/10\/2026",
     "time_local":"20:45",
