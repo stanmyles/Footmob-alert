@@ -43,30 +43,6 @@
 📚 Échantillon : 6 confrontation(s)
 🟢 Avantage H2H net
 
-⚽ **RC Strasbourg Alsace vs Paris Saint-Germain FC**
-🏆 Compétition : Ligue 1 (France)
-🗓️ Coup d’envoi : 17/10/2026 à 17:15
-📌 Avantage historique : Paris Saint-Germain FC
-📊 Bilan H2H : Paris Saint-Germain FC 4 victoire(s) | 1 nul(s) | 1 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟢 Avantage H2H net
-
-⚽ **FC Bayern München vs RB Leipzig**
-🏆 Compétition : Bundesliga (Allemagne)
-🗓️ Coup d’envoi : 17/10/2026 à 18:30
-📌 Avantage historique : FC Bayern München
-📊 Bilan H2H : FC Bayern München 4 victoire(s) | 1 nul(s) | 0 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Real Betis Balompié vs FC Barcelona**
-🏆 Compétition : LaLiga (Espagne)
-🗓️ Coup d’envoi : 17/10/2026 à 18:30
-📌 Avantage historique : FC Barcelona
-📊 Bilan H2H : FC Barcelona 3 victoire(s) | 2 nul(s) | 0 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
 ⚽ **PEC Zwolle vs Go Ahead Eagles**
 🏆 Compétition : Eredivisie (Pays-Bas)
 🗓️ Coup d’envoi : 18/10/2026 à 12:15
@@ -105,6 +81,30 @@
 📌 Avantage historique : SC Corinthians Paulista
 📊 Bilan H2H : SC Corinthians Paulista 3 victoire(s) | 2 nul(s) | 0 défaite(s)
 📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **CR Flamengo vs Estudiantes de La Plata**
+🏆 Compétition : Copa Libertadores
+🗓️ Coup d’envoi : 23/10/2026 à 02:30
+📌 Avantage historique : CR Flamengo
+📊 Bilan H2H : CR Flamengo 3 victoire(s) | 1 nul(s) | 0 défaite(s)
+📚 Échantillon : 4 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **VfB Stuttgart vs Borussia Mönchengladbach**
+🏆 Compétition : Bundesliga (Allemagne)
+🗓️ Coup d’envoi : 23/10/2026 à 20:30
+📌 Avantage historique : VfB Stuttgart
+📊 Bilan H2H : VfB Stuttgart 4 victoire(s) | 0 nul(s) | 2 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Torino FC vs AC Monza**
+🏆 Compétition : Serie A (Italie)
+🗓️ Coup d’envoi : 23/10/2026 à 20:45
+📌 Avantage historique : Torino FC
+📊 Bilan H2H : Torino FC 2 victoire(s) | 2 nul(s) | 0 défaite(s)
+📚 Échantillon : 4 confrontation(s)
 🟡 Avantage H2H à surveiller
 
 ℹ️ Signal fondé uniquement sur les confrontations directes des 3 dernières années. Il ne prédit pas un résultat et ne garantit pas une victoire.
