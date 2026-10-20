@@ -1,35 +1,5 @@
 [
   {
-    "competition":"PD",
-    "utcDate":"2026-10-19T19:00:00Z",
-    "date_local":"19\/10\/2026",
-    "time_local":"21:00",
-    "homeTeam":"Getafe CF",
-    "awayTeam":"Rayo Vallecano de Madrid",
-    "dominant_team":"Rayo Vallecano de Madrid",
-    "h2h_matches":6,
-    "dominant_wins":3,
-    "draws":3,
-    "dominant_losses":0,
-    "h2h_signal":"🟢 Avantage H2H net",
-    "recent_h2h":"[{\"date\": \"2026-05-03\", \"home\": \"Getafe CF\", \"away\": \"Rayo Vallecano de Madrid\", \"score\": \"0-2\"}, {\"date\": \"2026-01-02\", \"home\": \"Rayo Vallecano de Madrid\", \"away\": \"Getafe CF\", \"score\": \"1-1\"}, {\"date\": \"2025-05-02\", \"home\": \"Rayo Vallecano de Madrid\", \"away\": \"Getafe CF\", \"score\": \"1-0\"}, {\"date\": \"2024-08-24\", \"home\": \"Getafe CF\", \"away\": \"Rayo Vallecano de Madrid\", \"score\": \"0-0\"}, {\"date\": \"2024-04-13\", \"home\": \"Rayo Vallecano de Madrid\", \"away\": \"Getafe CF\", \"score\": \"0-0\"}, {\"date\": \"2024-01-02\", \"home\": \"Getafe CF\", \"away\": \"Rayo Vallecano de Madrid\", \"score\": \"0-2\"}]"
-  },
-  {
-    "competition":"BSA",
-    "utcDate":"2026-10-19T23:00:00Z",
-    "date_local":"20\/10\/2026",
-    "time_local":"01:00",
-    "homeTeam":"SC Corinthians Paulista",
-    "awayTeam":"EC Vitória",
-    "dominant_team":"SC Corinthians Paulista",
-    "h2h_matches":5,
-    "dominant_wins":3,
-    "draws":2,
-    "dominant_losses":0,
-    "h2h_signal":"🟡 Avantage H2H à surveiller",
-    "recent_h2h":"[{\"date\": \"2026-04-18\", \"home\": \"EC Vitória\", \"away\": \"SC Corinthians Paulista\", \"score\": \"0-0\"}, {\"date\": \"2025-10-25\", \"home\": \"EC Vitória\", \"away\": \"SC Corinthians Paulista\", \"score\": \"0-1\"}, {\"date\": \"2025-06-01\", \"home\": \"SC Corinthians Paulista\", \"away\": \"EC Vitória\", \"score\": \"0-0\"}, {\"date\": \"2024-11-09\", \"home\": \"EC Vitória\", \"away\": \"SC Corinthians Paulista\", \"score\": \"1-2\"}, {\"date\": \"2024-07-04\", \"home\": \"SC Corinthians Paulista\", \"away\": \"EC Vitória\", \"score\": \"3-2\"}]"
-  },
-  {
     "competition":"CLI",
     "utcDate":"2026-10-23T00:30:00Z",
     "date_local":"23\/10\/2026",
@@ -165,6 +135,21 @@
     "recent_h2h":"[{\"date\": \"2026-03-14\", \"home\": \"Arsenal FC\", \"away\": \"Everton FC\", \"score\": \"2-0\"}, {\"date\": \"2025-12-20\", \"home\": \"Everton FC\", \"away\": \"Arsenal FC\", \"score\": \"0-1\"}, {\"date\": \"2025-04-05\", \"home\": \"Everton FC\", \"away\": \"Arsenal FC\", \"score\": \"1-1\"}, {\"date\": \"2024-12-14\", \"home\": \"Arsenal FC\", \"away\": \"Everton FC\", \"score\": \"0-0\"}, {\"date\": \"2024-05-19\", \"home\": \"Arsenal FC\", \"away\": \"Everton FC\", \"score\": \"2-1\"}]"
   },
   {
+    "competition":"DED",
+    "utcDate":"2026-10-24T14:30:00Z",
+    "date_local":"24\/10\/2026",
+    "time_local":"16:30",
+    "homeTeam":"FC Utrecht",
+    "awayTeam":"PEC Zwolle",
+    "dominant_team":"FC Utrecht",
+    "h2h_matches":5,
+    "dominant_wins":3,
+    "draws":2,
+    "dominant_losses":0,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-02-22\", \"home\": \"FC Utrecht\", \"away\": \"PEC Zwolle\", \"score\": \"1-1\"}, {\"date\": \"2025-08-31\", \"home\": \"PEC Zwolle\", \"away\": \"FC Utrecht\", \"score\": \"0-2\"}, {\"date\": \"2025-02-01\", \"home\": \"PEC Zwolle\", \"away\": \"FC Utrecht\", \"score\": \"3-3\"}, {\"date\": \"2024-08-11\", \"home\": \"FC Utrecht\", \"away\": \"PEC Zwolle\", \"score\": \"1-0\"}, {\"date\": \"2024-04-03\", \"home\": \"FC Utrecht\", \"away\": \"PEC Zwolle\", \"score\": \"5-1\"}]"
+  },
+  {
     "competition":"SA",
     "utcDate":"2026-10-25T11:30:00Z",
     "date_local":"25\/10\/2026",
@@ -238,5 +223,35 @@
     "dominant_losses":1,
     "h2h_signal":"🟡 Avantage H2H à surveiller",
     "recent_h2h":"[{\"date\": \"2026-04-26\", \"home\": \"CA Mineiro\", \"away\": \"CR Flamengo\", \"score\": \"0-4\"}, {\"date\": \"2025-11-26\", \"home\": \"CA Mineiro\", \"away\": \"CR Flamengo\", \"score\": \"1-1\"}, {\"date\": \"2025-07-27\", \"home\": \"CR Flamengo\", \"away\": \"CA Mineiro\", \"score\": \"1-0\"}, {\"date\": \"2024-11-13\", \"home\": \"CR Flamengo\", \"away\": \"CA Mineiro\", \"score\": \"0-0\"}, {\"date\": \"2024-07-04\", \"home\": \"CA Mineiro\", \"away\": \"CR Flamengo\", \"score\": \"2-4\"}, {\"date\": \"2023-11-29\", \"home\": \"CR Flamengo\", \"away\": \"CA Mineiro\", \"score\": \"0-3\"}]"
+  },
+  {
+    "competition":"SA",
+    "utcDate":"2026-10-27T19:45:00Z",
+    "date_local":"27\/10\/2026",
+    "time_local":"20:45",
+    "homeTeam":"AS Roma",
+    "awayTeam":"Cagliari Calcio",
+    "dominant_team":"AS Roma",
+    "h2h_matches":5,
+    "dominant_wins":3,
+    "draws":1,
+    "dominant_losses":1,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-02-09\", \"home\": \"AS Roma\", \"away\": \"Cagliari Calcio\", \"score\": \"2-0\"}, {\"date\": \"2025-12-07\", \"home\": \"Cagliari Calcio\", \"away\": \"AS Roma\", \"score\": \"1-0\"}, {\"date\": \"2025-03-16\", \"home\": \"AS Roma\", \"away\": \"Cagliari Calcio\", \"score\": \"1-0\"}, {\"date\": \"2024-08-18\", \"home\": \"Cagliari Calcio\", \"away\": \"AS Roma\", \"score\": \"0-0\"}, {\"date\": \"2024-02-05\", \"home\": \"AS Roma\", \"away\": \"Cagliari Calcio\", \"score\": \"4-0\"}]"
+  },
+  {
+    "competition":"SA",
+    "utcDate":"2026-10-27T19:45:00Z",
+    "date_local":"27\/10\/2026",
+    "time_local":"20:45",
+    "homeTeam":"Torino FC",
+    "awayTeam":"Como 1907",
+    "dominant_team":"Como 1907",
+    "h2h_matches":4,
+    "dominant_wins":3,
+    "draws":0,
+    "dominant_losses":1,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-01-24\", \"home\": \"Como 1907\", \"away\": \"Torino FC\", \"score\": \"6-0\"}, {\"date\": \"2025-11-24\", \"home\": \"Torino FC\", \"away\": \"Como 1907\", \"score\": \"1-5\"}, {\"date\": \"2025-04-13\", \"home\": \"Como 1907\", \"away\": \"Torino FC\", \"score\": \"1-0\"}, {\"date\": \"2024-10-25\", \"home\": \"Torino FC\", \"away\": \"Como 1907\", \"score\": \"1-0\"}]"
   }
 ]
