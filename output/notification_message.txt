@@ -1,5 +1,5 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 17
+📅 Matchs avec signal : 23
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
 
@@ -83,6 +83,22 @@
 📚 Échantillon : 5 confrontation(s)
 🟡 Avantage H2H à surveiller
 
+⚽ **Borussia Dortmund vs Eintracht Frankfurt**
+🏆 Compétition : Bundesliga (Allemagne)
+🗓️ Coup d’envoi : 24/10/2026 à 18:30
+📌 Avantage historique : Borussia Dortmund
+📊 Bilan H2H : Borussia Dortmund 3 victoire(s) | 2 nul(s) | 1 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Valencia CF vs Villarreal CF**
+🏆 Compétition : LaLiga (Espagne)
+🗓️ Coup d’envoi : 24/10/2026 à 18:30
+📌 Avantage historique : Villarreal CF
+📊 Bilan H2H : Villarreal CF 3 victoire(s) | 2 nul(s) | 1 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟡 Avantage H2H à surveiller
+
 ⚽ **FC Internazionale Milano vs ACF Fiorentina**
 🏆 Compétition : Serie A (Italie)
 🗓️ Coup d’envoi : 25/10/2026 à 12:30
@@ -106,21 +122,5 @@
 📊 Bilan H2H : Lille OSC 4 victoire(s) | 1 nul(s) | 1 défaite(s)
 📚 Échantillon : 6 confrontation(s)
 🟢 Avantage H2H net
-
-⚽ **CD Santa Clara vs Sport Lisboa e Benfica**
-🏆 Compétition : Primeira Liga (Portugal)
-🗓️ Coup d’envoi : 26/10/2026 à 19:45
-📌 Avantage historique : Sport Lisboa e Benfica
-📊 Bilan H2H : Sport Lisboa e Benfica 3 victoire(s) | 1 nul(s) | 0 défaite(s)
-📚 Échantillon : 4 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **CR Flamengo vs CA Mineiro**
-🏆 Compétition : Brasileirão Série A (Brésil)
-🗓️ Coup d’envoi : 27/10/2026 à 00:00
-📌 Avantage historique : CR Flamengo
-📊 Bilan H2H : CR Flamengo 3 victoire(s) | 2 nul(s) | 1 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟡 Avantage H2H à surveiller
 
 ℹ️ Signal fondé uniquement sur les confrontations directes des 3 dernières années. Il ne prédit pas un résultat et ne garantit pas une victoire.
