@@ -1,5 +1,5 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 23
+📅 Matchs avec signal : 25
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
 
@@ -99,6 +99,14 @@
 📚 Échantillon : 6 confrontation(s)
 🟡 Avantage H2H à surveiller
 
+⚽ **Chelsea FC vs Tottenham Hotspur FC**
+🏆 Compétition : Premier League (Angleterre)
+🗓️ Coup d’envoi : 24/10/2026 à 18:30
+📌 Avantage historique : Chelsea FC
+📊 Bilan H2H : Chelsea FC 6 victoire(s) | 0 nul(s) | 0 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟢 Avantage H2H net
+
 ⚽ **FC Internazionale Milano vs ACF Fiorentina**
 🏆 Compétition : Serie A (Italie)
 🗓️ Coup d’envoi : 25/10/2026 à 12:30
@@ -112,14 +120,6 @@
 🗓️ Coup d’envoi : 25/10/2026 à 14:30
 📌 Avantage historique : PSV
 📊 Bilan H2H : PSV 5 victoire(s) | 1 nul(s) | 0 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟢 Avantage H2H net
-
-⚽ **AS Monaco FC vs Lille OSC**
-🏆 Compétition : Ligue 1 (France)
-🗓️ Coup d’envoi : 25/10/2026 à 15:00
-📌 Avantage historique : Lille OSC
-📊 Bilan H2H : Lille OSC 4 victoire(s) | 1 nul(s) | 1 défaite(s)
 📚 Échantillon : 6 confrontation(s)
 🟢 Avantage H2H net
 
