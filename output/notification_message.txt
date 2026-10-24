@@ -1,31 +1,7 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 28
+📅 Matchs avec signal : 26
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
-
-⚽ **CR Flamengo vs Estudiantes de La Plata**
-🏆 Compétition : Copa Libertadores
-🗓️ Coup d’envoi : 23/10/2026 à 02:30
-📌 Avantage historique : CR Flamengo
-📊 Bilan H2H : CR Flamengo 3 victoire(s) | 2 nul(s) | 0 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **VfB Stuttgart vs Borussia Mönchengladbach**
-🏆 Compétition : Bundesliga (Allemagne)
-🗓️ Coup d’envoi : 23/10/2026 à 20:30
-📌 Avantage historique : VfB Stuttgart
-📊 Bilan H2H : VfB Stuttgart 4 victoire(s) | 0 nul(s) | 2 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Torino FC vs AC Monza**
-🏆 Compétition : Serie A (Italie)
-🗓️ Coup d’envoi : 23/10/2026 à 20:45
-📌 Avantage historique : Torino FC
-📊 Bilan H2H : Torino FC 2 victoire(s) | 2 nul(s) | 0 défaite(s)
-📚 Échantillon : 4 confrontation(s)
-🟡 Avantage H2H à surveiller
 
 ⚽ **Sheffield United FC vs Derby County FC**
 🏆 Compétition : Championship (Angleterre)
@@ -121,6 +97,30 @@
 📌 Avantage historique : CR Flamengo
 📊 Bilan H2H : CR Flamengo 3 victoire(s) | 2 nul(s) | 1 défaite(s)
 📚 Échantillon : 6 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **AS Roma vs Cagliari Calcio**
+🏆 Compétition : Serie A (Italie)
+🗓️ Coup d’envoi : 27/10/2026 à 20:45
+📌 Avantage historique : AS Roma
+📊 Bilan H2H : AS Roma 3 victoire(s) | 1 nul(s) | 1 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Torino FC vs Como 1907**
+🏆 Compétition : Serie A (Italie)
+🗓️ Coup d’envoi : 27/10/2026 à 20:45
+📌 Avantage historique : Como 1907
+📊 Bilan H2H : Como 1907 3 victoire(s) | 0 nul(s) | 1 défaite(s)
+📚 Échantillon : 4 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **AC Milan vs Bologna FC 1909**
+🏆 Compétition : Serie A (Italie)
+🗓️ Coup d’envoi : 28/10/2026 à 18:30
+📌 Avantage historique : AC Milan
+📊 Bilan H2H : AC Milan 3 victoire(s) | 1 nul(s) | 1 défaite(s)
+📚 Échantillon : 5 confrontation(s)
 🟡 Avantage H2H à surveiller
 
 ℹ️ Signal fondé uniquement sur les confrontations directes des 3 dernières années. Il ne prédit pas un résultat et ne garantit pas une victoire.
