@@ -1,79 +1,63 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 26
+📅 Matchs avec signal : 28
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
 
-⚽ **Sheffield United FC vs Derby County FC**
-🏆 Compétition : Championship (Angleterre)
-🗓️ Coup d’envoi : 24/10/2026 à 13:30
-📌 Avantage historique : Sheffield United FC
-📊 Bilan H2H : Sheffield United FC 3 victoire(s) | 0 nul(s) | 1 défaite(s)
+⚽ **Sparta Rotterdam vs AFC Ajax**
+🏆 Compétition : Eredivisie (Pays-Bas)
+🗓️ Coup d’envoi : 25/10/2026 à 16:45
+📌 Avantage historique : AFC Ajax
+📊 Bilan H2H : AFC Ajax 3 victoire(s) | 3 nul(s) | 0 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟢 Avantage H2H net
+
+⚽ **Olympique de Marseille vs Le Havre AC**
+🏆 Compétition : Ligue 1 (France)
+🗓️ Coup d’envoi : 25/10/2026 à 17:15
+📌 Avantage historique : Olympique de Marseille
+📊 Bilan H2H : Olympique de Marseille 5 victoire(s) | 0 nul(s) | 0 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **SC Freiburg vs FC Bayern München**
+🏆 Compétition : Bundesliga (Allemagne)
+🗓️ Coup d’envoi : 25/10/2026 à 17:30
+📌 Avantage historique : FC Bayern München
+📊 Bilan H2H : FC Bayern München 4 victoire(s) | 1 nul(s) | 0 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **US Lecce vs Juventus FC**
+🏆 Compétition : Serie A (Italie)
+🗓️ Coup d’envoi : 25/10/2026 à 18:00
+📌 Avantage historique : Juventus FC
+📊 Bilan H2H : Juventus FC 3 victoire(s) | 2 nul(s) | 0 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **CD Nacional vs Sporting Clube de Braga**
+🏆 Compétition : Primeira Liga (Portugal)
+🗓️ Coup d’envoi : 25/10/2026 à 19:00
+📌 Avantage historique : Sporting Clube de Braga
+📊 Bilan H2H : Sporting Clube de Braga 3 victoire(s) | 0 nul(s) | 1 défaite(s)
 📚 Échantillon : 4 confrontation(s)
 🟡 Avantage H2H à surveiller
 
-⚽ **Aston Villa FC vs Manchester City FC**
-🏆 Compétition : Premier League (Angleterre)
-🗓️ Coup d’envoi : 24/10/2026 à 13:30
-📌 Avantage historique : Aston Villa FC
-📊 Bilan H2H : Aston Villa FC 4 victoire(s) | 0 nul(s) | 2 défaite(s)
-📚 Échantillon : 6 confrontation(s)
+⚽ **Rio Ave FC vs FC Famalicão**
+🏆 Compétition : Primeira Liga (Portugal)
+🗓️ Coup d’envoi : 25/10/2026 à 19:00
+📌 Avantage historique : FC Famalicão
+📊 Bilan H2H : FC Famalicão 2 victoire(s) | 3 nul(s) | 0 défaite(s)
+📚 Échantillon : 5 confrontation(s)
 🟡 Avantage H2H à surveiller
 
-⚽ **Cagliari Calcio vs Bologna FC 1909**
+⚽ **Udinese Calcio vs AC Milan**
 🏆 Compétition : Serie A (Italie)
-🗓️ Coup d’envoi : 24/10/2026 à 15:00
-📌 Avantage historique : Bologna FC 1909
-📊 Bilan H2H : Bologna FC 1909 3 victoire(s) | 1 nul(s) | 1 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **1. FSV Mainz 05 vs SV Werder Bremen**
-🏆 Compétition : Bundesliga (Allemagne)
-🗓️ Coup d’envoi : 24/10/2026 à 15:30
-📌 Avantage historique : SV Werder Bremen
-📊 Bilan H2H : SV Werder Bremen 3 victoire(s) | 1 nul(s) | 1 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Preston North End FC vs West Bromwich Albion FC**
-🏆 Compétition : Championship (Angleterre)
-🗓️ Coup d’envoi : 24/10/2026 à 16:00
-📌 Avantage historique : West Bromwich Albion FC
-📊 Bilan H2H : West Bromwich Albion FC 4 victoire(s) | 1 nul(s) | 0 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Arsenal FC vs Everton FC**
-🏆 Compétition : Premier League (Angleterre)
-🗓️ Coup d’envoi : 24/10/2026 à 16:00
-📌 Avantage historique : Arsenal FC
-📊 Bilan H2H : Arsenal FC 3 victoire(s) | 2 nul(s) | 0 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **FC Internazionale Milano vs ACF Fiorentina**
-🏆 Compétition : Serie A (Italie)
-🗓️ Coup d’envoi : 25/10/2026 à 12:30
-📌 Avantage historique : FC Internazionale Milano
-📊 Bilan H2H : FC Internazionale Milano 3 victoire(s) | 1 nul(s) | 1 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **PSV vs Feyenoord Rotterdam**
-🏆 Compétition : Eredivisie (Pays-Bas)
-🗓️ Coup d’envoi : 25/10/2026 à 14:30
-📌 Avantage historique : PSV
-📊 Bilan H2H : PSV 5 victoire(s) | 1 nul(s) | 0 défaite(s)
+🗓️ Coup d’envoi : 25/10/2026 à 20:45
+📌 Avantage historique : AC Milan
+📊 Bilan H2H : AC Milan 4 victoire(s) | 0 nul(s) | 2 défaite(s)
 📚 Échantillon : 6 confrontation(s)
-🟢 Avantage H2H net
-
-⚽ **AS Monaco FC vs Lille OSC**
-🏆 Compétition : Ligue 1 (France)
-🗓️ Coup d’envoi : 25/10/2026 à 15:00
-📌 Avantage historique : Lille OSC
-📊 Bilan H2H : Lille OSC 4 victoire(s) | 1 nul(s) | 1 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟢 Avantage H2H net
+🟡 Avantage H2H à surveiller
 
 ⚽ **CD Santa Clara vs Sport Lisboa e Benfica**
 🏆 Compétition : Primeira Liga (Portugal)
@@ -121,6 +105,22 @@
 📌 Avantage historique : AC Milan
 📊 Bilan H2H : AC Milan 3 victoire(s) | 1 nul(s) | 1 défaite(s)
 📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Parma Calcio 1913 vs Udinese Calcio**
+🏆 Compétition : Serie A (Italie)
+🗓️ Coup d’envoi : 28/10/2026 à 18:30
+📌 Avantage historique : Udinese Calcio
+📊 Bilan H2H : Udinese Calcio 3 victoire(s) | 0 nul(s) | 1 défaite(s)
+📚 Échantillon : 4 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **AC Monza vs SSC Napoli**
+🏆 Compétition : Serie A (Italie)
+🗓️ Coup d’envoi : 28/10/2026 à 20:45
+📌 Avantage historique : SSC Napoli
+📊 Bilan H2H : SSC Napoli 3 victoire(s) | 1 nul(s) | 0 défaite(s)
+📚 Échantillon : 4 confrontation(s)
 🟡 Avantage H2H à surveiller
 
 ℹ️ Signal fondé uniquement sur les confrontations directes des 3 dernières années. Il ne prédit pas un résultat et ne garantit pas une victoire.
