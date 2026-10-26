@@ -1,63 +1,7 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 28
+📅 Matchs avec signal : 26
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
-
-⚽ **Sparta Rotterdam vs AFC Ajax**
-🏆 Compétition : Eredivisie (Pays-Bas)
-🗓️ Coup d’envoi : 25/10/2026 à 16:45
-📌 Avantage historique : AFC Ajax
-📊 Bilan H2H : AFC Ajax 3 victoire(s) | 3 nul(s) | 0 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟢 Avantage H2H net
-
-⚽ **Olympique de Marseille vs Le Havre AC**
-🏆 Compétition : Ligue 1 (France)
-🗓️ Coup d’envoi : 25/10/2026 à 17:15
-📌 Avantage historique : Olympique de Marseille
-📊 Bilan H2H : Olympique de Marseille 5 victoire(s) | 0 nul(s) | 0 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **SC Freiburg vs FC Bayern München**
-🏆 Compétition : Bundesliga (Allemagne)
-🗓️ Coup d’envoi : 25/10/2026 à 17:30
-📌 Avantage historique : FC Bayern München
-📊 Bilan H2H : FC Bayern München 4 victoire(s) | 1 nul(s) | 0 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **US Lecce vs Juventus FC**
-🏆 Compétition : Serie A (Italie)
-🗓️ Coup d’envoi : 25/10/2026 à 18:00
-📌 Avantage historique : Juventus FC
-📊 Bilan H2H : Juventus FC 3 victoire(s) | 2 nul(s) | 0 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **CD Nacional vs Sporting Clube de Braga**
-🏆 Compétition : Primeira Liga (Portugal)
-🗓️ Coup d’envoi : 25/10/2026 à 19:00
-📌 Avantage historique : Sporting Clube de Braga
-📊 Bilan H2H : Sporting Clube de Braga 3 victoire(s) | 0 nul(s) | 1 défaite(s)
-📚 Échantillon : 4 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Rio Ave FC vs FC Famalicão**
-🏆 Compétition : Primeira Liga (Portugal)
-🗓️ Coup d’envoi : 25/10/2026 à 19:00
-📌 Avantage historique : FC Famalicão
-📊 Bilan H2H : FC Famalicão 2 victoire(s) | 3 nul(s) | 0 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Udinese Calcio vs AC Milan**
-🏆 Compétition : Serie A (Italie)
-🗓️ Coup d’envoi : 25/10/2026 à 20:45
-📌 Avantage historique : AC Milan
-📊 Bilan H2H : AC Milan 4 victoire(s) | 0 nul(s) | 2 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟡 Avantage H2H à surveiller
 
 ⚽ **CD Santa Clara vs Sport Lisboa e Benfica**
 🏆 Compétition : Primeira Liga (Portugal)
@@ -121,6 +65,62 @@
 📌 Avantage historique : SSC Napoli
 📊 Bilan H2H : SSC Napoli 3 victoire(s) | 1 nul(s) | 0 défaite(s)
 📚 Échantillon : 4 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Genoa CFC vs Juventus FC**
+🏆 Compétition : Serie A (Italie)
+🗓️ Coup d’envoi : 28/10/2026 à 20:45
+📌 Avantage historique : Juventus FC
+📊 Bilan H2H : Juventus FC 4 victoire(s) | 2 nul(s) | 0 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟢 Avantage H2H net
+
+⚽ **EC Bahia vs São Paulo FC**
+🏆 Compétition : Brasileirão Série A (Brésil)
+🗓️ Coup d’envoi : 29/10/2026 à 01:30
+📌 Avantage historique : São Paulo FC
+📊 Bilan H2H : São Paulo FC 4 victoire(s) | 1 nul(s) | 1 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟢 Avantage H2H net
+
+⚽ **CA Mineiro vs Cruzeiro EC**
+🏆 Compétition : Brasileirão Série A (Brésil)
+🗓️ Coup d’envoi : 29/10/2026 à 23:30
+📌 Avantage historique : CA Mineiro
+📊 Bilan H2H : CA Mineiro 2 victoire(s) | 3 nul(s) | 0 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Grêmio FBPA vs CA Paranaense**
+🏆 Compétition : Brasileirão Série A (Brésil)
+🗓️ Coup d’envoi : 30/10/2026 à 01:30
+📌 Avantage historique : Grêmio FBPA
+📊 Bilan H2H : Grêmio FBPA 2 victoire(s) | 1 nul(s) | 0 défaite(s)
+📚 Échantillon : 3 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Le Havre AC vs Paris Saint-Germain FC**
+🏆 Compétition : Ligue 1 (France)
+🗓️ Coup d’envoi : 30/10/2026 à 19:00
+📌 Avantage historique : Paris Saint-Germain FC
+📊 Bilan H2H : Paris Saint-Germain FC 5 victoire(s) | 1 nul(s) | 0 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟢 Avantage H2H net
+
+⚽ **Villarreal CF vs RCD Espanyol de Barcelona**
+🏆 Compétition : LaLiga (Espagne)
+🗓️ Coup d’envoi : 30/10/2026 à 21:00
+📌 Avantage historique : Villarreal CF
+📊 Bilan H2H : Villarreal CF 4 victoire(s) | 0 nul(s) | 0 défaite(s)
+📚 Échantillon : 4 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Lille OSC vs Racing Club de Lens**
+🏆 Compétition : Ligue 1 (France)
+🗓️ Coup d’envoi : 30/10/2026 à 21:05
+📌 Avantage historique : Lille OSC
+📊 Bilan H2H : Lille OSC 4 victoire(s) | 0 nul(s) | 1 défaite(s)
+📚 Échantillon : 5 confrontation(s)
 🟡 Avantage H2H à surveiller
 
 ℹ️ Signal fondé uniquement sur les confrontations directes des 3 dernières années. Il ne prédit pas un résultat et ne garantit pas une victoire.
