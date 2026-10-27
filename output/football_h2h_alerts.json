@@ -1,50 +1,5 @@
 [
   {
-    "competition":"PPL",
-    "utcDate":"2026-10-26T18:45:00Z",
-    "date_local":"26\/10\/2026",
-    "time_local":"19:45",
-    "homeTeam":"CD Santa Clara",
-    "awayTeam":"Sport Lisboa e Benfica",
-    "dominant_team":"Sport Lisboa e Benfica",
-    "h2h_matches":4,
-    "dominant_wins":3,
-    "draws":1,
-    "dominant_losses":0,
-    "h2h_signal":"🟡 Avantage H2H à surveiller",
-    "recent_h2h":"[{\"date\": \"2026-02-13\", \"home\": \"CD Santa Clara\", \"away\": \"Sport Lisboa e Benfica\", \"score\": \"1-2\"}, {\"date\": \"2025-09-12\", \"home\": \"Sport Lisboa e Benfica\", \"away\": \"CD Santa Clara\", \"score\": \"1-1\"}, {\"date\": \"2025-02-15\", \"home\": \"CD Santa Clara\", \"away\": \"Sport Lisboa e Benfica\", \"score\": \"0-1\"}, {\"date\": \"2024-09-14\", \"home\": \"Sport Lisboa e Benfica\", \"away\": \"CD Santa Clara\", \"score\": \"4-1\"}]"
-  },
-  {
-    "competition":"FL1",
-    "utcDate":"2026-10-26T19:30:00Z",
-    "date_local":"26\/10\/2026",
-    "time_local":"20:30",
-    "homeTeam":"Paris Saint-Germain FC",
-    "awayTeam":"Olympique Lyonnais",
-    "dominant_team":"Paris Saint-Germain FC",
-    "h2h_matches":5,
-    "dominant_wins":4,
-    "draws":0,
-    "dominant_losses":1,
-    "h2h_signal":"🟡 Avantage H2H à surveiller",
-    "recent_h2h":"[{\"date\": \"2026-04-19\", \"home\": \"Paris Saint-Germain FC\", \"away\": \"Olympique Lyonnais\", \"score\": \"1-2\"}, {\"date\": \"2025-11-09\", \"home\": \"Olympique Lyonnais\", \"away\": \"Paris Saint-Germain FC\", \"score\": \"2-3\"}, {\"date\": \"2025-02-23\", \"home\": \"Olympique Lyonnais\", \"away\": \"Paris Saint-Germain FC\", \"score\": \"2-3\"}, {\"date\": \"2024-12-15\", \"home\": \"Paris Saint-Germain FC\", \"away\": \"Olympique Lyonnais\", \"score\": \"3-1\"}, {\"date\": \"2024-04-21\", \"home\": \"Paris Saint-Germain FC\", \"away\": \"Olympique Lyonnais\", \"score\": \"4-1\"}]"
-  },
-  {
-    "competition":"BSA",
-    "utcDate":"2026-10-26T23:00:00Z",
-    "date_local":"27\/10\/2026",
-    "time_local":"00:00",
-    "homeTeam":"CR Flamengo",
-    "awayTeam":"CA Mineiro",
-    "dominant_team":"CR Flamengo",
-    "h2h_matches":6,
-    "dominant_wins":3,
-    "draws":2,
-    "dominant_losses":1,
-    "h2h_signal":"🟡 Avantage H2H à surveiller",
-    "recent_h2h":"[{\"date\": \"2026-04-26\", \"home\": \"CA Mineiro\", \"away\": \"CR Flamengo\", \"score\": \"0-4\"}, {\"date\": \"2025-11-26\", \"home\": \"CA Mineiro\", \"away\": \"CR Flamengo\", \"score\": \"1-1\"}, {\"date\": \"2025-07-27\", \"home\": \"CR Flamengo\", \"away\": \"CA Mineiro\", \"score\": \"1-0\"}, {\"date\": \"2024-11-13\", \"home\": \"CR Flamengo\", \"away\": \"CA Mineiro\", \"score\": \"0-0\"}, {\"date\": \"2024-07-04\", \"home\": \"CA Mineiro\", \"away\": \"CR Flamengo\", \"score\": \"2-4\"}, {\"date\": \"2023-11-29\", \"home\": \"CR Flamengo\", \"away\": \"CA Mineiro\", \"score\": \"0-3\"}]"
-  },
-  {
     "competition":"SA",
     "utcDate":"2026-10-27T19:45:00Z",
     "date_local":"27\/10\/2026",
@@ -307,27 +262,12 @@
     "homeTeam":"Swansea City AFC",
     "awayTeam":"Blackburn Rovers FC",
     "dominant_team":"Swansea City AFC",
-    "h2h_matches":6,
-    "dominant_wins":5,
+    "h2h_matches":5,
+    "dominant_wins":4,
     "draws":0,
     "dominant_losses":1,
-    "h2h_signal":"🟢 Avantage H2H net",
-    "recent_h2h":"[{\"date\": \"2026-01-20\", \"home\": \"Swansea City AFC\", \"away\": \"Blackburn Rovers FC\", \"score\": \"3-1\"}, {\"date\": \"2025-09-30\", \"home\": \"Blackburn Rovers FC\", \"away\": \"Swansea City AFC\", \"score\": \"1-2\"}, {\"date\": \"2025-02-22\", \"home\": \"Swansea City AFC\", \"away\": \"Blackburn Rovers FC\", \"score\": \"3-0\"}, {\"date\": \"2024-10-19\", \"home\": \"Blackburn Rovers FC\", \"away\": \"Swansea City AFC\", \"score\": \"1-0\"}, {\"date\": \"2024-03-02\", \"home\": \"Swansea City AFC\", \"away\": \"Blackburn Rovers FC\", \"score\": \"2-1\"}, {\"date\": \"2023-10-28\", \"home\": \"Blackburn Rovers FC\", \"away\": \"Swansea City AFC\", \"score\": \"0-1\"}]"
-  },
-  {
-    "competition":"PL",
-    "utcDate":"2026-10-31T15:00:00Z",
-    "date_local":"31\/10\/2026",
-    "time_local":"16:00",
-    "homeTeam":"Hull City AFC",
-    "awayTeam":"Ipswich Town FC",
-    "dominant_team":"Ipswich Town FC",
-    "h2h_matches":3,
-    "dominant_wins":2,
-    "draws":1,
-    "dominant_losses":0,
     "h2h_signal":"🟡 Avantage H2H à surveiller",
-    "recent_h2h":"[{\"date\": \"2026-03-03\", \"home\": \"Ipswich Town FC\", \"away\": \"Hull City AFC\", \"score\": \"1-0\"}, {\"date\": \"2025-11-25\", \"home\": \"Hull City AFC\", \"away\": \"Ipswich Town FC\", \"score\": \"0-2\"}, {\"date\": \"2024-04-27\", \"home\": \"Hull City AFC\", \"away\": \"Ipswich Town FC\", \"score\": \"3-3\"}]"
+    "recent_h2h":"[{\"date\": \"2026-01-20\", \"home\": \"Swansea City AFC\", \"away\": \"Blackburn Rovers FC\", \"score\": \"3-1\"}, {\"date\": \"2025-09-30\", \"home\": \"Blackburn Rovers FC\", \"away\": \"Swansea City AFC\", \"score\": \"1-2\"}, {\"date\": \"2025-02-22\", \"home\": \"Swansea City AFC\", \"away\": \"Blackburn Rovers FC\", \"score\": \"3-0\"}, {\"date\": \"2024-10-19\", \"home\": \"Blackburn Rovers FC\", \"away\": \"Swansea City AFC\", \"score\": \"1-0\"}, {\"date\": \"2024-03-02\", \"home\": \"Swansea City AFC\", \"away\": \"Blackburn Rovers FC\", \"score\": \"2-1\"}]"
   },
   {
     "competition":"FL1",
@@ -358,6 +298,21 @@
     "dominant_losses":0,
     "h2h_signal":"🟢 Avantage H2H net",
     "recent_h2h":"[{\"date\": \"2026-02-21\", \"home\": \"Cagliari Calcio\", \"away\": \"SS Lazio\", \"score\": \"0-0\"}, {\"date\": \"2025-11-03\", \"home\": \"SS Lazio\", \"away\": \"Cagliari Calcio\", \"score\": \"2-0\"}, {\"date\": \"2025-02-03\", \"home\": \"Cagliari Calcio\", \"away\": \"SS Lazio\", \"score\": \"1-2\"}, {\"date\": \"2024-11-04\", \"home\": \"SS Lazio\", \"away\": \"Cagliari Calcio\", \"score\": \"2-1\"}, {\"date\": \"2024-02-10\", \"home\": \"Cagliari Calcio\", \"away\": \"SS Lazio\", \"score\": \"1-3\"}, {\"date\": \"2023-12-02\", \"home\": \"SS Lazio\", \"away\": \"Cagliari Calcio\", \"score\": \"1-0\"}]"
+  },
+  {
+    "competition":"FL1",
+    "utcDate":"2026-11-02T19:45:00Z",
+    "date_local":"02\/11\/2026",
+    "time_local":"20:45",
+    "homeTeam":"FC Lorient",
+    "awayTeam":"Stade Brestois 29",
+    "dominant_team":"Stade Brestois 29",
+    "h2h_matches":4,
+    "dominant_wins":3,
+    "draws":1,
+    "dominant_losses":0,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-02-07\", \"home\": \"Stade Brestois 29\", \"away\": \"FC Lorient\", \"score\": \"2-0\"}, {\"date\": \"2025-10-19\", \"home\": \"FC Lorient\", \"away\": \"Stade Brestois 29\", \"score\": \"3-3\"}, {\"date\": \"2024-03-31\", \"home\": \"FC Lorient\", \"away\": \"Stade Brestois 29\", \"score\": \"0-1\"}, {\"date\": \"2023-12-20\", \"home\": \"Stade Brestois 29\", \"away\": \"FC Lorient\", \"score\": \"4-0\"}]"
   },
   {
     "competition":"PL",
