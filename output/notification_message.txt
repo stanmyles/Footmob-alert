@@ -1,39 +1,7 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 23
+📅 Matchs avec signal : 18
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
-
-⚽ **AS Roma vs Cagliari Calcio**
-🏆 Compétition : Serie A (Italie)
-🗓️ Coup d’envoi : 27/10/2026 à 20:45
-📌 Avantage historique : AS Roma
-📊 Bilan H2H : AS Roma 3 victoire(s) | 1 nul(s) | 1 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Torino FC vs Como 1907**
-🏆 Compétition : Serie A (Italie)
-🗓️ Coup d’envoi : 27/10/2026 à 20:45
-📌 Avantage historique : Como 1907
-📊 Bilan H2H : Como 1907 3 victoire(s) | 0 nul(s) | 1 défaite(s)
-📚 Échantillon : 4 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **AC Milan vs Bologna FC 1909**
-🏆 Compétition : Serie A (Italie)
-🗓️ Coup d’envoi : 28/10/2026 à 18:30
-📌 Avantage historique : AC Milan
-📊 Bilan H2H : AC Milan 3 victoire(s) | 1 nul(s) | 1 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Parma Calcio 1913 vs Udinese Calcio**
-🏆 Compétition : Serie A (Italie)
-🗓️ Coup d’envoi : 28/10/2026 à 18:30
-📌 Avantage historique : Udinese Calcio
-📊 Bilan H2H : Udinese Calcio 3 victoire(s) | 0 nul(s) | 1 défaite(s)
-📚 Échantillon : 4 confrontation(s)
-🟡 Avantage H2H à surveiller
 
 ⚽ **AC Monza vs SSC Napoli**
 🏆 Compétition : Serie A (Italie)
@@ -122,5 +90,37 @@
 📊 Bilan H2H : TSG 1899 Hoffenheim 4 victoire(s) | 0 nul(s) | 1 défaite(s)
 📚 Échantillon : 5 confrontation(s)
 🟡 Avantage H2H à surveiller
+
+⚽ **Millwall FC vs Derby County FC**
+🏆 Compétition : Championship (Angleterre)
+🗓️ Coup d’envoi : 31/10/2026 à 16:00
+📌 Avantage historique : Millwall FC
+📊 Bilan H2H : Millwall FC 2 victoire(s) | 2 nul(s) | 0 défaite(s)
+📚 Échantillon : 4 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Swansea City AFC vs Blackburn Rovers FC**
+🏆 Compétition : Championship (Angleterre)
+🗓️ Coup d’envoi : 31/10/2026 à 16:00
+📌 Avantage historique : Swansea City AFC
+📊 Bilan H2H : Swansea City AFC 4 victoire(s) | 0 nul(s) | 1 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **RC Strasbourg Alsace vs AJ Auxerre**
+🏆 Compétition : Ligue 1 (France)
+🗓️ Coup d’envoi : 01/11/2026 à 15:00
+📌 Avantage historique : RC Strasbourg Alsace
+📊 Bilan H2H : RC Strasbourg Alsace 3 victoire(s) | 1 nul(s) | 0 défaite(s)
+📚 Échantillon : 4 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **SS Lazio vs Cagliari Calcio**
+🏆 Compétition : Serie A (Italie)
+🗓️ Coup d’envoi : 01/11/2026 à 15:00
+📌 Avantage historique : SS Lazio
+📊 Bilan H2H : SS Lazio 5 victoire(s) | 1 nul(s) | 0 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟢 Avantage H2H net
 
 ℹ️ Signal fondé uniquement sur les confrontations directes des 3 dernières années. Il ne prédit pas un résultat et ne garantit pas une victoire.
