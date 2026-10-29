@@ -1,50 +1,5 @@
 [
   {
-    "competition":"SA",
-    "utcDate":"2026-10-28T19:45:00Z",
-    "date_local":"28\/10\/2026",
-    "time_local":"20:45",
-    "homeTeam":"AC Monza",
-    "awayTeam":"SSC Napoli",
-    "dominant_team":"SSC Napoli",
-    "h2h_matches":4,
-    "dominant_wins":3,
-    "draws":1,
-    "dominant_losses":0,
-    "h2h_signal":"🟡 Avantage H2H à surveiller",
-    "recent_h2h":"[{\"date\": \"2025-04-19\", \"home\": \"AC Monza\", \"away\": \"SSC Napoli\", \"score\": \"0-1\"}, {\"date\": \"2024-09-29\", \"home\": \"SSC Napoli\", \"away\": \"AC Monza\", \"score\": \"2-0\"}, {\"date\": \"2024-04-07\", \"home\": \"AC Monza\", \"away\": \"SSC Napoli\", \"score\": \"2-4\"}, {\"date\": \"2023-12-29\", \"home\": \"SSC Napoli\", \"away\": \"AC Monza\", \"score\": \"0-0\"}]"
-  },
-  {
-    "competition":"SA",
-    "utcDate":"2026-10-28T19:45:00Z",
-    "date_local":"28\/10\/2026",
-    "time_local":"20:45",
-    "homeTeam":"Genoa CFC",
-    "awayTeam":"Juventus FC",
-    "dominant_team":"Juventus FC",
-    "h2h_matches":6,
-    "dominant_wins":4,
-    "draws":2,
-    "dominant_losses":0,
-    "h2h_signal":"🟢 Avantage H2H net",
-    "recent_h2h":"[{\"date\": \"2026-04-06\", \"home\": \"Juventus FC\", \"away\": \"Genoa CFC\", \"score\": \"2-0\"}, {\"date\": \"2025-08-31\", \"home\": \"Genoa CFC\", \"away\": \"Juventus FC\", \"score\": \"0-1\"}, {\"date\": \"2025-03-29\", \"home\": \"Juventus FC\", \"away\": \"Genoa CFC\", \"score\": \"1-0\"}, {\"date\": \"2024-09-28\", \"home\": \"Genoa CFC\", \"away\": \"Juventus FC\", \"score\": \"0-3\"}, {\"date\": \"2024-03-17\", \"home\": \"Juventus FC\", \"away\": \"Genoa CFC\", \"score\": \"0-0\"}, {\"date\": \"2023-12-15\", \"home\": \"Genoa CFC\", \"away\": \"Juventus FC\", \"score\": \"1-1\"}]"
-  },
-  {
-    "competition":"BSA",
-    "utcDate":"2026-10-29T00:30:00Z",
-    "date_local":"29\/10\/2026",
-    "time_local":"01:30",
-    "homeTeam":"EC Bahia",
-    "awayTeam":"São Paulo FC",
-    "dominant_team":"São Paulo FC",
-    "h2h_matches":6,
-    "dominant_wins":4,
-    "draws":1,
-    "dominant_losses":1,
-    "h2h_signal":"🟢 Avantage H2H net",
-    "recent_h2h":"[{\"date\": \"2026-05-03\", \"home\": \"São Paulo FC\", \"away\": \"EC Bahia\", \"score\": \"2-2\"}, {\"date\": \"2025-10-26\", \"home\": \"São Paulo FC\", \"away\": \"EC Bahia\", \"score\": \"2-0\"}, {\"date\": \"2025-05-31\", \"home\": \"EC Bahia\", \"away\": \"São Paulo FC\", \"score\": \"2-1\"}, {\"date\": \"2024-11-06\", \"home\": \"EC Bahia\", \"away\": \"São Paulo FC\", \"score\": \"0-3\"}, {\"date\": \"2024-06-30\", \"home\": \"São Paulo FC\", \"away\": \"EC Bahia\", \"score\": \"3-1\"}, {\"date\": \"2023-11-29\", \"home\": \"EC Bahia\", \"away\": \"São Paulo FC\", \"score\": \"0-1\"}]"
-  },
-  {
     "competition":"BSA",
     "utcDate":"2026-10-29T22:30:00Z",
     "date_local":"29\/10\/2026",
@@ -184,6 +139,21 @@
     "utcDate":"2026-10-31T15:00:00Z",
     "date_local":"31\/10\/2026",
     "time_local":"16:00",
+    "homeTeam":"Southampton FC",
+    "awayTeam":"Queens Park Rangers FC",
+    "dominant_team":"Southampton FC",
+    "h2h_matches":3,
+    "dominant_wins":3,
+    "draws":0,
+    "dominant_losses":0,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-02-24\", \"home\": \"Southampton FC\", \"away\": \"Queens Park Rangers FC\", \"score\": \"5-0\"}, {\"date\": \"2025-11-05\", \"home\": \"Queens Park Rangers FC\", \"away\": \"Southampton FC\", \"score\": \"1-2\"}, {\"date\": \"2023-12-23\", \"home\": \"Queens Park Rangers FC\", \"away\": \"Southampton FC\", \"score\": \"0-1\"}]"
+  },
+  {
+    "competition":"ELC",
+    "utcDate":"2026-10-31T15:00:00Z",
+    "date_local":"31\/10\/2026",
+    "time_local":"16:00",
     "homeTeam":"Swansea City AFC",
     "awayTeam":"Blackburn Rovers FC",
     "dominant_team":"Swansea City AFC",
@@ -193,6 +163,21 @@
     "dominant_losses":1,
     "h2h_signal":"🟡 Avantage H2H à surveiller",
     "recent_h2h":"[{\"date\": \"2026-01-20\", \"home\": \"Swansea City AFC\", \"away\": \"Blackburn Rovers FC\", \"score\": \"3-1\"}, {\"date\": \"2025-09-30\", \"home\": \"Blackburn Rovers FC\", \"away\": \"Swansea City AFC\", \"score\": \"1-2\"}, {\"date\": \"2025-02-22\", \"home\": \"Swansea City AFC\", \"away\": \"Blackburn Rovers FC\", \"score\": \"3-0\"}, {\"date\": \"2024-10-19\", \"home\": \"Blackburn Rovers FC\", \"away\": \"Swansea City AFC\", \"score\": \"1-0\"}, {\"date\": \"2024-03-02\", \"home\": \"Swansea City AFC\", \"away\": \"Blackburn Rovers FC\", \"score\": \"2-1\"}]"
+  },
+  {
+    "competition":"PL",
+    "utcDate":"2026-10-31T15:00:00Z",
+    "date_local":"31\/10\/2026",
+    "time_local":"16:00",
+    "homeTeam":"Hull City AFC",
+    "awayTeam":"Ipswich Town FC",
+    "dominant_team":"Ipswich Town FC",
+    "h2h_matches":3,
+    "dominant_wins":2,
+    "draws":1,
+    "dominant_losses":0,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-03-03\", \"home\": \"Ipswich Town FC\", \"away\": \"Hull City AFC\", \"score\": \"1-0\"}, {\"date\": \"2025-11-25\", \"home\": \"Hull City AFC\", \"away\": \"Ipswich Town FC\", \"score\": \"0-2\"}, {\"date\": \"2024-04-27\", \"home\": \"Hull City AFC\", \"away\": \"Ipswich Town FC\", \"score\": \"3-3\"}]"
   },
   {
     "competition":"FL1",
@@ -268,5 +253,20 @@
     "dominant_losses":1,
     "h2h_signal":"🟡 Avantage H2H à surveiller",
     "recent_h2h":"[{\"date\": \"2026-04-18\", \"home\": \"Gil Vicente FC\", \"away\": \"Vitória SC\", \"score\": \"0-1\"}, {\"date\": \"2025-12-08\", \"home\": \"Vitória SC\", \"away\": \"Gil Vicente FC\", \"score\": \"0-0\"}, {\"date\": \"2025-04-11\", \"home\": \"Gil Vicente FC\", \"away\": \"Vitória SC\", \"score\": \"0-1\"}, {\"date\": \"2024-12-02\", \"home\": \"Vitória SC\", \"away\": \"Gil Vicente FC\", \"score\": \"4-0\"}, {\"date\": \"2024-01-28\", \"home\": \"Gil Vicente FC\", \"away\": \"Vitória SC\", \"score\": \"1-0\"}]"
+  },
+  {
+    "competition":"BSA",
+    "utcDate":"2026-11-05T00:30:00Z",
+    "date_local":"05\/11\/2026",
+    "time_local":"01:30",
+    "homeTeam":"Botafogo FR",
+    "awayTeam":"CA Mineiro",
+    "dominant_team":"Botafogo FR",
+    "h2h_matches":6,
+    "dominant_wins":3,
+    "draws":2,
+    "dominant_losses":1,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-05-10\", \"home\": \"CA Mineiro\", \"away\": \"Botafogo FR\", \"score\": \"1-1\"}, {\"date\": \"2025-09-20\", \"home\": \"Botafogo FR\", \"away\": \"CA Mineiro\", \"score\": \"1-0\"}, {\"date\": \"2025-04-20\", \"home\": \"CA Mineiro\", \"away\": \"Botafogo FR\", \"score\": \"1-0\"}, {\"date\": \"2024-11-30\", \"home\": \"CA Mineiro\", \"away\": \"Botafogo FR\", \"score\": \"1-3\"}, {\"date\": \"2024-11-21\", \"home\": \"CA Mineiro\", \"away\": \"Botafogo FR\", \"score\": \"0-0\"}, {\"date\": \"2024-07-07\", \"home\": \"Botafogo FR\", \"away\": \"CA Mineiro\", \"score\": \"3-0\"}]"
   }
 ]
