@@ -1,35 +1,5 @@
 [
   {
-    "competition":"BSA",
-    "utcDate":"2026-10-29T22:30:00Z",
-    "date_local":"29\/10\/2026",
-    "time_local":"23:30",
-    "homeTeam":"CA Mineiro",
-    "awayTeam":"Cruzeiro EC",
-    "dominant_team":"CA Mineiro",
-    "h2h_matches":5,
-    "dominant_wins":2,
-    "draws":3,
-    "dominant_losses":0,
-    "h2h_signal":"🟡 Avantage H2H à surveiller",
-    "recent_h2h":"[{\"date\": \"2026-05-03\", \"home\": \"Cruzeiro EC\", \"away\": \"CA Mineiro\", \"score\": \"1-3\"}, {\"date\": \"2025-10-16\", \"home\": \"CA Mineiro\", \"away\": \"Cruzeiro EC\", \"score\": \"1-1\"}, {\"date\": \"2025-05-18\", \"home\": \"Cruzeiro EC\", \"away\": \"CA Mineiro\", \"score\": \"0-0\"}, {\"date\": \"2024-08-11\", \"home\": \"Cruzeiro EC\", \"away\": \"CA Mineiro\", \"score\": \"0-0\"}, {\"date\": \"2024-04-21\", \"home\": \"CA Mineiro\", \"away\": \"Cruzeiro EC\", \"score\": \"3-0\"}]"
-  },
-  {
-    "competition":"BSA",
-    "utcDate":"2026-10-30T00:30:00Z",
-    "date_local":"30\/10\/2026",
-    "time_local":"01:30",
-    "homeTeam":"Grêmio FBPA",
-    "awayTeam":"CA Paranaense",
-    "dominant_team":"Grêmio FBPA",
-    "h2h_matches":3,
-    "dominant_wins":2,
-    "draws":1,
-    "dominant_losses":0,
-    "h2h_signal":"🟡 Avantage H2H à surveiller",
-    "recent_h2h":"[{\"date\": \"2026-05-02\", \"home\": \"CA Paranaense\", \"away\": \"Grêmio FBPA\", \"score\": \"0-0\"}, {\"date\": \"2024-08-04\", \"home\": \"CA Paranaense\", \"away\": \"Grêmio FBPA\", \"score\": \"0-2\"}, {\"date\": \"2024-04-17\", \"home\": \"Grêmio FBPA\", \"away\": \"CA Paranaense\", \"score\": \"2-0\"}]"
-  },
-  {
     "competition":"FL1",
     "utcDate":"2026-10-30T18:00:00Z",
     "date_local":"30\/10\/2026",
@@ -165,21 +135,6 @@
     "recent_h2h":"[{\"date\": \"2026-01-20\", \"home\": \"Swansea City AFC\", \"away\": \"Blackburn Rovers FC\", \"score\": \"3-1\"}, {\"date\": \"2025-09-30\", \"home\": \"Blackburn Rovers FC\", \"away\": \"Swansea City AFC\", \"score\": \"1-2\"}, {\"date\": \"2025-02-22\", \"home\": \"Swansea City AFC\", \"away\": \"Blackburn Rovers FC\", \"score\": \"3-0\"}, {\"date\": \"2024-10-19\", \"home\": \"Blackburn Rovers FC\", \"away\": \"Swansea City AFC\", \"score\": \"1-0\"}, {\"date\": \"2024-03-02\", \"home\": \"Swansea City AFC\", \"away\": \"Blackburn Rovers FC\", \"score\": \"2-1\"}]"
   },
   {
-    "competition":"PL",
-    "utcDate":"2026-10-31T15:00:00Z",
-    "date_local":"31\/10\/2026",
-    "time_local":"16:00",
-    "homeTeam":"Hull City AFC",
-    "awayTeam":"Ipswich Town FC",
-    "dominant_team":"Ipswich Town FC",
-    "h2h_matches":3,
-    "dominant_wins":2,
-    "draws":1,
-    "dominant_losses":0,
-    "h2h_signal":"🟡 Avantage H2H à surveiller",
-    "recent_h2h":"[{\"date\": \"2026-03-03\", \"home\": \"Ipswich Town FC\", \"away\": \"Hull City AFC\", \"score\": \"1-0\"}, {\"date\": \"2025-11-25\", \"home\": \"Hull City AFC\", \"away\": \"Ipswich Town FC\", \"score\": \"0-2\"}, {\"date\": \"2024-04-27\", \"home\": \"Hull City AFC\", \"away\": \"Ipswich Town FC\", \"score\": \"3-3\"}]"
-  },
-  {
     "competition":"FL1",
     "utcDate":"2026-11-01T14:00:00Z",
     "date_local":"01\/11\/2026",
@@ -268,5 +223,20 @@
     "dominant_losses":1,
     "h2h_signal":"🟡 Avantage H2H à surveiller",
     "recent_h2h":"[{\"date\": \"2026-05-10\", \"home\": \"CA Mineiro\", \"away\": \"Botafogo FR\", \"score\": \"1-1\"}, {\"date\": \"2025-09-20\", \"home\": \"Botafogo FR\", \"away\": \"CA Mineiro\", \"score\": \"1-0\"}, {\"date\": \"2025-04-20\", \"home\": \"CA Mineiro\", \"away\": \"Botafogo FR\", \"score\": \"1-0\"}, {\"date\": \"2024-11-30\", \"home\": \"CA Mineiro\", \"away\": \"Botafogo FR\", \"score\": \"1-3\"}, {\"date\": \"2024-11-21\", \"home\": \"CA Mineiro\", \"away\": \"Botafogo FR\", \"score\": \"0-0\"}, {\"date\": \"2024-07-07\", \"home\": \"Botafogo FR\", \"away\": \"CA Mineiro\", \"score\": \"3-0\"}]"
+  },
+  {
+    "competition":"BSA",
+    "utcDate":"2026-11-06T00:30:00Z",
+    "date_local":"06\/11\/2026",
+    "time_local":"01:30",
+    "homeTeam":"Cruzeiro EC",
+    "awayTeam":"EC Bahia",
+    "dominant_team":"Cruzeiro EC",
+    "h2h_matches":5,
+    "dominant_wins":3,
+    "draws":1,
+    "dominant_losses":1,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-05-10\", \"home\": \"EC Bahia\", \"away\": \"Cruzeiro EC\", \"score\": \"1-2\"}, {\"date\": \"2025-09-15\", \"home\": \"EC Bahia\", \"away\": \"Cruzeiro EC\", \"score\": \"1-2\"}, {\"date\": \"2025-04-18\", \"home\": \"Cruzeiro EC\", \"away\": \"EC Bahia\", \"score\": \"3-0\"}, {\"date\": \"2024-10-19\", \"home\": \"Cruzeiro EC\", \"away\": \"EC Bahia\", \"score\": \"1-1\"}, {\"date\": \"2024-06-23\", \"home\": \"EC Bahia\", \"away\": \"Cruzeiro EC\", \"score\": \"4-1\"}]"
   }
 ]

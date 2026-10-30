@@ -1,23 +1,7 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 18
+📅 Matchs avec signal : 16
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
-
-⚽ **CA Mineiro vs Cruzeiro EC**
-🏆 Compétition : Brasileirão Série A (Brésil)
-🗓️ Coup d’envoi : 29/10/2026 à 23:30
-📌 Avantage historique : CA Mineiro
-📊 Bilan H2H : CA Mineiro 2 victoire(s) | 3 nul(s) | 0 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Grêmio FBPA vs CA Paranaense**
-🏆 Compétition : Brasileirão Série A (Brésil)
-🗓️ Coup d’envoi : 30/10/2026 à 01:30
-📌 Avantage historique : Grêmio FBPA
-📊 Bilan H2H : Grêmio FBPA 2 victoire(s) | 1 nul(s) | 0 défaite(s)
-📚 Échantillon : 3 confrontation(s)
-🟡 Avantage H2H à surveiller
 
 ⚽ **Le Havre AC vs Paris Saint-Germain FC**
 🏆 Compétition : Ligue 1 (France)
@@ -91,14 +75,6 @@
 📚 Échantillon : 5 confrontation(s)
 🟡 Avantage H2H à surveiller
 
-⚽ **Hull City AFC vs Ipswich Town FC**
-🏆 Compétition : Premier League (Angleterre)
-🗓️ Coup d’envoi : 31/10/2026 à 16:00
-📌 Avantage historique : Ipswich Town FC
-📊 Bilan H2H : Ipswich Town FC 2 victoire(s) | 1 nul(s) | 0 défaite(s)
-📚 Échantillon : 3 confrontation(s)
-🟡 Avantage H2H à surveiller
-
 ⚽ **RC Strasbourg Alsace vs AJ Auxerre**
 🏆 Compétition : Ligue 1 (France)
 🗓️ Coup d’envoi : 01/11/2026 à 15:00
@@ -121,6 +97,30 @@
 📌 Avantage historique : Stade Brestois 29
 📊 Bilan H2H : Stade Brestois 29 3 victoire(s) | 1 nul(s) | 0 défaite(s)
 📚 Échantillon : 4 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Newcastle United FC vs Everton FC**
+🏆 Compétition : Premier League (Angleterre)
+🗓️ Coup d’envoi : 02/11/2026 à 21:00
+📌 Avantage historique : Everton FC
+📊 Bilan H2H : Everton FC 3 victoire(s) | 2 nul(s) | 1 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Gil Vicente FC vs Vitória SC**
+🏆 Compétition : Primeira Liga (Portugal)
+🗓️ Coup d’envoi : 02/11/2026 à 21:15
+📌 Avantage historique : Vitória SC
+📊 Bilan H2H : Vitória SC 3 victoire(s) | 1 nul(s) | 1 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Botafogo FR vs CA Mineiro**
+🏆 Compétition : Brasileirão Série A (Brésil)
+🗓️ Coup d’envoi : 05/11/2026 à 01:30
+📌 Avantage historique : Botafogo FR
+📊 Bilan H2H : Botafogo FR 3 victoire(s) | 2 nul(s) | 1 défaite(s)
+📚 Échantillon : 6 confrontation(s)
 🟡 Avantage H2H à surveiller
 
 ℹ️ Signal fondé uniquement sur les confrontations directes des 3 dernières années. Il ne prédit pas un résultat et ne garantit pas une victoire.
