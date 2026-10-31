@@ -1,55 +1,7 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 16
+📅 Matchs avec signal : 13
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
-
-⚽ **Le Havre AC vs Paris Saint-Germain FC**
-🏆 Compétition : Ligue 1 (France)
-🗓️ Coup d’envoi : 30/10/2026 à 19:00
-📌 Avantage historique : Paris Saint-Germain FC
-📊 Bilan H2H : Paris Saint-Germain FC 5 victoire(s) | 1 nul(s) | 0 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟢 Avantage H2H net
-
-⚽ **Villarreal CF vs RCD Espanyol de Barcelona**
-🏆 Compétition : LaLiga (Espagne)
-🗓️ Coup d’envoi : 30/10/2026 à 21:00
-📌 Avantage historique : Villarreal CF
-📊 Bilan H2H : Villarreal CF 4 victoire(s) | 0 nul(s) | 0 défaite(s)
-📚 Échantillon : 4 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Lille OSC vs Racing Club de Lens**
-🏆 Compétition : Ligue 1 (France)
-🗓️ Coup d’envoi : 30/10/2026 à 21:05
-📌 Avantage historique : Lille OSC
-📊 Bilan H2H : Lille OSC 4 victoire(s) | 0 nul(s) | 1 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Casa Pia AC vs Sporting Clube de Portugal**
-🏆 Compétition : Primeira Liga (Portugal)
-🗓️ Coup d’envoi : 30/10/2026 à 21:15
-📌 Avantage historique : Sporting Clube de Portugal
-📊 Bilan H2H : Sporting Clube de Portugal 5 victoire(s) | 0 nul(s) | 0 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Bologna FC 1909 vs AC Monza**
-🏆 Compétition : Serie A (Italie)
-🗓️ Coup d’envoi : 31/10/2026 à 15:00
-📌 Avantage historique : Bologna FC 1909
-📊 Bilan H2H : Bologna FC 1909 2 victoire(s) | 1 nul(s) | 0 défaite(s)
-📚 Échantillon : 3 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **SV Werder Bremen vs TSG 1899 Hoffenheim**
-🏆 Compétition : Bundesliga (Allemagne)
-🗓️ Coup d’envoi : 31/10/2026 à 15:30
-📌 Avantage historique : TSG 1899 Hoffenheim
-📊 Bilan H2H : TSG 1899 Hoffenheim 4 victoire(s) | 0 nul(s) | 1 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
 
 ⚽ **Millwall FC vs Derby County FC**
 🏆 Compétition : Championship (Angleterre)
@@ -73,6 +25,22 @@
 📌 Avantage historique : Swansea City AFC
 📊 Bilan H2H : Swansea City AFC 4 victoire(s) | 0 nul(s) | 1 défaite(s)
 📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Udinese Calcio vs AS Roma**
+🏆 Compétition : Serie A (Italie)
+🗓️ Coup d’envoi : 31/10/2026 à 18:00
+📌 Avantage historique : AS Roma
+📊 Bilan H2H : AS Roma 5 victoire(s) | 0 nul(s) | 1 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟢 Avantage H2H net
+
+⚽ **FC Bayern München vs Borussia Dortmund**
+🏆 Compétition : Bundesliga (Allemagne)
+🗓️ Coup d’envoi : 31/10/2026 à 18:30
+📌 Avantage historique : FC Bayern München
+📊 Bilan H2H : FC Bayern München 3 victoire(s) | 2 nul(s) | 1 défaite(s)
+📚 Échantillon : 6 confrontation(s)
 🟡 Avantage H2H à surveiller
 
 ⚽ **RC Strasbourg Alsace vs AJ Auxerre**
@@ -121,6 +89,22 @@
 📌 Avantage historique : Botafogo FR
 📊 Bilan H2H : Botafogo FR 3 victoire(s) | 2 nul(s) | 1 défaite(s)
 📚 Échantillon : 6 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Cruzeiro EC vs EC Bahia**
+🏆 Compétition : Brasileirão Série A (Brésil)
+🗓️ Coup d’envoi : 06/11/2026 à 01:30
+📌 Avantage historique : Cruzeiro EC
+📊 Bilan H2H : Cruzeiro EC 3 victoire(s) | 1 nul(s) | 1 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **RB Leipzig vs FC Augsburg**
+🏆 Compétition : Bundesliga (Allemagne)
+🗓️ Coup d’envoi : 07/11/2026 à 15:30
+📌 Avantage historique : RB Leipzig
+📊 Bilan H2H : RB Leipzig 3 victoire(s) | 2 nul(s) | 0 défaite(s)
+📚 Échantillon : 5 confrontation(s)
 🟡 Avantage H2H à surveiller
 
 ℹ️ Signal fondé uniquement sur les confrontations directes des 3 dernières années. Il ne prédit pas un résultat et ne garantit pas une victoire.
