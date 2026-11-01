@@ -1,63 +1,23 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 13
+📅 Matchs avec signal : 12
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
 
-⚽ **Millwall FC vs Derby County FC**
-🏆 Compétition : Championship (Angleterre)
-🗓️ Coup d’envoi : 31/10/2026 à 16:00
-📌 Avantage historique : Millwall FC
-📊 Bilan H2H : Millwall FC 2 victoire(s) | 2 nul(s) | 0 défaite(s)
-📚 Échantillon : 4 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Southampton FC vs Queens Park Rangers FC**
-🏆 Compétition : Championship (Angleterre)
-🗓️ Coup d’envoi : 31/10/2026 à 16:00
-📌 Avantage historique : Southampton FC
-📊 Bilan H2H : Southampton FC 3 victoire(s) | 0 nul(s) | 0 défaite(s)
-📚 Échantillon : 3 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Swansea City AFC vs Blackburn Rovers FC**
-🏆 Compétition : Championship (Angleterre)
-🗓️ Coup d’envoi : 31/10/2026 à 16:00
-📌 Avantage historique : Swansea City AFC
-📊 Bilan H2H : Swansea City AFC 4 victoire(s) | 0 nul(s) | 1 défaite(s)
+⚽ **Olympique de Marseille vs Toulouse FC**
+🏆 Compétition : Ligue 1 (France)
+🗓️ Coup d’envoi : 01/11/2026 à 20:45
+📌 Avantage historique : Olympique de Marseille
+📊 Bilan H2H : Olympique de Marseille 3 victoire(s) | 2 nul(s) | 0 défaite(s)
 📚 Échantillon : 5 confrontation(s)
 🟡 Avantage H2H à surveiller
 
-⚽ **Udinese Calcio vs AS Roma**
-🏆 Compétition : Serie A (Italie)
-🗓️ Coup d’envoi : 31/10/2026 à 18:00
-📌 Avantage historique : AS Roma
-📊 Bilan H2H : AS Roma 5 victoire(s) | 0 nul(s) | 1 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟢 Avantage H2H net
-
-⚽ **FC Bayern München vs Borussia Dortmund**
-🏆 Compétition : Bundesliga (Allemagne)
-🗓️ Coup d’envoi : 31/10/2026 à 18:30
-📌 Avantage historique : FC Bayern München
-📊 Bilan H2H : FC Bayern München 3 victoire(s) | 2 nul(s) | 1 défaite(s)
-📚 Échantillon : 6 confrontation(s)
+⚽ **Sporting Clube de Braga vs FC Famalicão**
+🏆 Compétition : Primeira Liga (Portugal)
+🗓️ Coup d’envoi : 01/11/2026 à 21:30
+📌 Avantage historique : Sporting Clube de Braga
+📊 Bilan H2H : Sporting Clube de Braga 2 victoire(s) | 3 nul(s) | 0 défaite(s)
+📚 Échantillon : 5 confrontation(s)
 🟡 Avantage H2H à surveiller
-
-⚽ **RC Strasbourg Alsace vs AJ Auxerre**
-🏆 Compétition : Ligue 1 (France)
-🗓️ Coup d’envoi : 01/11/2026 à 15:00
-📌 Avantage historique : RC Strasbourg Alsace
-📊 Bilan H2H : RC Strasbourg Alsace 3 victoire(s) | 1 nul(s) | 0 défaite(s)
-📚 Échantillon : 4 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **SS Lazio vs Cagliari Calcio**
-🏆 Compétition : Serie A (Italie)
-🗓️ Coup d’envoi : 01/11/2026 à 15:00
-📌 Avantage historique : SS Lazio
-📊 Bilan H2H : SS Lazio 5 victoire(s) | 1 nul(s) | 0 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟢 Avantage H2H net
 
 ⚽ **FC Lorient vs Stade Brestois 29**
 🏆 Compétition : Ligue 1 (France)
@@ -83,6 +43,14 @@
 📚 Échantillon : 5 confrontation(s)
 🟡 Avantage H2H à surveiller
 
+⚽ **West Bromwich Albion FC vs Southampton FC**
+🏆 Compétition : Championship (Angleterre)
+🗓️ Coup d’envoi : 03/11/2026 à 21:00
+📌 Avantage historique : Southampton FC
+📊 Bilan H2H : Southampton FC 4 victoire(s) | 2 nul(s) | 0 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟢 Avantage H2H net
+
 ⚽ **Botafogo FR vs CA Mineiro**
 🏆 Compétition : Brasileirão Série A (Brésil)
 🗓️ Coup d’envoi : 05/11/2026 à 01:30
@@ -104,6 +72,30 @@
 🗓️ Coup d’envoi : 07/11/2026 à 15:30
 📌 Avantage historique : RB Leipzig
 📊 Bilan H2H : RB Leipzig 3 victoire(s) | 2 nul(s) | 0 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **SC Heerenveen vs Feyenoord Rotterdam**
+🏆 Compétition : Eredivisie (Pays-Bas)
+🗓️ Coup d’envoi : 08/11/2026 à 12:15
+📌 Avantage historique : Feyenoord Rotterdam
+📊 Bilan H2H : Feyenoord Rotterdam 3 victoire(s) | 1 nul(s) | 1 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **FC Twente '65 vs AFC Ajax**
+🏆 Compétition : Eredivisie (Pays-Bas)
+🗓️ Coup d’envoi : 08/11/2026 à 14:30
+📌 Avantage historique : AFC Ajax
+📊 Bilan H2H : AFC Ajax 3 victoire(s) | 1 nul(s) | 1 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Stade Rennais FC 1901 vs Lille OSC**
+🏆 Compétition : Ligue 1 (France)
+🗓️ Coup d’envoi : 08/11/2026 à 15:00
+📌 Avantage historique : Lille OSC
+📊 Bilan H2H : Lille OSC 3 victoire(s) | 1 nul(s) | 1 défaite(s)
 📚 Échantillon : 5 confrontation(s)
 🟡 Avantage H2H à surveiller
 
