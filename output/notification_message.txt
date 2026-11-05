@@ -1,23 +1,7 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 15
+📅 Matchs avec signal : 22
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
-
-⚽ **CR Flamengo vs Grêmio FBPA**
-🏆 Compétition : Brasileirão Série A (Brésil)
-🗓️ Coup d’envoi : 04/11/2026 à 23:30
-📌 Avantage historique : CR Flamengo
-📊 Bilan H2H : CR Flamengo 3 victoire(s) | 1 nul(s) | 1 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Botafogo FR vs CA Mineiro**
-🏆 Compétition : Brasileirão Série A (Brésil)
-🗓️ Coup d’envoi : 05/11/2026 à 01:30
-📌 Avantage historique : Botafogo FR
-📊 Bilan H2H : Botafogo FR 3 victoire(s) | 2 nul(s) | 1 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟡 Avantage H2H à surveiller
 
 ⚽ **Cruzeiro EC vs EC Bahia**
 🏆 Compétition : Brasileirão Série A (Brésil)
@@ -121,6 +105,22 @@
 📌 Avantage historique : Brighton & Hove Albion FC
 📊 Bilan H2H : Brighton & Hove Albion FC 3 victoire(s) | 2 nul(s) | 1 défaite(s)
 📚 Échantillon : 6 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **AC Monza vs Atalanta BC**
+🏆 Compétition : Serie A (Italie)
+🗓️ Coup d’envoi : 08/11/2026 à 15:00
+📌 Avantage historique : Atalanta BC
+📊 Bilan H2H : Atalanta BC 3 victoire(s) | 0 nul(s) | 0 défaite(s)
+📚 Échantillon : 3 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Genoa CFC vs AC Milan**
+🏆 Compétition : Serie A (Italie)
+🗓️ Coup d’envoi : 08/11/2026 à 15:00
+📌 Avantage historique : AC Milan
+📊 Bilan H2H : AC Milan 2 victoire(s) | 3 nul(s) | 0 défaite(s)
+📚 Échantillon : 5 confrontation(s)
 🟡 Avantage H2H à surveiller
 
 ℹ️ Signal fondé uniquement sur les confrontations directes des 3 dernières années. Il ne prédit pas un résultat et ne garantit pas une victoire.
