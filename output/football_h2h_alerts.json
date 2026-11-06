@@ -1,20 +1,5 @@
 [
   {
-    "competition":"BSA",
-    "utcDate":"2026-11-06T00:30:00Z",
-    "date_local":"06\/11\/2026",
-    "time_local":"01:30",
-    "homeTeam":"Cruzeiro EC",
-    "awayTeam":"EC Bahia",
-    "dominant_team":"Cruzeiro EC",
-    "h2h_matches":5,
-    "dominant_wins":3,
-    "draws":1,
-    "dominant_losses":1,
-    "h2h_signal":"🟡 Avantage H2H à surveiller",
-    "recent_h2h":"[{\"date\": \"2026-05-10\", \"home\": \"EC Bahia\", \"away\": \"Cruzeiro EC\", \"score\": \"1-2\"}, {\"date\": \"2025-09-15\", \"home\": \"EC Bahia\", \"away\": \"Cruzeiro EC\", \"score\": \"1-2\"}, {\"date\": \"2025-04-18\", \"home\": \"Cruzeiro EC\", \"away\": \"EC Bahia\", \"score\": \"3-0\"}, {\"date\": \"2024-10-19\", \"home\": \"Cruzeiro EC\", \"away\": \"EC Bahia\", \"score\": \"1-1\"}, {\"date\": \"2024-06-23\", \"home\": \"EC Bahia\", \"away\": \"Cruzeiro EC\", \"score\": \"4-1\"}]"
-  },
-  {
     "competition":"BL1",
     "utcDate":"2026-11-07T14:30:00Z",
     "date_local":"07\/11\/2026",
@@ -328,5 +313,20 @@
     "dominant_losses":1,
     "h2h_signal":"🟢 Avantage H2H net",
     "recent_h2h":"[{\"date\": \"2026-03-15\", \"home\": \"Manchester United FC\", \"away\": \"Aston Villa FC\", \"score\": \"3-1\"}, {\"date\": \"2025-12-21\", \"home\": \"Aston Villa FC\", \"away\": \"Manchester United FC\", \"score\": \"2-1\"}, {\"date\": \"2025-05-25\", \"home\": \"Manchester United FC\", \"away\": \"Aston Villa FC\", \"score\": \"2-0\"}, {\"date\": \"2024-10-06\", \"home\": \"Aston Villa FC\", \"away\": \"Manchester United FC\", \"score\": \"0-0\"}, {\"date\": \"2024-02-11\", \"home\": \"Aston Villa FC\", \"away\": \"Manchester United FC\", \"score\": \"1-2\"}, {\"date\": \"2023-12-26\", \"home\": \"Manchester United FC\", \"away\": \"Aston Villa FC\", \"score\": \"3-2\"}]"
+  },
+  {
+    "competition":"SA",
+    "utcDate":"2026-11-08T17:00:00Z",
+    "date_local":"08\/11\/2026",
+    "time_local":"18:00",
+    "homeTeam":"FC Internazionale Milano",
+    "awayTeam":"Como 1907",
+    "dominant_team":"FC Internazionale Milano",
+    "h2h_matches":4,
+    "dominant_wins":4,
+    "draws":0,
+    "dominant_losses":0,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-04-12\", \"home\": \"Como 1907\", \"away\": \"FC Internazionale Milano\", \"score\": \"3-4\"}, {\"date\": \"2025-12-06\", \"home\": \"FC Internazionale Milano\", \"away\": \"Como 1907\", \"score\": \"4-0\"}, {\"date\": \"2025-05-23\", \"home\": \"Como 1907\", \"away\": \"FC Internazionale Milano\", \"score\": \"0-2\"}, {\"date\": \"2024-12-23\", \"home\": \"FC Internazionale Milano\", \"away\": \"Como 1907\", \"score\": \"2-0\"}]"
   }
 ]
