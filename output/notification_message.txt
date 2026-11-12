@@ -1,5 +1,5 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 1
+📅 Matchs avec signal : 3
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
 
@@ -9,6 +9,22 @@
 📌 Avantage historique : CA Mineiro
 📊 Bilan H2H : CA Mineiro 2 victoire(s) | 1 nul(s) | 0 défaite(s)
 📚 Échantillon : 3 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Grêmio FBPA vs EC Bahia**
+🏆 Compétition : Brasileirão Série A (Brésil)
+🗓️ Coup d’envoi : 19/11/2026 à 01:30
+📌 Avantage historique : EC Bahia
+📊 Bilan H2H : EC Bahia 3 victoire(s) | 1 nul(s) | 1 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **SC Corinthians Paulista vs Botafogo FR**
+🏆 Compétition : Brasileirão Série A (Brésil)
+🗓️ Coup d’envoi : 19/11/2026 à 01:30
+📌 Avantage historique : Botafogo FR
+📊 Bilan H2H : Botafogo FR 3 victoire(s) | 2 nul(s) | 0 défaite(s)
+📚 Échantillon : 5 confrontation(s)
 🟡 Avantage H2H à surveiller
 
 ℹ️ Signal fondé uniquement sur les confrontations directes des 3 dernières années. Il ne prédit pas un résultat et ne garantit pas une victoire.

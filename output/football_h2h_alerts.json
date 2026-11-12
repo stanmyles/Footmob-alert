@@ -13,5 +13,35 @@
     "dominant_losses":0,
     "h2h_signal":"🟡 Avantage H2H à surveiller",
     "recent_h2h":"[{\"date\": \"2026-05-16\", \"home\": \"CA Mineiro\", \"away\": \"Mirassol FC\", \"score\": \"3-1\"}, {\"date\": \"2025-09-28\", \"home\": \"CA Mineiro\", \"away\": \"Mirassol FC\", \"score\": \"1-0\"}, {\"date\": \"2025-04-26\", \"home\": \"Mirassol FC\", \"away\": \"CA Mineiro\", \"score\": \"2-2\"}]"
+  },
+  {
+    "competition":"BSA",
+    "utcDate":"2026-11-19T00:30:00Z",
+    "date_local":"19\/11\/2026",
+    "time_local":"01:30",
+    "homeTeam":"Grêmio FBPA",
+    "awayTeam":"EC Bahia",
+    "dominant_team":"EC Bahia",
+    "h2h_matches":5,
+    "dominant_wins":3,
+    "draws":1,
+    "dominant_losses":1,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-05-17\", \"home\": \"EC Bahia\", \"away\": \"Grêmio FBPA\", \"score\": \"1-1\"}, {\"date\": \"2025-10-19\", \"home\": \"EC Bahia\", \"away\": \"Grêmio FBPA\", \"score\": \"4-0\"}, {\"date\": \"2025-05-25\", \"home\": \"Grêmio FBPA\", \"away\": \"EC Bahia\", \"score\": \"1-0\"}, {\"date\": \"2024-08-17\", \"home\": \"Grêmio FBPA\", \"away\": \"EC Bahia\", \"score\": \"0-2\"}, {\"date\": \"2024-04-28\", \"home\": \"EC Bahia\", \"away\": \"Grêmio FBPA\", \"score\": \"1-0\"}]"
+  },
+  {
+    "competition":"BSA",
+    "utcDate":"2026-11-19T00:30:00Z",
+    "date_local":"19\/11\/2026",
+    "time_local":"01:30",
+    "homeTeam":"SC Corinthians Paulista",
+    "awayTeam":"Botafogo FR",
+    "dominant_team":"Botafogo FR",
+    "h2h_matches":5,
+    "dominant_wins":3,
+    "draws":2,
+    "dominant_losses":0,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-05-17\", \"home\": \"Botafogo FR\", \"away\": \"SC Corinthians Paulista\", \"score\": \"3-1\"}, {\"date\": \"2025-11-30\", \"home\": \"SC Corinthians Paulista\", \"away\": \"Botafogo FR\", \"score\": \"2-2\"}, {\"date\": \"2025-07-26\", \"home\": \"Botafogo FR\", \"away\": \"SC Corinthians Paulista\", \"score\": \"1-1\"}, {\"date\": \"2024-09-15\", \"home\": \"Botafogo FR\", \"away\": \"SC Corinthians Paulista\", \"score\": \"2-1\"}, {\"date\": \"2024-06-02\", \"home\": \"SC Corinthians Paulista\", \"away\": \"Botafogo FR\", \"score\": \"0-1\"}]"
   }
 ]
