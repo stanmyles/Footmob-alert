@@ -43,5 +43,35 @@
     "dominant_losses":0,
     "h2h_signal":"🟡 Avantage H2H à surveiller",
     "recent_h2h":"[{\"date\": \"2026-05-17\", \"home\": \"Botafogo FR\", \"away\": \"SC Corinthians Paulista\", \"score\": \"3-1\"}, {\"date\": \"2025-11-30\", \"home\": \"SC Corinthians Paulista\", \"away\": \"Botafogo FR\", \"score\": \"2-2\"}, {\"date\": \"2025-07-26\", \"home\": \"Botafogo FR\", \"away\": \"SC Corinthians Paulista\", \"score\": \"1-1\"}, {\"date\": \"2024-09-15\", \"home\": \"Botafogo FR\", \"away\": \"SC Corinthians Paulista\", \"score\": \"2-1\"}, {\"date\": \"2024-06-02\", \"home\": \"SC Corinthians Paulista\", \"away\": \"Botafogo FR\", \"score\": \"0-1\"}]"
+  },
+  {
+    "competition":"BSA",
+    "utcDate":"2026-11-20T00:30:00Z",
+    "date_local":"20\/11\/2026",
+    "time_local":"01:30",
+    "homeTeam":"São Paulo FC",
+    "awayTeam":"Fluminense FC",
+    "dominant_team":"Fluminense FC",
+    "h2h_matches":6,
+    "dominant_wins":4,
+    "draws":0,
+    "dominant_losses":2,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-05-16\", \"home\": \"Fluminense FC\", \"away\": \"São Paulo FC\", \"score\": \"2-1\"}, {\"date\": \"2025-11-27\", \"home\": \"Fluminense FC\", \"away\": \"São Paulo FC\", \"score\": \"6-0\"}, {\"date\": \"2025-07-27\", \"home\": \"São Paulo FC\", \"away\": \"Fluminense FC\", \"score\": \"3-1\"}, {\"date\": \"2024-09-01\", \"home\": \"Fluminense FC\", \"away\": \"São Paulo FC\", \"score\": \"2-0\"}, {\"date\": \"2024-05-13\", \"home\": \"São Paulo FC\", \"away\": \"Fluminense FC\", \"score\": \"2-1\"}, {\"date\": \"2023-11-23\", \"home\": \"Fluminense FC\", \"away\": \"São Paulo FC\", \"score\": \"1-0\"}]"
+  },
+  {
+    "competition":"BL1",
+    "utcDate":"2026-11-20T19:30:00Z",
+    "date_local":"20\/11\/2026",
+    "time_local":"20:30",
+    "homeTeam":"FC Bayern München",
+    "awayTeam":"1. FC Köln",
+    "dominant_team":"FC Bayern München",
+    "h2h_matches":4,
+    "dominant_wins":4,
+    "draws":0,
+    "dominant_losses":0,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-05-16\", \"home\": \"FC Bayern München\", \"away\": \"1. FC Köln\", \"score\": \"5-1\"}, {\"date\": \"2026-01-14\", \"home\": \"1. FC Köln\", \"away\": \"FC Bayern München\", \"score\": \"1-3\"}, {\"date\": \"2024-04-13\", \"home\": \"FC Bayern München\", \"away\": \"1. FC Köln\", \"score\": \"2-0\"}, {\"date\": \"2023-11-24\", \"home\": \"1. FC Köln\", \"away\": \"FC Bayern München\", \"score\": \"0-1\"}]"
   }
 ]
