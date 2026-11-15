@@ -1,21 +1,6 @@
 [
   {
     "competition":"BSA",
-    "utcDate":"2026-11-14T21:30:00Z",
-    "date_local":"14\/11\/2026",
-    "time_local":"22:30",
-    "homeTeam":"Mirassol FC",
-    "awayTeam":"CA Mineiro",
-    "dominant_team":"CA Mineiro",
-    "h2h_matches":3,
-    "dominant_wins":2,
-    "draws":1,
-    "dominant_losses":0,
-    "h2h_signal":"🟡 Avantage H2H à surveiller",
-    "recent_h2h":"[{\"date\": \"2026-05-16\", \"home\": \"CA Mineiro\", \"away\": \"Mirassol FC\", \"score\": \"3-1\"}, {\"date\": \"2025-09-28\", \"home\": \"CA Mineiro\", \"away\": \"Mirassol FC\", \"score\": \"1-0\"}, {\"date\": \"2025-04-26\", \"home\": \"Mirassol FC\", \"away\": \"CA Mineiro\", \"score\": \"2-2\"}]"
-  },
-  {
-    "competition":"BSA",
     "utcDate":"2026-11-19T00:30:00Z",
     "date_local":"19\/11\/2026",
     "time_local":"01:30",
@@ -373,5 +358,50 @@
     "dominant_losses":1,
     "h2h_signal":"🟡 Avantage H2H à surveiller",
     "recent_h2h":"[{\"date\": \"2026-03-06\", \"home\": \"RC Celta de Vigo\", \"away\": \"Real Madrid CF\", \"score\": \"1-2\"}, {\"date\": \"2025-12-07\", \"home\": \"Real Madrid CF\", \"away\": \"RC Celta de Vigo\", \"score\": \"0-2\"}, {\"date\": \"2025-05-04\", \"home\": \"Real Madrid CF\", \"away\": \"RC Celta de Vigo\", \"score\": \"3-2\"}, {\"date\": \"2024-10-19\", \"home\": \"RC Celta de Vigo\", \"away\": \"Real Madrid CF\", \"score\": \"1-2\"}, {\"date\": \"2024-03-10\", \"home\": \"Real Madrid CF\", \"away\": \"RC Celta de Vigo\", \"score\": \"4-0\"}]"
+  },
+  {
+    "competition":"DED",
+    "utcDate":"2026-11-22T13:30:00Z",
+    "date_local":"22\/11\/2026",
+    "time_local":"14:30",
+    "homeTeam":"Sparta Rotterdam",
+    "awayTeam":"AZ",
+    "dominant_team":"AZ",
+    "h2h_matches":5,
+    "dominant_wins":3,
+    "draws":1,
+    "dominant_losses":1,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-02-22\", \"home\": \"AZ\", \"away\": \"Sparta Rotterdam\", \"score\": \"3-1\"}, {\"date\": \"2025-11-02\", \"home\": \"Sparta Rotterdam\", \"away\": \"AZ\", \"score\": \"0-1\"}, {\"date\": \"2025-01-26\", \"home\": \"AZ\", \"away\": \"Sparta Rotterdam\", \"score\": \"1-2\"}, {\"date\": \"2024-11-24\", \"home\": \"Sparta Rotterdam\", \"away\": \"AZ\", \"score\": \"1-2\"}, {\"date\": \"2024-03-02\", \"home\": \"Sparta Rotterdam\", \"away\": \"AZ\", \"score\": \"1-1\"}]"
+  },
+  {
+    "competition":"SA",
+    "utcDate":"2026-11-22T14:00:00Z",
+    "date_local":"22\/11\/2026",
+    "time_local":"15:00",
+    "homeTeam":"US Sassuolo Calcio",
+    "awayTeam":"Genoa CFC",
+    "dominant_team":"Genoa CFC",
+    "h2h_matches":4,
+    "dominant_wins":4,
+    "draws":0,
+    "dominant_losses":0,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-04-12\", \"home\": \"Genoa CFC\", \"away\": \"US Sassuolo Calcio\", \"score\": \"2-1\"}, {\"date\": \"2025-11-03\", \"home\": \"US Sassuolo Calcio\", \"away\": \"Genoa CFC\", \"score\": \"1-2\"}, {\"date\": \"2024-05-12\", \"home\": \"Genoa CFC\", \"away\": \"US Sassuolo Calcio\", \"score\": \"2-1\"}, {\"date\": \"2023-12-22\", \"home\": \"US Sassuolo Calcio\", \"away\": \"Genoa CFC\", \"score\": \"1-2\"}]"
+  },
+  {
+    "competition":"BL1",
+    "utcDate":"2026-11-22T14:30:00Z",
+    "date_local":"22\/11\/2026",
+    "time_local":"15:30",
+    "homeTeam":"FC Augsburg",
+    "awayTeam":"1. FSV Mainz 05",
+    "dominant_team":"1. FSV Mainz 05",
+    "h2h_matches":5,
+    "dominant_wins":4,
+    "draws":1,
+    "dominant_losses":0,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-02-07\", \"home\": \"1. FSV Mainz 05\", \"away\": \"FC Augsburg\", \"score\": \"2-0\"}, {\"date\": \"2025-09-20\", \"home\": \"FC Augsburg\", \"away\": \"1. FSV Mainz 05\", \"score\": \"1-4\"}, {\"date\": \"2025-02-08\", \"home\": \"1. FSV Mainz 05\", \"away\": \"FC Augsburg\", \"score\": \"0-0\"}, {\"date\": \"2024-09-20\", \"home\": \"FC Augsburg\", \"away\": \"1. FSV Mainz 05\", \"score\": \"2-3\"}, {\"date\": \"2024-02-17\", \"home\": \"1. FSV Mainz 05\", \"away\": \"FC Augsburg\", \"score\": \"1-0\"}]"
   }
 ]

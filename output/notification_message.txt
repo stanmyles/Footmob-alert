@@ -1,15 +1,7 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 25
+📅 Matchs avec signal : 27
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
-
-⚽ **Mirassol FC vs CA Mineiro**
-🏆 Compétition : Brasileirão Série A (Brésil)
-🗓️ Coup d’envoi : 14/11/2026 à 22:30
-📌 Avantage historique : CA Mineiro
-📊 Bilan H2H : CA Mineiro 2 victoire(s) | 1 nul(s) | 0 défaite(s)
-📚 Échantillon : 3 confrontation(s)
-🟡 Avantage H2H à surveiller
 
 ⚽ **Grêmio FBPA vs EC Bahia**
 🏆 Compétition : Brasileirão Série A (Brésil)
@@ -121,6 +113,14 @@
 📌 Avantage historique : Paris Saint-Germain FC
 📊 Bilan H2H : Paris Saint-Germain FC 3 victoire(s) | 1 nul(s) | 1 défaite(s)
 📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Parma Calcio 1913 vs AS Roma**
+🏆 Compétition : Serie A (Italie)
+🗓️ Coup d’envoi : 21/11/2026 à 18:00
+📌 Avantage historique : AS Roma
+📊 Bilan H2H : AS Roma 4 victoire(s) | 0 nul(s) | 0 défaite(s)
+📚 Échantillon : 4 confrontation(s)
 🟡 Avantage H2H à surveiller
 
 ℹ️ Signal fondé uniquement sur les confrontations directes des 3 dernières années. Il ne prédit pas un résultat et ne garantit pas une victoire.
