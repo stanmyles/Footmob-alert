@@ -1,23 +1,7 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 18
+📅 Matchs avec signal : 15
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
-
-⚽ **São Paulo FC vs Fluminense FC**
-🏆 Compétition : Brasileirão Série A (Brésil)
-🗓️ Coup d’envoi : 20/11/2026 à 01:30
-📌 Avantage historique : Fluminense FC
-📊 Bilan H2H : Fluminense FC 4 victoire(s) | 0 nul(s) | 2 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **FC Bayern München vs 1. FC Köln**
-🏆 Compétition : Bundesliga (Allemagne)
-🗓️ Coup d’envoi : 20/11/2026 à 20:30
-📌 Avantage historique : FC Bayern München
-📊 Bilan H2H : FC Bayern München 4 victoire(s) | 0 nul(s) | 0 défaite(s)
-📚 Échantillon : 4 confrontation(s)
-🟡 Avantage H2H à surveiller
 
 ⚽ **Millwall FC vs Queens Park Rangers FC**
 🏆 Compétition : Championship (Angleterre)
@@ -107,20 +91,36 @@
 📚 Échantillon : 4 confrontation(s)
 🟡 Avantage H2H à surveiller
 
-⚽ **Newcastle United FC vs Arsenal FC**
-🏆 Compétition : Premier League (Angleterre)
-🗓️ Coup d’envoi : 21/11/2026 à 18:30
-📌 Avantage historique : Arsenal FC
-📊 Bilan H2H : Arsenal FC 4 victoire(s) | 0 nul(s) | 1 défaite(s)
+⚽ **Sparta Rotterdam vs AZ**
+🏆 Compétition : Eredivisie (Pays-Bas)
+🗓️ Coup d’envoi : 22/11/2026 à 14:30
+📌 Avantage historique : AZ
+📊 Bilan H2H : AZ 3 victoire(s) | 1 nul(s) | 1 défaite(s)
 📚 Échantillon : 5 confrontation(s)
 🟡 Avantage H2H à surveiller
 
-⚽ **Feyenoord Rotterdam vs SBV Excelsior**
-🏆 Compétition : Eredivisie (Pays-Bas)
-🗓️ Coup d’envoi : 21/11/2026 à 18:45
-📌 Avantage historique : Feyenoord Rotterdam
-📊 Bilan H2H : Feyenoord Rotterdam 4 victoire(s) | 0 nul(s) | 0 défaite(s)
-📚 Échantillon : 4 confrontation(s)
+⚽ **Santos FC vs Grêmio FBPA**
+🏆 Compétition : Brasileirão Série A (Brésil)
+🗓️ Coup d’envoi : 24/11/2026 à 01:00
+📌 Avantage historique : Grêmio FBPA
+📊 Bilan H2H : Grêmio FBPA 2 victoire(s) | 1 nul(s) | 0 défaite(s)
+📚 Échantillon : 3 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Middlesbrough FC vs Swansea City AFC**
+🏆 Compétition : Championship (Angleterre)
+🗓️ Coup d’envoi : 24/11/2026 à 20:45
+📌 Avantage historique : Middlesbrough FC
+📊 Bilan H2H : Middlesbrough FC 4 victoire(s) | 1 nul(s) | 1 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟢 Avantage H2H net
+
+⚽ **Nottingham Forest FC vs Chelsea FC**
+🏆 Compétition : Premier League (Angleterre)
+🗓️ Coup d’envoi : 27/11/2026 à 21:00
+📌 Avantage historique : Chelsea FC
+📊 Bilan H2H : Chelsea FC 3 victoire(s) | 1 nul(s) | 1 défaite(s)
+📚 Échantillon : 5 confrontation(s)
 🟡 Avantage H2H à surveiller
 
 ℹ️ Signal fondé uniquement sur les confrontations directes des 3 dernières années. Il ne prédit pas un résultat et ne garantit pas une victoire.
