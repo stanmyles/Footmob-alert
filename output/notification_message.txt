@@ -1,95 +1,23 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 16
+📅 Matchs avec signal : 11
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
 
-⚽ **SE Palmeiras vs CR Flamengo**
-🏆 Compétition : Brasileirão Série A (Brésil)
-🗓️ Coup d’envoi : 21/11/2026 à 20:30
-📌 Avantage historique : CR Flamengo
-📊 Bilan H2H : CR Flamengo 3 victoire(s) | 2 nul(s) | 1 défaite(s)
-📚 Échantillon : 6 confrontation(s)
+⚽ **Atalanta BC vs FC Internazionale Milano**
+🏆 Compétition : Serie A (Italie)
+🗓️ Coup d’envoi : 22/11/2026 à 20:45
+📌 Avantage historique : FC Internazionale Milano
+📊 Bilan H2H : FC Internazionale Milano 4 victoire(s) | 1 nul(s) | 0 défaite(s)
+📚 Échantillon : 5 confrontation(s)
 🟡 Avantage H2H à surveiller
 
-⚽ **AS Monaco FC vs AJ Auxerre**
-🏆 Compétition : Ligue 1 (France)
-🗓️ Coup d’envoi : 21/11/2026 à 20:45
-📌 Avantage historique : AS Monaco FC
-📊 Bilan H2H : AS Monaco FC 3 victoire(s) | 1 nul(s) | 0 défaite(s)
-📚 Échantillon : 4 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Lille OSC vs Olympique Lyonnais**
-🏆 Compétition : Ligue 1 (France)
-🗓️ Coup d’envoi : 21/11/2026 à 20:45
-📌 Avantage historique : Olympique Lyonnais
-📊 Bilan H2H : Olympique Lyonnais 4 victoire(s) | 1 nul(s) | 1 défaite(s)
+⚽ **Getafe CF vs Club Atlético de Madrid**
+🏆 Compétition : LaLiga (Espagne)
+🗓️ Coup d’envoi : 22/11/2026 à 21:00
+📌 Avantage historique : Club Atlético de Madrid
+📊 Bilan H2H : Club Atlético de Madrid 4 victoire(s) | 1 nul(s) | 1 défaite(s)
 📚 Échantillon : 6 confrontation(s)
 🟢 Avantage H2H net
-
-⚽ **RC Strasbourg Alsace vs Stade Brestois 29**
-🏆 Compétition : Ligue 1 (France)
-🗓️ Coup d’envoi : 21/11/2026 à 20:45
-📌 Avantage historique : Stade Brestois 29
-📊 Bilan H2H : Stade Brestois 29 3 victoire(s) | 2 nul(s) | 1 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Racing Club de Lens vs Toulouse FC**
-🏆 Compétition : Ligue 1 (France)
-🗓️ Coup d’envoi : 21/11/2026 à 20:45
-📌 Avantage historique : Racing Club de Lens
-📊 Bilan H2H : Racing Club de Lens 3 victoire(s) | 1 nul(s) | 1 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **FC Groningen vs SC Heerenveen**
-🏆 Compétition : Eredivisie (Pays-Bas)
-🗓️ Coup d’envoi : 21/11/2026 à 21:00
-📌 Avantage historique : FC Groningen
-📊 Bilan H2H : FC Groningen 3 victoire(s) | 0 nul(s) | 1 défaite(s)
-📚 Échantillon : 4 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Real Madrid CF vs RC Celta de Vigo**
-🏆 Compétition : LaLiga (Espagne)
-🗓️ Coup d’envoi : 21/11/2026 à 21:00
-📌 Avantage historique : Real Madrid CF
-📊 Bilan H2H : Real Madrid CF 4 victoire(s) | 0 nul(s) | 1 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Sparta Rotterdam vs AZ**
-🏆 Compétition : Eredivisie (Pays-Bas)
-🗓️ Coup d’envoi : 22/11/2026 à 14:30
-📌 Avantage historique : AZ
-📊 Bilan H2H : AZ 3 victoire(s) | 1 nul(s) | 1 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **US Sassuolo Calcio vs Genoa CFC**
-🏆 Compétition : Serie A (Italie)
-🗓️ Coup d’envoi : 22/11/2026 à 15:00
-📌 Avantage historique : Genoa CFC
-📊 Bilan H2H : Genoa CFC 4 victoire(s) | 0 nul(s) | 0 défaite(s)
-📚 Échantillon : 4 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **FC Augsburg vs 1. FSV Mainz 05**
-🏆 Compétition : Bundesliga (Allemagne)
-🗓️ Coup d’envoi : 22/11/2026 à 15:30
-📌 Avantage historique : 1. FSV Mainz 05
-📊 Bilan H2H : 1. FSV Mainz 05 4 victoire(s) | 1 nul(s) | 0 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **FC Lorient vs Stade Rennais FC 1901**
-🏆 Compétition : Ligue 1 (France)
-🗓️ Coup d’envoi : 22/11/2026 à 17:15
-📌 Avantage historique : FC Lorient
-📊 Bilan H2H : FC Lorient 3 victoire(s) | 0 nul(s) | 0 défaite(s)
-📚 Échantillon : 3 confrontation(s)
-🟡 Avantage H2H à surveiller
 
 ⚽ **Santos FC vs Grêmio FBPA**
 🏆 Compétition : Brasileirão Série A (Brésil)
@@ -107,6 +35,22 @@
 📚 Échantillon : 6 confrontation(s)
 🟢 Avantage H2H net
 
+⚽ **Norwich City FC vs Queens Park Rangers FC**
+🏆 Compétition : Championship (Angleterre)
+🗓️ Coup d’envoi : 24/11/2026 à 20:45
+📌 Avantage historique : Norwich City FC
+📊 Bilan H2H : Norwich City FC 3 victoire(s) | 2 nul(s) | 1 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Stoke City FC vs Millwall FC**
+🏆 Compétition : Championship (Angleterre)
+🗓️ Coup d’envoi : 25/11/2026 à 21:00
+📌 Avantage historique : Millwall FC
+📊 Bilan H2H : Millwall FC 3 victoire(s) | 2 nul(s) | 0 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
 ⚽ **Nottingham Forest FC vs Chelsea FC**
 🏆 Compétition : Premier League (Angleterre)
 🗓️ Coup d’envoi : 27/11/2026 à 21:00
@@ -120,6 +64,30 @@
 🗓️ Coup d’envoi : 28/11/2026 à 15:30
 📌 Avantage historique : 1. FC Union Berlin
 📊 Bilan H2H : 1. FC Union Berlin 2 victoire(s) | 3 nul(s) | 0 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Botafogo FR vs EC Bahia**
+🏆 Compétition : Brasileirão Série A (Brésil)
+🗓️ Coup d’envoi : 29/11/2026 à 01:00
+📌 Avantage historique : EC Bahia
+📊 Bilan H2H : EC Bahia 3 victoire(s) | 1 nul(s) | 1 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Everton FC vs Liverpool FC**
+🏆 Compétition : Premier League (Angleterre)
+🗓️ Coup d’envoi : 29/11/2026 à 13:00
+📌 Avantage historique : Liverpool FC
+📊 Bilan H2H : Liverpool FC 3 victoire(s) | 1 nul(s) | 1 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Feyenoord Rotterdam vs AFC Ajax**
+🏆 Compétition : Eredivisie (Pays-Bas)
+🗓️ Coup d’envoi : 29/11/2026 à 14:30
+📌 Avantage historique : AFC Ajax
+📊 Bilan H2H : AFC Ajax 3 victoire(s) | 1 nul(s) | 1 défaite(s)
 📚 Échantillon : 5 confrontation(s)
 🟡 Avantage H2H à surveiller
 
