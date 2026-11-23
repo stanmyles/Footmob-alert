@@ -3,22 +3,6 @@
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
 
-⚽ **Atalanta BC vs FC Internazionale Milano**
-🏆 Compétition : Serie A (Italie)
-🗓️ Coup d’envoi : 22/11/2026 à 20:45
-📌 Avantage historique : FC Internazionale Milano
-📊 Bilan H2H : FC Internazionale Milano 4 victoire(s) | 1 nul(s) | 0 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Getafe CF vs Club Atlético de Madrid**
-🏆 Compétition : LaLiga (Espagne)
-🗓️ Coup d’envoi : 22/11/2026 à 21:00
-📌 Avantage historique : Club Atlético de Madrid
-📊 Bilan H2H : Club Atlético de Madrid 4 victoire(s) | 1 nul(s) | 1 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟢 Avantage H2H net
-
 ⚽ **Santos FC vs Grêmio FBPA**
 🏆 Compétition : Brasileirão Série A (Brésil)
 🗓️ Coup d’envoi : 24/11/2026 à 01:00
@@ -89,6 +73,22 @@
 📌 Avantage historique : AFC Ajax
 📊 Bilan H2H : AFC Ajax 3 victoire(s) | 1 nul(s) | 1 défaite(s)
 📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **US Lecce vs Atalanta BC**
+🏆 Compétition : Serie A (Italie)
+🗓️ Coup d’envoi : 30/11/2026 à 18:30
+📌 Avantage historique : Atalanta BC
+📊 Bilan H2H : Atalanta BC 5 victoire(s) | 1 nul(s) | 0 défaite(s)
+📚 Échantillon : 6 confrontation(s)
+🟢 Avantage H2H net
+
+⚽ **Casa Pia AC vs Sporting Clube de Braga**
+🏆 Compétition : Primeira Liga (Portugal)
+🗓️ Coup d’envoi : 30/11/2026 à 21:15
+📌 Avantage historique : Sporting Clube de Braga
+📊 Bilan H2H : Sporting Clube de Braga 4 victoire(s) | 0 nul(s) | 2 défaite(s)
+📚 Échantillon : 6 confrontation(s)
 🟡 Avantage H2H à surveiller
 
 ℹ️ Signal fondé uniquement sur les confrontations directes des 3 dernières années. Il ne prédit pas un résultat et ne garantit pas une victoire.
