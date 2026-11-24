@@ -1,31 +1,7 @@
 📊 **Football — confrontations directes récentes**
-📅 Matchs avec signal : 11
+📅 Matchs avec signal : 14
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
-
-⚽ **Santos FC vs Grêmio FBPA**
-🏆 Compétition : Brasileirão Série A (Brésil)
-🗓️ Coup d’envoi : 24/11/2026 à 01:00
-📌 Avantage historique : Grêmio FBPA
-📊 Bilan H2H : Grêmio FBPA 2 victoire(s) | 1 nul(s) | 0 défaite(s)
-📚 Échantillon : 3 confrontation(s)
-🟡 Avantage H2H à surveiller
-
-⚽ **Middlesbrough FC vs Swansea City AFC**
-🏆 Compétition : Championship (Angleterre)
-🗓️ Coup d’envoi : 24/11/2026 à 20:45
-📌 Avantage historique : Middlesbrough FC
-📊 Bilan H2H : Middlesbrough FC 4 victoire(s) | 1 nul(s) | 1 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟢 Avantage H2H net
-
-⚽ **Norwich City FC vs Queens Park Rangers FC**
-🏆 Compétition : Championship (Angleterre)
-🗓️ Coup d’envoi : 24/11/2026 à 20:45
-📌 Avantage historique : Norwich City FC
-📊 Bilan H2H : Norwich City FC 3 victoire(s) | 2 nul(s) | 1 défaite(s)
-📚 Échantillon : 6 confrontation(s)
-🟡 Avantage H2H à surveiller
 
 ⚽ **Stoke City FC vs Millwall FC**
 🏆 Compétition : Championship (Angleterre)
@@ -48,6 +24,46 @@
 🗓️ Coup d’envoi : 28/11/2026 à 15:30
 📌 Avantage historique : 1. FC Union Berlin
 📊 Bilan H2H : 1. FC Union Berlin 2 victoire(s) | 3 nul(s) | 0 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Derby County FC vs Watford FC**
+🏆 Compétition : Championship (Angleterre)
+🗓️ Coup d’envoi : 28/11/2026 à 16:00
+📌 Avantage historique : Watford FC
+📊 Bilan H2H : Watford FC 4 victoire(s) | 0 nul(s) | 0 défaite(s)
+📚 Échantillon : 4 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Queens Park Rangers FC vs Sheffield United FC**
+🏆 Compétition : Championship (Angleterre)
+🗓️ Coup d’envoi : 28/11/2026 à 16:00
+📌 Avantage historique : Sheffield United FC
+📊 Bilan H2H : Sheffield United FC 2 victoire(s) | 2 nul(s) | 0 défaite(s)
+📚 Échantillon : 4 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Moreirense FC vs CD Santa Clara**
+🏆 Compétition : Primeira Liga (Portugal)
+🗓️ Coup d’envoi : 28/11/2026 à 16:30
+📌 Avantage historique : Moreirense FC
+📊 Bilan H2H : Moreirense FC 3 victoire(s) | 1 nul(s) | 0 défaite(s)
+📚 Échantillon : 4 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Angers SCO vs Racing Club de Lens**
+🏆 Compétition : Ligue 1 (France)
+🗓️ Coup d’envoi : 28/11/2026 à 17:15
+📌 Avantage historique : Racing Club de Lens
+📊 Bilan H2H : Racing Club de Lens 4 victoire(s) | 0 nul(s) | 0 défaite(s)
+📚 Échantillon : 4 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **PSV vs Go Ahead Eagles**
+🏆 Compétition : Eredivisie (Pays-Bas)
+🗓️ Coup d’envoi : 28/11/2026 à 18:45
+📌 Avantage historique : PSV
+📊 Bilan H2H : PSV 4 victoire(s) | 0 nul(s) | 1 défaite(s)
 📚 Échantillon : 5 confrontation(s)
 🟡 Avantage H2H à surveiller
 
@@ -89,6 +105,14 @@
 📌 Avantage historique : Sporting Clube de Braga
 📊 Bilan H2H : Sporting Clube de Braga 4 victoire(s) | 0 nul(s) | 2 défaite(s)
 📚 Échantillon : 6 confrontation(s)
+🟡 Avantage H2H à surveiller
+
+⚽ **Coventry City FC vs Ipswich Town FC**
+🏆 Compétition : Premier League (Angleterre)
+🗓️ Coup d’envoi : 01/12/2026 à 21:00
+📌 Avantage historique : Ipswich Town FC
+📊 Bilan H2H : Ipswich Town FC 4 victoire(s) | 0 nul(s) | 0 défaite(s)
+📚 Échantillon : 4 confrontation(s)
 🟡 Avantage H2H à surveiller
 
 ℹ️ Signal fondé uniquement sur les confrontations directes des 3 dernières années. Il ne prédit pas un résultat et ne garantit pas une victoire.
