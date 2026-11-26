@@ -105,21 +105,6 @@
     "recent_h2h":"[{\"date\": \"2026-05-10\", \"home\": \"Go Ahead Eagles\", \"away\": \"PSV\", \"score\": \"1-4\"}, {\"date\": \"2025-10-18\", \"home\": \"PSV\", \"away\": \"Go Ahead Eagles\", \"score\": \"2-1\"}, {\"date\": \"2025-03-01\", \"home\": \"Go Ahead Eagles\", \"away\": \"PSV\", \"score\": \"3-2\"}, {\"date\": \"2024-09-01\", \"home\": \"PSV\", \"away\": \"Go Ahead Eagles\", \"score\": \"3-0\"}, {\"date\": \"2024-03-08\", \"home\": \"Go Ahead Eagles\", \"away\": \"PSV\", \"score\": \"0-1\"}]"
   },
   {
-    "competition":"SA",
-    "utcDate":"2026-11-28T19:45:00Z",
-    "date_local":"28\/11\/2026",
-    "time_local":"20:45",
-    "homeTeam":"FC Internazionale Milano",
-    "awayTeam":"Genoa CFC",
-    "dominant_team":"FC Internazionale Milano",
-    "h2h_matches":6,
-    "dominant_wins":4,
-    "draws":2,
-    "dominant_losses":0,
-    "h2h_signal":"🟢 Avantage H2H net",
-    "recent_h2h":"[{\"date\": \"2026-02-28\", \"home\": \"FC Internazionale Milano\", \"away\": \"Genoa CFC\", \"score\": \"2-0\"}, {\"date\": \"2025-12-14\", \"home\": \"Genoa CFC\", \"away\": \"FC Internazionale Milano\", \"score\": \"1-2\"}, {\"date\": \"2025-02-22\", \"home\": \"FC Internazionale Milano\", \"away\": \"Genoa CFC\", \"score\": \"1-0\"}, {\"date\": \"2024-08-17\", \"home\": \"Genoa CFC\", \"away\": \"FC Internazionale Milano\", \"score\": \"2-2\"}, {\"date\": \"2024-03-04\", \"home\": \"FC Internazionale Milano\", \"away\": \"Genoa CFC\", \"score\": \"2-1\"}, {\"date\": \"2023-12-29\", \"home\": \"Genoa CFC\", \"away\": \"FC Internazionale Milano\", \"score\": \"1-1\"}]"
-  },
-  {
     "competition":"BSA",
     "utcDate":"2026-11-29T00:00:00Z",
     "date_local":"29\/11\/2026",
@@ -268,5 +253,35 @@
     "dominant_losses":2,
     "h2h_signal":"🟡 Avantage H2H à surveiller",
     "recent_h2h":"[{\"date\": \"2026-03-04\", \"home\": \"Newcastle United FC\", \"away\": \"Manchester United FC\", \"score\": \"2-1\"}, {\"date\": \"2025-12-26\", \"home\": \"Manchester United FC\", \"away\": \"Newcastle United FC\", \"score\": \"1-0\"}, {\"date\": \"2025-04-13\", \"home\": \"Newcastle United FC\", \"away\": \"Manchester United FC\", \"score\": \"4-1\"}, {\"date\": \"2024-12-30\", \"home\": \"Manchester United FC\", \"away\": \"Newcastle United FC\", \"score\": \"0-2\"}, {\"date\": \"2024-05-15\", \"home\": \"Manchester United FC\", \"away\": \"Newcastle United FC\", \"score\": \"3-2\"}, {\"date\": \"2023-12-02\", \"home\": \"Newcastle United FC\", \"away\": \"Manchester United FC\", \"score\": \"1-0\"}]"
+  },
+  {
+    "competition":"BSA",
+    "utcDate":"2026-12-03T00:30:00Z",
+    "date_local":"03\/12\/2026",
+    "time_local":"01:30",
+    "homeTeam":"EC Bahia",
+    "awayTeam":"CA Mineiro",
+    "dominant_team":"EC Bahia",
+    "h2h_matches":6,
+    "dominant_wins":3,
+    "draws":2,
+    "dominant_losses":1,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-07-21\", \"home\": \"CA Mineiro\", \"away\": \"EC Bahia\", \"score\": \"1-1\"}, {\"date\": \"2025-11-05\", \"home\": \"CA Mineiro\", \"away\": \"EC Bahia\", \"score\": \"3-0\"}, {\"date\": \"2025-07-13\", \"home\": \"EC Bahia\", \"away\": \"CA Mineiro\", \"score\": \"2-1\"}, {\"date\": \"2024-09-15\", \"home\": \"EC Bahia\", \"away\": \"CA Mineiro\", \"score\": \"3-0\"}, {\"date\": \"2024-06-02\", \"home\": \"CA Mineiro\", \"away\": \"EC Bahia\", \"score\": \"1-1\"}, {\"date\": \"2023-12-07\", \"home\": \"EC Bahia\", \"away\": \"CA Mineiro\", \"score\": \"4-1\"}]"
+  },
+  {
+    "competition":"BSA",
+    "utcDate":"2026-12-03T00:30:00Z",
+    "date_local":"03\/12\/2026",
+    "time_local":"01:30",
+    "homeTeam":"Grêmio FBPA",
+    "awayTeam":"Mirassol FC",
+    "dominant_team":"Mirassol FC",
+    "h2h_matches":3,
+    "dominant_wins":3,
+    "draws":0,
+    "dominant_losses":0,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-07-17\", \"home\": \"Mirassol FC\", \"away\": \"Grêmio FBPA\", \"score\": \"2-1\"}, {\"date\": \"2025-09-13\", \"home\": \"Grêmio FBPA\", \"away\": \"Mirassol FC\", \"score\": \"0-1\"}, {\"date\": \"2025-04-16\", \"home\": \"Mirassol FC\", \"away\": \"Grêmio FBPA\", \"score\": \"4-1\"}]"
   }
 ]
