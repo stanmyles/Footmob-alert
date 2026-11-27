@@ -1,20 +1,5 @@
 [
   {
-    "competition":"PL",
-    "utcDate":"2026-11-27T20:00:00Z",
-    "date_local":"27\/11\/2026",
-    "time_local":"21:00",
-    "homeTeam":"Nottingham Forest FC",
-    "awayTeam":"Chelsea FC",
-    "dominant_team":"Chelsea FC",
-    "h2h_matches":5,
-    "dominant_wins":3,
-    "draws":1,
-    "dominant_losses":1,
-    "h2h_signal":"🟡 Avantage H2H à surveiller",
-    "recent_h2h":"[{\"date\": \"2026-05-04\", \"home\": \"Chelsea FC\", \"away\": \"Nottingham Forest FC\", \"score\": \"1-3\"}, {\"date\": \"2025-10-18\", \"home\": \"Nottingham Forest FC\", \"away\": \"Chelsea FC\", \"score\": \"0-3\"}, {\"date\": \"2025-05-25\", \"home\": \"Nottingham Forest FC\", \"away\": \"Chelsea FC\", \"score\": \"0-1\"}, {\"date\": \"2024-10-06\", \"home\": \"Chelsea FC\", \"away\": \"Nottingham Forest FC\", \"score\": \"1-1\"}, {\"date\": \"2024-05-11\", \"home\": \"Nottingham Forest FC\", \"away\": \"Chelsea FC\", \"score\": \"2-3\"}]"
-  },
-  {
     "competition":"BL1",
     "utcDate":"2026-11-28T14:30:00Z",
     "date_local":"28\/11\/2026",
@@ -283,5 +268,20 @@
     "dominant_losses":0,
     "h2h_signal":"🟡 Avantage H2H à surveiller",
     "recent_h2h":"[{\"date\": \"2026-07-17\", \"home\": \"Mirassol FC\", \"away\": \"Grêmio FBPA\", \"score\": \"2-1\"}, {\"date\": \"2025-09-13\", \"home\": \"Grêmio FBPA\", \"away\": \"Mirassol FC\", \"score\": \"0-1\"}, {\"date\": \"2025-04-16\", \"home\": \"Mirassol FC\", \"away\": \"Grêmio FBPA\", \"score\": \"4-1\"}]"
+  },
+  {
+    "competition":"FL1",
+    "utcDate":"2026-12-04T19:45:00Z",
+    "date_local":"04\/12\/2026",
+    "time_local":"20:45",
+    "homeTeam":"Toulouse FC",
+    "awayTeam":"Paris Saint-Germain FC",
+    "dominant_team":"Paris Saint-Germain FC",
+    "h2h_matches":5,
+    "dominant_wins":4,
+    "draws":0,
+    "dominant_losses":1,
+    "h2h_signal":"🟡 Avantage H2H à surveiller",
+    "recent_h2h":"[{\"date\": \"2026-04-03\", \"home\": \"Paris Saint-Germain FC\", \"away\": \"Toulouse FC\", \"score\": \"3-1\"}, {\"date\": \"2025-08-30\", \"home\": \"Toulouse FC\", \"away\": \"Paris Saint-Germain FC\", \"score\": \"3-6\"}, {\"date\": \"2025-02-15\", \"home\": \"Toulouse FC\", \"away\": \"Paris Saint-Germain FC\", \"score\": \"0-1\"}, {\"date\": \"2024-11-22\", \"home\": \"Paris Saint-Germain FC\", \"away\": \"Toulouse FC\", \"score\": \"3-0\"}, {\"date\": \"2024-05-12\", \"home\": \"Paris Saint-Germain FC\", \"away\": \"Toulouse FC\", \"score\": \"1-3\"}]"
   }
 ]

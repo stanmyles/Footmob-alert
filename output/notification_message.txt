@@ -3,14 +3,6 @@
 📆 Période des matchs : aujourd’hui + les 7 prochains jours.
 🔎 Fenêtre H2H : les 3 dernières années.
 
-⚽ **Nottingham Forest FC vs Chelsea FC**
-🏆 Compétition : Premier League (Angleterre)
-🗓️ Coup d’envoi : 27/11/2026 à 21:00
-📌 Avantage historique : Chelsea FC
-📊 Bilan H2H : Chelsea FC 3 victoire(s) | 1 nul(s) | 1 défaite(s)
-📚 Échantillon : 5 confrontation(s)
-🟡 Avantage H2H à surveiller
-
 ⚽ **1. FSV Mainz 05 vs 1. FC Union Berlin**
 🏆 Compétition : Bundesliga (Allemagne)
 🗓️ Coup d’envoi : 28/11/2026 à 15:30
@@ -122,5 +114,13 @@
 📊 Bilan H2H : Chelsea FC 3 victoire(s) | 3 nul(s) | 0 défaite(s)
 📚 Échantillon : 6 confrontation(s)
 🟢 Avantage H2H net
+
+⚽ **Brentford FC vs Arsenal FC**
+🏆 Compétition : Premier League (Angleterre)
+🗓️ Coup d’envoi : 02/12/2026 à 21:15
+📌 Avantage historique : Arsenal FC
+📊 Bilan H2H : Arsenal FC 3 victoire(s) | 2 nul(s) | 0 défaite(s)
+📚 Échantillon : 5 confrontation(s)
+🟡 Avantage H2H à surveiller
 
 ℹ️ Signal fondé uniquement sur les confrontations directes des 3 dernières années. Il ne prédit pas un résultat et ne garantit pas une victoire.
